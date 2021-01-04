@@ -97,7 +97,9 @@
               taxidermy. Gastropub indxgo juice poutine, ramps microdosing banh
               mi pug VHS try-hard.
             </p>
-            <a class="inline-flex items-center mt-3 text-indigo-500"
+            <a
+              href="/last"
+              class="inline-flex items-center mt-3 text-indigo-500"
               >Ir a los últimos sitios
               <svg
                 fill="none"

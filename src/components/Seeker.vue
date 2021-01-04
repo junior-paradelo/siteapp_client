@@ -28,7 +28,7 @@
       <input
         class="text-gray-900 placeholder-gray-500 w-96 focus:outline-none"
         type="text"
-        placeholder="Busca cualquier cosa..."
+        placeholder="Escriba el nombre de algún lugar..."
         v-model="searching"
       />
       <button
@@ -107,9 +107,7 @@ export default {
   methods: {
     search() {
       axios
-        .get("http://localhost:8080/api/sites", {
-          headers: { Authorization: localStorage.getItem("token") },
-        })
+        .get("http://localhost:8080/api/sites/keyword=" + this.searching)
         .then((response) => {
           console.log(response);
           this.listSites = response.data;

@@ -6,6 +6,8 @@ import Seeker from '../components/Seeker.vue'
 import Register from '../components/Register.vue'
 import LastSites from '../components/LastSites.vue'
 import Mapa from '../components/Map.vue'
+import SiteDetails from '../components/SiteDetails.vue'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -38,6 +40,11 @@ const routes = [
     path: '/map' ,
     name: 'Map',
     component: Mapa
+   },
+   {
+    path: '/details' ,
+    name: 'SiteDetails',
+    component: SiteDetails
    }
 ]
 
