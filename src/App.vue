@@ -1,16 +1,16 @@
 <template>
   <div id="app" class="min-h-screen bg-gray-100">
-    <Header></Header>
+    <MenuBar></MenuBar>
     <router-view />
   </div>
 </template>
 
 <script>
-import Header from "./components/Header.vue";
+import MenuBar from "./components/MenuBar.vue";
 export default {
   name: "app",
   components: {
-    Header,
+    MenuBar,
   },
 };
 </script>

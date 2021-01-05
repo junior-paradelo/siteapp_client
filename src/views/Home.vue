@@ -17,7 +17,7 @@
           qué ver en Galicia.
         </p>
         <div class="flex justify-center mt-6">
-          <div class="inline-flex w-16 h-1 bg-indigo-500 rounded-full"></div>
+          <div class="inline-flex w-16 h-1 rounded-full bg-pg-500"></div>
         </div>
       </div>
       <div
@@ -25,7 +25,7 @@
       >
         <div class="flex flex-col items-center p-4 text-center md:w-1/4">
           <div
-            class="inline-flex items-center justify-center flex-shrink-0 w-20 h-20 mb-5 text-indigo-500 bg-indigo-100 rounded-full"
+            class="inline-flex items-center justify-center flex-shrink-0 w-20 h-20 mb-5 rounded-full text-charcoal-500 bg-pg-50"
           >
             <svg
               class="w-9 h-9"
@@ -47,13 +47,12 @@
               Buscador
             </h2>
             <p class="text-base leading-relaxed">
-              Blue bottle crucifix vinyl post-ironic four dollar toast vegan
-              taxidermy. Gastropub indxgo juice poutine, ramps microdosing banh
-              mi pug VHS try-hard.
+              Aventúrese, realice la búsqueda que lleva tiempo pensando y
+              realice la escapada que tanto ha planeado en su cabeza.
             </p>
             <a
               href="/seeker"
-              class="inline-flex items-center mt-3 text-indigo-500"
+              class="inline-flex items-center mt-3 text-burn-500"
               >Ir al buscador
               <svg
                 fill="none"
@@ -71,7 +70,7 @@
         </div>
         <div class="flex flex-col items-center p-4 text-center md:w-1/4">
           <div
-            class="inline-flex items-center justify-center flex-shrink-0 w-20 h-20 mb-5 text-indigo-500 bg-indigo-100 rounded-full"
+            class="inline-flex items-center justify-center flex-shrink-0 w-20 h-20 mb-5 rounded-full text-charcoal-500 bg-pg-50"
           >
             <svg
               class="w-9 h-9"
@@ -93,13 +92,11 @@
               Últimos sitios destacados
             </h2>
             <p class="text-base leading-relaxed">
-              Blue bottle crucifix vinyl post-ironic four dollar toast vegan
-              taxidermy. Gastropub indxgo juice poutine, ramps microdosing banh
-              mi pug VHS try-hard.
+              Descubra todo los sitios nuevos que puede visitar en Galicia.
+              Todos llenos de encantos y pecurialidades que han sido descubierta
+              hace muy poco tiempo.
             </p>
-            <a
-              href="/last"
-              class="inline-flex items-center mt-3 text-indigo-500"
+            <a href="/last" class="inline-flex items-center mt-3 text-burn-500"
               >Ir a los últimos sitios
               <svg
                 fill="none"
@@ -117,7 +114,7 @@
         </div>
         <div class="flex flex-col items-center p-4 text-center md:w-1/4">
           <div
-            class="inline-flex items-center justify-center flex-shrink-0 w-20 h-20 mb-5 text-indigo-500 bg-indigo-100 rounded-full"
+            class="inline-flex items-center justify-center flex-shrink-0 w-20 h-20 mb-5 rounded-full text-charcoal-500 bg-pg-50"
           >
             <svg
               class="w-9 h-9"
@@ -139,11 +136,11 @@
               Mapa interactivo
             </h2>
             <p class="text-base leading-relaxed">
-              Blue bottle crucifix vinyl post-ironic four dollar toast vegan
-              taxidermy. Gastropub indxgo juice poutine, ramps microdosing banh
-              mi pug VHS try-hard.
+              Navege por el mapa interactivo de Galisites!, descubriendo lugares
+              que no se esperaba o buscando algún sitio con encanto cerca de
+              donde está.
             </p>
-            <a class="inline-flex items-center mt-3 text-indigo-500"
+            <a class="inline-flex items-center mt-3 text-burn-500"
               >Ir al mapa
               <svg
                 fill="none"
@@ -161,7 +158,7 @@
         </div>
         <div class="flex flex-col items-center p-4 text-center md:w-1/4">
           <div
-            class="inline-flex items-center justify-center flex-shrink-0 w-20 h-20 mb-5 text-indigo-500 bg-indigo-100 rounded-full"
+            class="inline-flex items-center justify-center flex-shrink-0 w-20 h-20 mb-5 rounded-full text-charcoal-500 bg-pg-50"
           >
             <svg
               class="w-9 h-9"
@@ -183,11 +180,11 @@
               Categorías
             </h2>
             <p class="text-base leading-relaxed">
-              Blue bottle crucifix vinyl post-ironic four dollar toast vegan
-              taxidermy. Gastropub indxgo juice poutine, ramps microdosing banh
-              mi pug VHS try-hard.
+              Busque sitios filtrando por las categorías que más le interesen o
+              le llamen la atención. Realizando así una búsqueda mucho más
+              acorde a sus necesidades.
             </p>
-            <a class="inline-flex items-center mt-3 text-indigo-500"
+            <a class="inline-flex items-center mt-3 text-burn-500"
               >Ir a las categorías
               <svg
                 fill="none"

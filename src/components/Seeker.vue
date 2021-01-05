@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col justify-center pt-10 ">
     <div class="p-4 m-2 mx-auto text-center">
-      <img src="../assets/img/busqueda_global.svg" class="w-full h-32" />
+      <img src="../assets/img/busqueda_global_green.svg" class="w-full h-32" />
       <h1 class="pt-2 font-bold text-black align-middletext-xl md:text-3xl">
         Buscador de sitios de interés cultural
       </h1>
@@ -33,13 +33,13 @@
       />
       <button
         id="search_btn"
-        class="p-2 pl-4 pr-4 text-white bg-indigo-900 rounded hover:bg-indigo-600"
+        class="p-2 pl-4 pr-4 text-white rounded bg-pg-900 hover:bg-pg-600"
         @click="search"
       >
         <p class="text-xs font-semibold">Realizar búsqueda</p>
       </button>
     </div>
-    <div class="container px-6 mx-auto">
+    <div class="container px-6 py-6 mx-auto">
       <div
         class="grid grid-cols-1 gap-6 mt-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
       >
@@ -52,7 +52,7 @@
               style="background-image: url('https://images.unsplash.com/photo-1495856458515-0637185db551?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80')"
             >
               <button
-                class="p-2 mx-5 -mb-4 text-white bg-blue-600 rounded-full hover:bg-blue-500 focus:outline-none focus:bg-blue-500"
+                class="p-2 mx-5 -mb-4 text-white rounded-full bg-burn-600 hover:bg-burn-300 focus:outline-none focus:bg-burn-300"
               >
                 <svg
                   class="w-6 h-6"
