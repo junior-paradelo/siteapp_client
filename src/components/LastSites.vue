@@ -7,7 +7,6 @@
           <h1 class="pt-10 text-xl font-bold text-gray-700 md:text-2xl">
             Últimos sitios añadidos
           </h1>
-          <button type="button" id="button_hidden" @click="search" hidden />
         </div>
         <div v-for="site in listSites" :key="site.id">
           <div class="mt-6 ">
@@ -121,7 +120,7 @@ export default {
     },
   },
   mounted() {
-    document.querySelector("#button_hidden").click();
+    this.search();
   },
 };
 </script>

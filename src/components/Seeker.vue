@@ -33,7 +33,7 @@
       />
       <button
         id="search_btn"
-        class="p-2 pl-4 pr-4 text-white rounded bg-pg-900 hover:bg-pg-600"
+        class="p-2 pl-4 pr-4 text-white rounded bg-fawn-900 hover:bg-fawn-600"
         @click="search"
       >
         <p class="text-xs font-semibold">Realizar búsqueda</p>
@@ -52,7 +52,7 @@
               style="background-image: url('https://images.unsplash.com/photo-1495856458515-0637185db551?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80')"
             >
               <button
-                class="p-2 mx-5 -mb-4 text-white rounded-full bg-burn-600 hover:bg-burn-300 focus:outline-none focus:bg-burn-300"
+                class="p-2 mx-5 -mb-4 text-white rounded-full bg-liverdogs-600 hover:bg-liverdogs-300 focus:outline-none focus:bg-liverdogs-300"
               >
                 <svg
                   class="w-6 h-6"

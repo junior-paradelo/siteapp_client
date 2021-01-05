@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import Login from '../components/Login.vue'
 import Seeker from '../components/Seeker.vue'
 import Register from '../components/Register.vue'
 import LastSites from '../components/LastSites.vue'
@@ -16,11 +15,6 @@ const routes = [
     name: 'Home',
     component: Home
   }, 
-  {
-    path: '/login',
-    name: 'Login',
-    component: Login
-  },
   {
    path: '/seeker' ,
    name: 'Seeker',

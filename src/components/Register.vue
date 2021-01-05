@@ -1,102 +1,109 @@
 <template>
   <section class="text-gray-600 body-font">
     <div class="container flex flex-wrap items-center px-5 py-24 mx-auto">
-      <div class="pr-0 lg:w-3/5 md:w-1/2 md:pr-16 lg:pr-0">
-        <form class="px-8 pt-6 pb-8 mb-4 bg-white rounded">
-          <div class="mb-4 md:flex md:justify-between">
-            <div class="mb-4 md:mr-2 md:mb-0">
-              <label
-                class="block mb-2 text-sm font-bold text-gray-700"
-                for="firstName"
-              >
-                Nombre
-              </label>
-              <input
-                class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                id="firstName"
-                type="text"
-                placeholder="Nombre"
-              />
-            </div>
-            <div class="md:ml-2">
-              <label
-                class="block mb-2 text-sm font-bold text-gray-700"
-                for="lastName"
-              >
-                Apellido
-              </label>
-              <input
-                class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                id="lastName"
-                type="text"
-                placeholder="Apellido"
-              />
-            </div>
-          </div>
-          <div class="mb-4">
-            <label
-              class="block mb-2 text-sm font-bold text-gray-700"
-              for="email"
+      <div
+        class="flex flex-col w-full p-8 mt-10 border rounded-lg border-darkolive-300 lg:w-3/6 md:w-1/2 md:ml-auto md:mt-0"
+      >
+        <div class="mb-2">
+          <h1
+            class="mb-4 text-2xl font-medium text-center text-gray-900 sm:text-3xl title-font"
+          >
+            Darse de alta en Galisites!
+          </h1>
+        </div>
+        <form
+          class="mb-4 md:flex md:flex-wrap md:justify-between"
+          action="#"
+          method="POST"
+          v-on:submit.prevent="register"
+        >
+          <div class="field-group md:w-full">
+            <label class="pr-2 font-semibold field-label" for="name"
+              >Nombre</label
             >
-              Correo electrónico
-            </label>
             <input
-              class="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-              id="email"
-              type="email"
-              placeholder="Correo electrónico"
+              v-model="firstname"
+              type="text"
+              id="name"
+              class="w-full px-4 py-2 mt-2 mb-6 text-gray-700 border-b-2 border-darkolive-200 focus:outline-none focus:border-kombu-700"
             />
           </div>
-          <div class="mb-4 md:flex md:justify-between">
-            <div class="mb-4 md:mr-2 md:mb-0">
-              <label
-                class="block mb-2 text-sm font-bold text-gray-700"
-                for="password"
-              >
-                Contraseña
-              </label>
-              <input
-                class="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                id="password_r"
-                type="password"
-                placeholder="******************"
-              />
-            </div>
-            <div class="md:ml-2">
-              <label
-                class="block mb-2 text-sm font-bold text-gray-700"
-                for="c_password"
-              >
-                Confirmar contraseña
-              </label>
-              <input
-                class="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                id="c_password"
-                type="password"
-                placeholder="******************"
-              />
-            </div>
-          </div>
-          <div class="mb-6 text-center">
-            <button
-              class="relative flex justify-center w-full px-4 py-3 text-sm font-medium text-white bg-indigo-900 border border-transparent rounded-md group hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              type="button"
+          <div class="field-group md:w-full">
+            <label class="pr-2 font-semibold field-label" for="lastname"
+              >Apellidos</label
             >
-              Registrar cuenta
-            </button>
+            <input
+              v-model="lastname"
+              type="text"
+              id="lastname"
+              class="w-full px-4 py-2 mt-2 mb-6 text-gray-700 border-b-2 border-darkolive-200 focus:outline-none focus:border-kombu-700"
+            />
           </div>
-          <hr class="border-t" />
+          <div class="field-group md:w-full">
+            <label class="pr-2 font-semibold field-label" for="email"
+              >Correo electrónico</label
+            >
+            <input
+              v-model="email"
+              type="text"
+              id="email"
+              class="w-full px-4 py-2 mt-2 mb-6 text-gray-700 border-b-2 border-darkolive-200 focus:outline-none focus:border-kombu-700"
+            />
+          </div>
+          <div class="field-group md:w-full">
+            <label class="pr-2 font-semibold field-label" for="username_r"
+              >Nombre usuario</label
+            >
+            <input
+              v-model="username"
+              type="text"
+              id="username_r"
+              class="w-full px-4 py-2 mt-2 mb-6 text-gray-700 border-b-2 border-darkolive-200 focus:outline-none focus:border-kombu-700"
+            />
+          </div>
+          <div class="field-group md:w-full">
+            <label class="pr-2 font-semibold field-label" for="password_r"
+              >Contraseña</label
+            >
+            <input
+              v-model="password_r"
+              type="password"
+              id="password_r"
+              class="w-full px-4 py-2 mt-2 mb-6 text-gray-700 border-b-2 border-darkolive-200 focus:outline-none focus:border-kombu-700"
+            />
+          </div>
+
+          <button
+            type="submit"
+            class="relative flex justify-center w-full px-4 py-3 mt-4 text-sm font-medium border rounded-md text-liverdogs-500 border-liverdogs-500 hover:bg-liverdogs-300 hover:text-liverdogs-500 group focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-800"
+          >
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+              <svg
+                class="w-6 h-6"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+            </span>
+            Crear cuenta
+          </button>
         </form>
       </div>
       <div
-        class="flex flex-col w-full p-8 mt-10 bg-gray-100 rounded-lg lg:w-2/6 md:w-1/2 md:ml-auto md:mt-0"
+        class="flex flex-col w-full p-8 mt-10 border rounded-lg border-darkolive-300 lg:w-2/6 md:w-1/2 md:ml-auto md:mt-0"
       >
         <div>
-          <img
-            class="w-auto h-12 mx-auto"
-            src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
-            alt="Workflow"
-          />
+          <h1
+            class="mb-4 text-2xl font-medium text-center text-gray-900 sm:text-3xl title-font"
+          >
+            Bienvenido a Galisites!
+          </h1>
         </div>
         <form
           class="mt-8 space-y-6"
@@ -113,7 +120,7 @@
                 type="text"
                 autocomplete="email"
                 required
-                class="relative block w-full px-3 py-3 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none shadow appearance-none rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                class="relative block w-full px-3 py-3 text-gray-900 border rounded-none shadow appearance-none placeholder-darkolive-500 border-darkolive-300 rounded-t-md focus:outline-none focus:ring-kombu-500 focus:border-kombu-500 focus:z-10 sm:text-sm"
                 placeholder="Usuario"
                 v-model="user"
               />
@@ -126,7 +133,7 @@
                 type="password"
                 autocomplete="current-password"
                 required
-                class="relative block w-full px-3 py-3 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none shadow appearance-none rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                class="relative block w-full px-3 py-3 text-gray-900 border rounded-none shadow appearance-none placeholder-darkolive-500 border-darkolive-300 rounded-b-md focus:outline-none focus:ring-kombu-500 focus:border-kombu-500 focus:z-10 sm:text-sm"
                 placeholder="Contraseña"
                 v-model="password"
               />
@@ -136,12 +143,12 @@
           <div>
             <button
               type="submit"
-              class="relative flex justify-center w-full px-4 py-3 text-sm font-medium text-white bg-indigo-900 border border-transparent rounded-md group hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              class="relative flex justify-center w-full px-4 py-3 text-sm font-medium border rounded-md text-liverdogs-500 border-liverdogs-500 hover:bg-liverdogs-300 hover:text-liverdogs-500 group focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-800"
             >
               <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                 <!-- Heroicon name: lock-closed -->
                 <svg
-                  class="w-5 h-5 text-indigo-500 group-hover:text-indigo-300"
+                  class="w-5 h-5 text-liverdogs-500 group-hover:text-liverdogs-500"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   fill="currentColor"
@@ -173,6 +180,11 @@ export default {
     return {
       user: "",
       password: "",
+      username: "",
+      password_r: "",
+      firstname: "",
+      lastname: "",
+      email: "",
     };
   },
   methods: {
@@ -184,7 +196,30 @@ export default {
       axios.post("http://localhost:8080/auth", json).then((response) => {
         if (response.status == "200") {
           localStorage.setItem("token", response.data.token);
-          this.$router.push("seeker");
+          this.$router.push("/");
+        }
+      });
+    },
+    register() {
+      let json = {
+        username: this.username,
+        firstname: this.firstname,
+        lastname: this.lastname,
+        password: this.password_r,
+        email: this.email,
+      };
+      axios.post("http://localhost:8080/api/users", json).then((response) => {
+        if (response.status == "200") {
+          let json = {
+            username: this.username,
+            password: this.password_r,
+          };
+          axios.post("http://localhost:8080/auth", json).then((response) => {
+            if (response.status == "200") {
+              localStorage.setItem("token", response.data.token);
+              this.$router.push("/");
+            }
+          });
         }
       });
     },
