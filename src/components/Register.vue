@@ -16,6 +16,7 @@
           action="#"
           method="POST"
           v-on:submit.prevent="register"
+          enctype="multipart/form-data"
         >
           <div class="field-group md:w-full">
             <label class="pr-2 font-semibold field-label" for="name"
@@ -71,6 +72,12 @@
               id="password_r"
               class="w-full px-4 py-2 mt-2 mb-6 text-gray-700 border-b-2 border-darkolive-200 focus:outline-none focus:border-kombu-700"
             />
+          </div>
+          <div class="field-group md:w-full">
+            <label class="pr-2 font-semibold field-label" for="file"
+              >Imagen</label
+            >
+            <input type="file" name="file" id="file" @change="onFileSelected" />
           </div>
 
           <button
@@ -185,6 +192,7 @@ export default {
       firstname: "",
       lastname: "",
       email: "",
+      selectedFile: "",
     };
   },
   methods: {
@@ -194,6 +202,7 @@ export default {
         password: this.password,
       };
       axios.post("http://localhost:8080/auth", json).then((response) => {
+        console.log(response);
         if (response.status == "200") {
           localStorage.setItem("token", response.data.token);
           this.$router.push("/");
@@ -208,20 +217,36 @@ export default {
         password: this.password_r,
         email: this.email,
       };
+      let image = new FormData();
+      image.append("image", this.selectedFile);
       axios.post("http://localhost:8080/api/users", json).then((response) => {
         if (response.status == "200") {
-          let json = {
-            username: this.username,
-            password: this.password_r,
-          };
-          axios.post("http://localhost:8080/auth", json).then((response) => {
-            if (response.status == "200") {
-              localStorage.setItem("token", response.data.token);
-              this.$router.push("/");
-            }
-          });
+          axios
+            .put(
+              "http://localhost:8080/api/users/upload/" + response.data.id,
+              image
+            )
+            .then((response) => {
+              if (response.status == "200") {
+                let json = {
+                  username: this.username,
+                  password: this.password_r,
+                };
+                axios
+                  .post("http://localhost:8080/auth", json)
+                  .then((response) => {
+                    if (response.status == "200") {
+                      localStorage.setItem("token", response.data.token);
+                      this.$router.push("/");
+                    }
+                  });
+              }
+            });
         }
       });
+    },
+    onFileSelected(event) {
+      this.selectedFile = event.target.files[0];
     },
   },
 };

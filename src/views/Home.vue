@@ -8,7 +8,7 @@
           Galisites!
         </h1>
         <p
-          class="mx-auto text-base leading-relaxed xl:w-2/4 lg:w-3/4 text-gray-500s"
+          class="mx-auto text-base leading-relaxed text-gray-500 xl:w-2/4 lg:w-3/4"
         >
           Proyecto personal de información turística y de interés de Galicia. En
           Galisites podrás descubrir la verdadera magia de Galicia a través de
@@ -17,7 +17,7 @@
           qué ver en Galicia.
         </p>
         <div class="flex justify-center mt-6">
-          <div class="inline-flex w-16 h-1 rounded-full bg-pg-500"></div>
+          <div class="inline-flex w-16 h-1 rounded-full bg-kombu-500"></div>
         </div>
       </div>
       <div
@@ -25,7 +25,7 @@
       >
         <div class="flex flex-col items-center p-4 text-center md:w-1/4">
           <div
-            class="inline-flex items-center justify-center flex-shrink-0 w-20 h-20 mb-5 rounded-full text-charcoal-500 bg-pg-50"
+            class="inline-flex items-center justify-center flex-shrink-0 w-20 h-20 mb-5 rounded-full text-kombu-500 bg-darkolive-50"
           >
             <svg
               class="w-9 h-9"
@@ -52,7 +52,7 @@
             </p>
             <a
               href="/seeker"
-              class="inline-flex items-center mt-3 text-burn-500"
+              class="inline-flex items-center mt-3 text-liverdogs-500 hover:text-liverdogs-50"
               >Ir al buscador
               <svg
                 fill="none"
@@ -70,7 +70,7 @@
         </div>
         <div class="flex flex-col items-center p-4 text-center md:w-1/4">
           <div
-            class="inline-flex items-center justify-center flex-shrink-0 w-20 h-20 mb-5 rounded-full text-charcoal-500 bg-pg-50"
+            class="inline-flex items-center justify-center flex-shrink-0 w-20 h-20 mb-5 rounded-full text-kombu-500 bg-darkolive-50"
           >
             <svg
               class="w-9 h-9"
@@ -96,7 +96,9 @@
               Todos llenos de encantos y pecurialidades que han sido descubierta
               hace muy poco tiempo.
             </p>
-            <a href="/last" class="inline-flex items-center mt-3 text-burn-500"
+            <a
+              href="/last"
+              class="inline-flex items-center mt-3 text-liverdogs-500 hover:text-liverdogs-50"
               >Ir a los últimos sitios
               <svg
                 fill="none"
@@ -114,7 +116,7 @@
         </div>
         <div class="flex flex-col items-center p-4 text-center md:w-1/4">
           <div
-            class="inline-flex items-center justify-center flex-shrink-0 w-20 h-20 mb-5 rounded-full text-charcoal-500 bg-pg-50"
+            class="inline-flex items-center justify-center flex-shrink-0 w-20 h-20 mb-5 rounded-full text-kombu-500 bg-darkolive-50 "
           >
             <svg
               class="w-9 h-9"
@@ -140,7 +142,8 @@
               que no se esperaba o buscando algún sitio con encanto cerca de
               donde está.
             </p>
-            <a class="inline-flex items-center mt-3 text-burn-500"
+            <a
+              class="inline-flex items-center mt-3 text-liverdogs-500 hover:text-liverdogs-50"
               >Ir al mapa
               <svg
                 fill="none"
@@ -158,7 +161,7 @@
         </div>
         <div class="flex flex-col items-center p-4 text-center md:w-1/4">
           <div
-            class="inline-flex items-center justify-center flex-shrink-0 w-20 h-20 mb-5 rounded-full text-charcoal-500 bg-pg-50"
+            class="inline-flex items-center justify-center flex-shrink-0 w-20 h-20 mb-5 rounded-full text-kombu-500 bg-darkolive-50"
           >
             <svg
               class="w-9 h-9"
@@ -184,7 +187,8 @@
               le llamen la atención. Realizando así una búsqueda mucho más
               acorde a sus necesidades.
             </p>
-            <a class="inline-flex items-center mt-3 text-burn-500"
+            <a
+              class="inline-flex items-center mt-3 text-liverdogs-500 hover:text-liverdogs-50"
               >Ir a las categorías
               <svg
                 fill="none"
@@ -202,6 +206,31 @@
         </div>
       </div>
     </div>
+    <div
+      class="fixed bottom-0 right-0 w-5/6 max-w-sm m-8 alert-toast md:w-full"
+    >
+      <input type="checkbox" class="hidden" id="footertoast" />
+
+      <label
+        class="flex items-start justify-between w-full h-24 p-2 text-white rounded shadow-lg cursor-pointer bg-kombu-300 close"
+        title="close"
+        for="footertoast"
+      >
+        Toast Alert (click anywhere to close)
+
+        <svg
+          class="text-white fill-current"
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 18 18"
+        >
+          <path
+            d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"
+          ></path>
+        </svg>
+      </label>
+    </div>
   </section>
 </template>
 
@@ -214,3 +243,163 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+@-webkit-keyframes slide-in-top {
+  0% {
+    -webkit-transform: translateY(-1000px);
+    transform: translateY(-1000px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes slide-in-top {
+  0% {
+    -webkit-transform: translateY(-1000px);
+    transform: translateY(-1000px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@-webkit-keyframes slide-out-top {
+  0% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translateY(-1000px);
+    transform: translateY(-1000px);
+    opacity: 0;
+  }
+}
+@keyframes slide-out-top {
+  0% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translateY(-1000px);
+    transform: translateY(-1000px);
+    opacity: 0;
+  }
+}
+@-webkit-keyframes slide-in-bottom {
+  0% {
+    -webkit-transform: translateY(1000px);
+    transform: translateY(1000px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes slide-in-bottom {
+  0% {
+    -webkit-transform: translateY(1000px);
+    transform: translateY(1000px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@-webkit-keyframes slide-out-bottom {
+  0% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translateY(1000px);
+    transform: translateY(1000px);
+    opacity: 0;
+  }
+}
+@keyframes slide-out-bottom {
+  0% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translateY(1000px);
+    transform: translateY(1000px);
+    opacity: 0;
+  }
+}
+@-webkit-keyframes slide-in-right {
+  0% {
+    -webkit-transform: translateX(1000px);
+    transform: translateX(1000px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes slide-in-right {
+  0% {
+    -webkit-transform: translateX(1000px);
+    transform: translateX(1000px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@-webkit-keyframes fade-out-right {
+  0% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translateX(50px);
+    transform: translateX(50px);
+    opacity: 0;
+  }
+}
+@keyframes fade-out-right {
+  0% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translateX(50px);
+    transform: translateX(50px);
+    opacity: 0;
+  }
+}
+
+.alert-toast {
+  -webkit-animation: slide-in-right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    both;
+  animation: slide-in-right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+/*Toast close animation*/
+.alert-toast input:checked ~ * {
+  -webkit-animation: fade-out-right 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    both;
+  animation: fade-out-right 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+</style>

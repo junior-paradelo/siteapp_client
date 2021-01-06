@@ -9,23 +9,21 @@
       >
         <div class="w-full pt-1 pb-5">
           <div
-            class="w-20 h-20 mx-auto -mt-16 overflow-hidden rounded-full shadow-lg"
+            class="w-32 h-32 mx-auto -mt-16 overflow-hidden rounded-full shadow-lg"
           >
-            <img src="https://randomuser.me/api/portraits/men/15.jpg" alt="" />
+            <img v-bind:src="img" />
           </div>
         </div>
         <div class="w-full mb-10">
           <p class="px-5 text-sm text-center text-gray-600">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nam
-            obcaecati laudantium recusandae, debitis eum voluptatem ad, illo
-            voluptatibus temporibus odio provident.
+            {{ email }}
           </p>
         </div>
         <div class="w-full">
           <p class="font-bold text-center text-fawn-500 text-md">
-            Junior Paradelo Álvarez
+            {{ firstname }} {{ lastname }}
           </p>
-          <p class="text-xs text-center text-gray-500">@juniorparadelo</p>
+          <p class="text-xs text-center text-gray-500">@{{ username }}</p>
         </div>
       </div>
     </div>
@@ -117,7 +115,42 @@
 </template>
 
 <script>
-export default {};
+import axios from "axios";
+
+export default {
+  data: function() {
+    return {
+      img: "",
+      username: "",
+      firstname: "",
+      lastname: "",
+      email: "",
+    };
+  },
+  methods: {
+    loadData() {
+      axios
+        .get("http://localhost:8080/info", {
+          headers: { Authorization: localStorage.getItem("token") },
+        })
+        .then((response) => {
+          axios
+            .get("http://localhost:8080/api/users/" + response.data.id)
+            .then((response) => {
+              console.log(response.data);
+              this.img = "data:image/png;base64," + response.data.image;
+              this.username = response.data.username;
+              this.firstname = response.data.firstname;
+              this.lastname = response.data.lastname;
+              this.email = response.data.email;
+            });
+        });
+    },
+  },
+  mounted() {
+    this.loadData();
+  },
+};
 </script>
 
 <style></style>
