@@ -48,11 +48,18 @@
           >
         </div>
       </div>
-      <div id="login_button" class="hidden md:block">
+      <div v-if="existRegisterButton" id="login_button" class="hidden md:block">
         <a
           href="/register"
           class="inline-block px-4 py-2 text-gray-700 rounded-lg bg-cornsilk-600 hover:bg-fawn-50"
           >Iniciar sesión</a
+        >
+      </div>
+      <div v-else id="login_button" class="hidden md:block">
+        <a
+          href="/register"
+          class="inline-block px-4 py-2 text-gray-700 rounded-lg bg-cornsilk-600 hover:bg-fawn-50"
+          >Perfil usuario</a
         >
       </div>
     </div>
@@ -62,9 +69,14 @@
 <script>
 export default {
   name: "Header",
+  data() {
+    return {
+      existRegisterButton: true,
+    };
+  },
   mounted() {
     if (localStorage.getItem("token") != null) {
-      document.querySelector("#login_button").classList.add("hidden");
+      this.existRegisterButton = false;
     }
   },
 };

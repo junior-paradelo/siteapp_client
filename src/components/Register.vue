@@ -2,7 +2,7 @@
   <section class="text-gray-600 body-font">
     <div class="container flex flex-wrap items-center px-5 py-24 mx-auto">
       <div
-        class="flex flex-col w-full p-8 mt-10 border rounded-lg border-darkolive-300 lg:w-3/6 md:w-1/2 md:ml-auto md:mt-0"
+        class="flex flex-col w-full p-8 mt-10 border rounded-lg shadow-lg border-darkolive-300 lg:w-3/6 md:w-1/2 md:ml-auto md:mt-0"
       >
         <div class="mb-2">
           <h1
@@ -96,7 +96,7 @@
         </form>
       </div>
       <div
-        class="flex flex-col w-full p-8 mt-10 border rounded-lg border-darkolive-300 lg:w-2/6 md:w-1/2 md:ml-auto md:mt-0"
+        class="flex flex-col w-full p-8 mt-10 border rounded-lg shadow-lg border-darkolive-300 lg:w-2/6 md:w-1/2 md:ml-auto md:mt-0"
       >
         <div>
           <h1

@@ -6,6 +6,7 @@ import Register from '../components/Register.vue'
 import LastSites from '../components/LastSites.vue'
 import Mapa from '../components/Map.vue'
 import SiteDetails from '../components/SiteDetails.vue'
+import UserProfile from '../components/UserProfile.vue'
 
 Vue.use(VueRouter)
 
@@ -39,6 +40,11 @@ const routes = [
     path: '/details' ,
     name: 'SiteDetails',
     component: SiteDetails
+   },
+   {
+    path: '/userProfile',
+    name: 'UserProfile',
+    component: UserProfile
    }
 ]
 
