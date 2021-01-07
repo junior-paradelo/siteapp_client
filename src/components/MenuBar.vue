@@ -134,6 +134,7 @@ export default {
   methods: {
     logout() {
       localStorage.removeItem("token");
+      localStorage.removeItem("showNotify");
       document.querySelector("#home").click();
     },
   },
