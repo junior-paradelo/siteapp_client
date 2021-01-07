@@ -11,7 +11,7 @@
         <div v-for="site in listSites" :key="site.id">
           <div class="mt-6 ">
             <div
-              class="max-w-4xl px-10 py-6 bg-white border-t-4 rounded-lg shadow-md border-pg-100"
+              class="max-w-4xl px-10 py-6 bg-white border-t-4 rounded-lg shadow-md border-fawn-100"
             >
               <div class="flex items-center justify-between">
                 <span class="font-light text-gray-600">{{

@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col justify-center pt-10 ">
     <div class="p-4 m-2 mx-auto text-center">
-      <img src="../assets/img/busqueda_global_green.svg" class="w-full h-32" />
+      <img src="../assets/img/busqueda_global.svg" class="w-full h-32" />
       <h1 class="pt-2 font-bold text-black align-middletext-xl md:text-3xl">
         Buscador de sitios de interés cultural
       </h1>
@@ -76,7 +76,7 @@
                 </svg>
               </button>
             </div>
-            <div class="px-5 py-3">
+            <div class="px-5 py-3 ">
               <h3 class="font-bold text-gray-900 uppercase">{{ site.name }}</h3>
               <p>
                 {{ site.description }}
@@ -84,7 +84,9 @@
               <span class="mt-2 italic text-gray-700"
                 >{{ site.province }} - {{ site.townHall }}</span
               ><br />
-              <span class="mt-2 text-gray-700">{{ site.category }} </span>
+              <span class="text-gray-700 lowercase"
+                >{{ site.category.name }}
+              </span>
             </div>
           </div>
         </div>
