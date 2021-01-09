@@ -116,8 +116,8 @@ export default {
           this.listSites = response.data;
         });
     },
-    loadDetails(siteid) {      
-      this.$router.push('/details/' + siteid);
+    loadDetails(siteid) {
+      this.$router.push("/details/" + siteid);
     },
   },
 };

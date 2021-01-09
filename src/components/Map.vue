@@ -1,104 +1,97 @@
 <template>
-  <section class="relative text-gray-600 body-font">
-    <div class="container flex flex-wrap px-5 py-24 mx-auto sm:flex-nowrap">
-      <div
-        class="relative flex items-end justify-start p-10 overflow-hidden bg-gray-300 rounded-lg lg:w-2/3 md:w-1/2 sm:mr-10"
-      >
-        <iframe
-          width="100%"
-          height="100%"
-          class="absolute inset-0"
-          frameborder="0"
-          title="map"
-          marginheight="0"
-          marginwidth="0"
-          scrolling="no"
-          src="https://maps.google.com/maps?width=100%&height=600&hl=en&q=%C4%B0zmir+(My%20Business%20Name)&ie=UTF8&t=&z=14&iwloc=B&output=embed"
-          style="filter: grayscale(1) contrast(1.2) opacity(0.4);"
-        ></iframe>
-        <div class="relative flex flex-wrap py-6 bg-white rounded shadow-md">
-          <div class="px-6 lg:w-1/2">
-            <h2
-              class="text-xs font-semibold tracking-widest text-gray-900 title-font"
-            >
-              ADDRESS
-            </h2>
-            <p class="mt-1">
-              Photo booth tattooed prism, portland taiyaki hoodie neutra
-              typewriter
+  <div style="height: 500px; width: 100%">
+    <div style="height: 200px overflow: auto;">
+      <p>First marker is placed at {{ withPopup.lat }}, {{ withPopup.lng }}</p>
+      <p>Center is at {{ currentCenter }} and the zoom is: {{ currentZoom }}</p>
+      <button @click="showLongText">
+        Toggle long popup
+      </button>
+      <button @click="showMap = !showMap">
+        Toggle map
+      </button>
+    </div>
+    <l-map
+      v-if="showMap"
+      :zoom="zoom"
+      :center="center"
+      :options="mapOptions"
+      style="height: 80%"
+      @update:center="centerUpdate"
+      @update:zoom="zoomUpdate"
+    >
+      <l-tile-layer :url="url" :attribution="attribution" />
+      <l-marker :lat-lng="withPopup">
+        <l-popup>
+          <div @click="innerClick">
+            I am a popup
+            <p v-show="showParagraph">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+              sed pretium nisl, ut sagittis sapien. Sed vel sollicitudin nisi.
+              Donec finibus semper metus id malesuada.
             </p>
           </div>
-          <div class="px-6 mt-4 lg:w-1/2 lg:mt-0">
-            <h2
-              class="text-xs font-semibold tracking-widest text-gray-900 title-font"
-            >
-              EMAIL
-            </h2>
-            <a class="leading-relaxed text-indigo-500">example@email.com</a>
-            <h2
-              class="mt-4 text-xs font-semibold tracking-widest text-gray-900 title-font"
-            >
-              PHONE
-            </h2>
-            <p class="leading-relaxed">123-456-7890</p>
+        </l-popup>
+      </l-marker>
+      <l-marker :lat-lng="withTooltip">
+        <l-tooltip :options="{ permanent: true, interactive: true }">
+          <div @click="innerClick">
+            I am a tooltip
+            <p v-show="showParagraph">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+              sed pretium nisl, ut sagittis sapien. Sed vel sollicitudin nisi.
+              Donec finibus semper metus id malesuada.
+            </p>
           </div>
-        </div>
-      </div>
-      <div
-        class="flex flex-col w-full mt-8 bg-white lg:w-1/3 md:w-1/2 md:ml-auto md:py-8 md:mt-0"
-      >
-        <h2 class="mb-1 text-lg font-medium text-gray-900 title-font">
-          Feedback
-        </h2>
-        <p class="mb-5 leading-relaxed text-gray-600">
-          Post-ironic portland shabby chic echo park, banjo fashion axe
-        </p>
-        <div class="relative mb-4">
-          <label for="name" class="text-sm leading-7 text-gray-600">Name</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            class="w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-white border border-gray-300 rounded outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
-          />
-        </div>
-        <div class="relative mb-4">
-          <label for="email" class="text-sm leading-7 text-gray-600"
-            >Email</label
-          >
-          <input
-            type="email"
-            id="email"
-            name="email"
-            class="w-full px-3 py-1 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out bg-white border border-gray-300 rounded outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
-          />
-        </div>
-        <div class="relative mb-4">
-          <label for="message" class="text-sm leading-7 text-gray-600"
-            >Message</label
-          >
-          <textarea
-            id="message"
-            name="message"
-            class="w-full h-32 px-3 py-1 text-base leading-6 text-gray-700 transition-colors duration-200 ease-in-out bg-white border border-gray-300 rounded outline-none resize-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
-          ></textarea>
-        </div>
-        <button
-          class="px-6 py-2 text-lg text-white bg-indigo-500 border-0 rounded focus:outline-none hover:bg-indigo-600"
-        >
-          Button
-        </button>
-        <p class="mt-3 text-xs text-gray-500">
-          Chicharrones blog helvetica normcore iceland tousled brook viral
-          artisan.
-        </p>
-      </div>
-    </div>
-  </section>
+        </l-tooltip>
+      </l-marker>
+    </l-map>
+  </div>
 </template>
 
 <script>
-export default {};
-</script>
+import { latLng } from "leaflet";
+import { LMap, LTileLayer, LMarker, LPopup, LTooltip } from "vue2-leaflet";
 
-<style></style>
+export default {
+  name: "Example",
+  components: {
+    LMap,
+    LTileLayer,
+    LMarker,
+    LPopup,
+    LTooltip,
+  },
+  data() {
+    return {
+      zoom: 13,
+      center: latLng(43.37135, -8.396),
+      url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      attribution:
+        '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+      withPopup: latLng(43.37135, -8.396),
+      withTooltip: latLng(43.37135, -8.396),
+      currentZoom: 11.5,
+      currentCenter: latLng(43.37135, -8.396),
+      showParagraph: false,
+      mapOptions: {
+        zoomSnap: 0.5,
+      },
+      showMap: true,
+    };
+  },
+  methods: {
+    zoomUpdate(zoom) {
+      this.currentZoom = zoom;
+    },
+    centerUpdate(center) {
+      this.currentCenter = center;
+    },
+    showLongText() {
+      this.showParagraph = !this.showParagraph;
+    },
+    innerClick() {
+      alert("Click!");
+    },
+  },
+};
+</script>
