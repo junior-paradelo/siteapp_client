@@ -53,6 +53,7 @@
             >
               <button
                 class="p-2 mx-5 -mb-4 text-white rounded-full bg-liverdogs-600 hover:bg-liverdogs-300 focus:outline-none focus:bg-liverdogs-300"
+                @click="loadDetails(site.id)"
               >
                 <svg
                   class="w-6 h-6"
@@ -114,6 +115,9 @@ export default {
           console.log(response);
           this.listSites = response.data;
         });
+    },
+    loadDetails(siteid) {      
+      this.$router.push('/details/' + siteid);
     },
   },
 };

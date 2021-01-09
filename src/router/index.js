@@ -37,7 +37,7 @@ const routes = [
     component: Mapa
    },
    {
-    path: '/details' ,
+    path: '/details/:id' ,
     name: 'SiteDetails',
     component: SiteDetails
    },

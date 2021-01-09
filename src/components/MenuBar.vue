@@ -10,13 +10,13 @@
           class="inline-block py-2 text-xl font-bold text-white"
           ><span class="text-cornsilk-400">Galisites!</span></a
         >
-        <div class="block md:hidden">
+        <div class="block lg:hidden">
           <button
             id="threelines"
-            class="flex items-center px-3 py-2 text-teal-200 border border-teal-400 rounded hover:text-white hover:border-white"
+            class="flex items-center px-3 py-2 border rounded text-kombu-200 border-kombu-400 hover:text-white hover:border-white"
           >
             <svg
-              class="w-3 h-3 fill-current"
+              class="w-4 h-4 fill-current"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
             >
@@ -28,7 +28,7 @@
       </div>
 
       <div>
-        <div id="menubar_button" class="hidden md:block">
+        <div id="menubar_button" class="hidden md:block md:justify-center">
           <a
             href="/seeker"
             class="block px-4 py-2 mt-4 text-sm leading-none text-white border-white rounded md:inline-block hover:border-transparent hover:text-gray-700 hover:bg-cornsilk-500 md:mt-0"
@@ -51,7 +51,11 @@
           >
         </div>
       </div>
-      <div v-if="existRegisterButton" id="login_button" class="hidden md:block">
+      <div
+        v-if="existRegisterButton"
+        id="login_button"
+        class="hidden md:block md:justify-center"
+      >
         <a
           href="/register"
           class="inline-block px-4 py-2 text-gray-700 rounded-lg bg-cornsilk-600 hover:bg-fawn-50"
@@ -139,6 +143,14 @@ export default {
     },
   },
   mounted() {
+    const threelines = document.querySelector("#threelines");
+    const menubar_button = document.querySelector("#menubar_button");
+    const login_button = document.querySelector("#login_button");
+
+    threelines.addEventListener("click", () => {
+      menubar_button.classList.toggle("hidden");
+      login_button.classList.toggle("hidden");
+    });
     if (localStorage.getItem("token") != null) {
       this.existRegisterButton = false;
     }
