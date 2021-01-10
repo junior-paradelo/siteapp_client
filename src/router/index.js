@@ -7,6 +7,8 @@ import LastSites from '../components/LastSites.vue'
 import Mapa from '../components/Map.vue'
 import SiteDetails from '../components/SiteDetails.vue'
 import UserProfile from '../components/UserProfile.vue'
+import NewSiteForm from '../components/NewSiteForm.vue'
+
 
 Vue.use(VueRouter)
 
@@ -45,6 +47,11 @@ const routes = [
     path: '/userProfile',
     name: 'UserProfile',
     component: UserProfile
+   },
+   {
+    path: '/newSite',
+    name: 'NewSiteForm',
+    component: NewSiteForm
    }
 ]
 

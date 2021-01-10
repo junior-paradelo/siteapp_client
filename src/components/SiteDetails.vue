@@ -212,7 +212,6 @@ export default {
   methods: {},
   mounted() {
     axios.get("http://localhost:8080/api/sites/" + this.id).then((response) => {
-      console.log(response.data.category);
       this.lat = response.data.latitude;
       this.long = response.data.longitude;
       this.center = latLng(response.data.latitude, response.data.longitude);
