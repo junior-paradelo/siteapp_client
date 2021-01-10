@@ -49,10 +49,7 @@
           >
             <l-tile-layer :url="url" :attribution="attribution" />
 
-            <l-marker :lat-lng="withTooltip">
-              <l-tooltip :options="{ permanent: true, interactive: true }">
-              </l-tooltip>
-            </l-marker>
+            <l-marker :lat-lng="withTooltip"> </l-marker>
           </l-map>
         </div>
       </div>
@@ -194,11 +191,13 @@ export default {
       id: this.$route.params.id,
       site: "",
       zoom: 14,
-      center: latLng(43.37135, -8.396),
+      lat: 0,
+      long: 0,
+      center: "",
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       attribution:
         '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      withTooltip: latLng(43.37135, -8.396),
+      withTooltip: "",
       mapOptions: {
         zoomSnap: 0.5,
       },
@@ -213,6 +212,11 @@ export default {
   methods: {},
   mounted() {
     axios.get("http://localhost:8080/api/sites/" + this.id).then((response) => {
+      console.log(response.data.category);
+      this.lat = response.data.latitude;
+      this.long = response.data.longitude;
+      this.center = latLng(response.data.latitude, response.data.longitude);
+      this.withTooltip = this.center;
       this.site = response.data;
     });
   },
