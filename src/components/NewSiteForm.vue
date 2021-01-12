@@ -80,6 +80,7 @@
             id="name"
             step="any"
             class="w-1/2 px-4 py-2 mt-2 mb-6 text-gray-700 border-b-2 border-darkolive-200 focus:outline-none focus:border-kombu-700"
+            required
           />
           <input
             v-model="longitude"
@@ -88,6 +89,7 @@
             step="any"
             id="name"
             class="w-1/2 px-4 py-2 mt-2 mb-6 text-gray-700 border-b-2 border-darkolive-200 focus:outline-none focus:border-kombu-700"
+            required
           />
         </div>
         <div class="px-4 field-group md:w-1/3">
@@ -162,6 +164,18 @@
             v-model="comment"
           ></textarea>
         </div>
+        <div class="px-4 field-group md:w-2/3">
+          <label class="pr-2 font-semibold field-label" for="file"
+            >Imagen principal</label
+          >
+          <input
+            type="file"
+            name="file"
+            id="file"
+            @change="onFileSelected"
+            accept=".jpg, .jpeg, .png"
+          />
+        </div>
         <button
           type="submit"
           class="relative flex justify-center w-full px-4 py-3 mt-4 text-sm font-medium border rounded-md text-liverdogs-500 border-liverdogs-500 hover:bg-liverdogs-300 hover:text-liverdogs-500 group focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-800"
@@ -206,6 +220,7 @@ export default {
       resume: null,
       comment: null,
       categories: [],
+      selectedFile: null,
     };
   },
   methods: {
@@ -236,6 +251,9 @@ export default {
         .then((response) => {
           this.categories = response.data;
         });
+    },
+    onFileSelected(event) {
+      this.selectedFile = event.target.files[0];
     },
   },
   mounted() {

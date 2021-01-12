@@ -62,7 +62,7 @@
         {{ site.siteDetails.comment }}
       </div>
 
-      <div
+      <div v-if="images"
         class="relative mx-auto mb-6 bg-white rounded-lg shadow-2xl carousel"
       >
         <div
@@ -202,6 +202,7 @@ export default {
         zoomSnap: 0.5,
       },
       showMap: true,
+      images: null
     };
   },
   components: {

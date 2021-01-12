@@ -77,7 +77,7 @@
             <label class="pr-2 font-semibold field-label" for="file"
               >Imagen</label
             >
-            <input type="file" name="file" id="file" @change="onFileSelected" />
+            <input type="file" name="file" id="file" @change="onFileSelected" accept=".jpg, .jpeg, .png"/>
           </div>
 
           <button
@@ -248,15 +248,14 @@ export default {
         password: this.password,
       };
       axios
-        .post("http://localhost:8080/auth", json)
-        .then((response) => {
-          console.log(response);
+        .post("http://localhost:8080/api/auth", json)
+        .then((response) => {          
           if (response.status == "200") {
             localStorage.setItem("token", response.data.token);
             document.querySelector("#home").click();
           }
         })
-        .catch(() => {
+        .catch(() => {          
           this.onClickError();
         });
     },
