@@ -17,10 +17,6 @@
                 <span class="font-light text-gray-600">{{
                   site.createdAt
                 }}</span
-                ><a
-                  href="#"
-                  class="px-2 py-1 text-gray-100 lowercase bg-gray-600 rounded hover:bg-gray-500"
-                  >{{ site.category.name }}</a
                 >
               </div>
               <div class="mt-2">

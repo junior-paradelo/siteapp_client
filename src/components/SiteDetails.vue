@@ -9,14 +9,14 @@
         style="background-image: linear-gradient(180deg,transparent,rgba(0,0,0,.7));"
       ></div>
       <img
-        src="https://images.unsplash.com/photo-1493770348161-369560ae357d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80"
+        v-bind:src="principal_image"
         class="absolute top-0 left-0 z-0 object-cover w-full h-full"
       />
       <div class="absolute bottom-0 left-0 z-20 p-4">
         <a
           href="#"
           class="inline-flex items-center justify-center px-4 py-1 mb-2 text-gray-200 bg-black"
-          >{{ site.category.name }}</a
+          >{{ site.category }}</a
         >
         <h2 class="text-4xl font-semibold leading-tight text-gray-100">
           {{ site.name }}
@@ -26,7 +26,9 @@
             <p class="text-sm font-semibold text-gray-200">
               {{ site.province }} - {{ site.townHall }}
             </p>
-            <p class="text-xs font-semibold text-gray-400">Fecha</p>
+            <p class="text-xs font-semibold text-gray-400">
+              {{ site.createdAt }}
+            </p>
           </div>
         </div>
       </div>
@@ -62,7 +64,8 @@
         {{ site.siteDetails.comment }}
       </div>
 
-      <div v-if="images"
+      <div
+        v-if="images"
         class="relative mx-auto mb-6 bg-white rounded-lg shadow-2xl carousel"
       >
         <div
@@ -202,7 +205,8 @@ export default {
         zoomSnap: 0.5,
       },
       showMap: true,
-      images: null
+      images: null,
+      principal_image: null,
     };
   },
   components: {
@@ -213,6 +217,7 @@ export default {
   methods: {},
   mounted() {
     axios.get("http://localhost:8080/api/sites/" + this.id).then((response) => {
+      this.principal_image = "data:image/png;base64," + response.data.image;
       this.lat = response.data.latitude;
       this.long = response.data.longitude;
       this.center = latLng(response.data.latitude, response.data.longitude);

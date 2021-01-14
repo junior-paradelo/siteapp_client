@@ -77,7 +77,13 @@
             <label class="pr-2 font-semibold field-label" for="file"
               >Imagen</label
             >
-            <input type="file" name="file" id="file" @change="onFileSelected" accept=".jpg, .jpeg, .png"/>
+            <input
+              type="file"
+              name="file"
+              id="file"
+              @change="onFileSelected"
+              accept=".jpg, .jpeg, .png"
+            />
           </div>
 
           <button
@@ -229,6 +235,7 @@ export default {
       lastname: "",
       email: "",
       selectedFile: "",
+      id_user: "",
     };
   },
   methods: {
@@ -249,13 +256,13 @@ export default {
       };
       axios
         .post("http://localhost:8080/api/auth", json)
-        .then((response) => {          
+        .then((response) => {
           if (response.status == "200") {
             localStorage.setItem("token", response.data.token);
             document.querySelector("#home").click();
           }
         })
-        .catch(() => {          
+        .catch(() => {
           this.onClickError();
         });
     },
@@ -271,24 +278,26 @@ export default {
       image.append("image", this.selectedFile);
       axios.post("http://localhost:8080/api/users", json).then((response) => {
         if (response.status == "200") {
+          this.id_user = response.data.id;
+          let json = {
+            username: this.username,
+            password: this.password_r,
+          };
           axios
-            .put(
-              "http://localhost:8080/api/users/upload/" + response.data.id,
-              image
-            )
+            .post("http://localhost:8080/api/auth", json)
             .then((response) => {
               if (response.status == "200") {
-                let json = {
-                  username: this.username,
-                  password: this.password_r,
-                };
+                localStorage.setItem("token", response.data.token);
                 axios
-                  .post("http://localhost:8080/auth", json)
-                  .then((response) => {
-                    if (response.status == "200") {
-                      localStorage.setItem("token", response.data.token);
-                      document.querySelector("#home").click();
+                  .put(
+                    "http://localhost:8080/api/users/upload/" + this.id_user,
+                    image,
+                    {
+                      headers: { Authorization: localStorage.getItem("token") },
                     }
+                  )
+                  .then(() => {
+                    document.querySelector("#home").click();
                   });
               }
             });

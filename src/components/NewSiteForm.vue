@@ -176,6 +176,19 @@
             accept=".jpg, .jpeg, .png"
           />
         </div>
+        <div class="px-4 field-group md:w-2/3">
+          <label class="pr-2 font-semibold field-label" for="file"
+            >Imágenes complementarias</label
+          >
+          <input
+            type="file"
+            name="files"
+            id="files"
+            @change="onFilesSelected"
+            accept=".jpg, .jpeg, .png"
+            multiple
+          />
+        </div>
         <button
           type="submit"
           class="relative flex justify-center w-full px-4 py-3 mt-4 text-sm font-medium border rounded-md text-liverdogs-500 border-liverdogs-500 hover:bg-liverdogs-300 hover:text-liverdogs-500 group focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-800"
@@ -240,9 +253,41 @@ export default {
         },
         latitudePark: this.latitude_p,
         longitudePark: this.longitude_p,
+        selectedFile: null,
+        selectedFiles: null,
       };
+      const image = new FormData();
+      image.append("image", this.selectedFile);
+      const images = new FormData();
+      for (let i = 0; i < this.selectedFiles.length; i++) {
+        images.append("images", this.selectedFiles[i]);
+      }
       axios.post("http://localhost:8080/api/sites", json).then((response) => {
-        console.log(response);
+        if (response.status == "200") {
+          axios
+            .put(
+              "http://localhost:8080/api/sites/upload/" + response.data.id,
+              image,
+              {
+                headers: { Authorization: localStorage.getItem("token") },
+              }
+            )
+            .then(() => {
+              console.log("Imagen principal subida con éxito");
+            });
+
+          axios
+            .post(
+              "http://localhost:8080/api/uploads/" + response.data.id,
+              images,
+              {
+                headers: { Authorization: localStorage.getItem("token") },
+              }
+            )
+            .then(() => {
+              console.log("Imágenes complementarias subidas con éxito");
+            });
+        }
       });
     },
     loadData() {
@@ -254,6 +299,9 @@ export default {
     },
     onFileSelected(event) {
       this.selectedFile = event.target.files[0];
+    },
+    onFilesSelected(event) {
+      this.selectedFiles = event.target.files;
     },
   },
   mounted() {

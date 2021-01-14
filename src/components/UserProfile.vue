@@ -203,7 +203,7 @@ export default {
   methods: {
     loadData() {
       axios
-        .get("http://localhost:8080/info", {
+        .get("http://localhost:8080/api/info", {
           headers: { Authorization: localStorage.getItem("token") },
         })
         .then((response) => {
