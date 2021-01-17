@@ -1,5 +1,7 @@
 <template>
-  <div class="relative z-10 px-4 py-4 bg-darkolive-300 opacity-90">
+  <div
+    class="relative z-10 px-4 py-4 bg-darkolive-300 opacity-90 bg-gradient-to-r from-darkolive-200 to-kombu-600"
+  >
     <div
       class="md:max-w-6xl md:mx-auto md:flex md:items-center md:justify-between"
     >
