@@ -1,5 +1,5 @@
 <template>
-  <div class="px-4 py-4 bg-darkolive-300">
+  <div class="relative z-10 px-4 py-4 bg-darkolive-300 opacity-90">
     <div
       class="md:max-w-6xl md:mx-auto md:flex md:items-center md:justify-between"
     >
@@ -26,7 +26,6 @@
           </button>
         </div>
       </div>
-
       <div>
         <div id="menubar_button" class="hidden md:block md:justify-center">
           <a
