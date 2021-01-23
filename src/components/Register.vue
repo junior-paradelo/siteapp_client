@@ -113,12 +113,21 @@
       >
         <div>
           <h1
-            class="mb-4 text-2xl font-medium text-center text-gray-900 sm:text-3xl title-font"
+            class="mb-4 text-2xl font-medium text-center text-gray-900 sm:text-3xl"
+            id="titleLogin"
           >
             Bienvenido a Galisites!
           </h1>
+
+          <h1
+            class="hidden mb-4 text-2xl italic font-medium text-center text-gray-900 sm:text-3xl title-font"
+            id="titleRestore"
+          >
+            Restablecer la contraseña
+          </h1>
         </div>
         <form
+          id="formLogin"
           class="mt-8 space-y-6"
           action="#"
           method="POST"
@@ -152,14 +161,19 @@
               />
             </div>
           </div>
-
+          <div class="flex justify-end">
+            <a
+              @click="hiddenForm"
+              class="text-sm cursor-pointer text-darkolive-300 hover:text-darkolive-700 hover:underline"
+              >¿Olvidaste la contraseña?</a
+            >
+          </div>
           <div>
             <button
               type="submit"
               class="relative flex justify-center w-full px-4 py-3 text-sm font-medium border rounded-md text-liverdogs-500 border-liverdogs-500 hover:bg-liverdogs-300 hover:text-liverdogs-500 group focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-800"
             >
               <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-                <!-- Heroicon name: lock-closed -->
                 <svg
                   class="w-5 h-5 text-liverdogs-500 group-hover:text-liverdogs-500"
                   xmlns="http://www.w3.org/2000/svg"
@@ -178,44 +192,84 @@
             </button>
           </div>
         </form>
-      </div>
-    </div>
-    <notificationGroup group="error">
-      <div
-        class="fixed inset-0 flex items-start justify-end p-6 px-4 py-6 pointer-events-none"
-      >
-        <div class="w-full max-w-sm mt-12">
-          <notification v-slot="{ notifications }">
-            <div
-              class="flex w-full max-w-sm mx-auto mt-4 overflow-hidden bg-white rounded-lg shadow-md"
-              v-for="notification in notifications"
-              :key="notification.id"
+        <form
+          id="formRestore"
+          class="hidden mt-8 space-y-6"
+          action="#"
+          method="POST"
+          v-on:submit.prevent="changePassword"
+        >
+          <div class="-space-y-px rounded-md shadow-sm">
+            <div>
+              <label for="username-forgot" class="sr-only">Usuario</label>
+              <input
+                id="username-forgot"
+                name="username-forgot"
+                type="text"
+                required
+                class="relative block w-full px-3 py-3 text-gray-900 border rounded-none shadow appearance-none placeholder-darkolive-500 border-darkolive-300 rounded-t-md focus:outline-none focus:ring-kombu-500 focus:border-kombu-500 focus:z-10 sm:text-sm"
+                placeholder="Usuario"
+                v-model="user_forgot"
+              />
+            </div>
+            <div>
+              <label for="email-address-forgot" class="sr-only"
+                >Correo electrónico</label
+              >
+              <input
+                id="email-address-forgot"
+                name="email-address-forgot"
+                type="email"
+                autocomplete="email"
+                required
+                class="relative block w-full px-3 py-3 text-gray-900 border shadow appearance-none placeholder-darkolive-500 border-darkolive-300 focus:outline-none focus:ring-kombu-500 focus:border-kombu-500 focus:z-10 sm:text-sm"
+                placeholder="Correo electrónico"
+                v-model="email_forgot"
+              />
+            </div>
+            <div>
+              <label for="password-forgot" class="sr-only"
+                >Nueva contraseña</label
+              >
+              <input
+                id="password-forgot"
+                name="password-forgot"
+                type="password"
+                autocomplete="current-password"
+                required
+                class="relative block w-full px-3 py-3 text-gray-900 border rounded-none shadow appearance-none placeholder-darkolive-500 border-darkolive-300 rounded-b-md focus:outline-none focus:ring-kombu-500 focus:border-kombu-500 focus:z-10 sm:text-sm"
+                placeholder="Nueva contraseña"
+                v-model="password_forgot"
+              />
+            </div>
+          </div>
+          <div>
+            <button
+              type="submit"
+              class="relative flex justify-center w-full px-4 py-3 text-sm font-medium border rounded-md text-liverdogs-500 border-liverdogs-500 hover:bg-liverdogs-300 hover:text-liverdogs-500 group focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-800"
             >
-              <div class="flex items-center justify-center w-12 bg-red-700">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                 <svg
-                  class="w-6 h-6 text-white fill-current"
-                  viewBox="0 0 40 40"
+                  class="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M20 3.36667C10.8167 3.36667 3.3667 10.8167 3.3667 20C3.3667 29.1833 10.8167 36.6333 20 36.6333C29.1834 36.6333 36.6334 29.1833 36.6334 20C36.6334 10.8167 29.1834 3.36667 20 3.36667ZM19.1334 33.3333V22.9H13.3334L21.6667 6.66667V17.1H27.25L19.1334 33.3333Z"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
                   ></path>
                 </svg>
-              </div>
-
-              <div class="px-4 py-2 -mx-3">
-                <div class="mx-3">
-                  <span class="font-semibold text-red-700">{{
-                    notification.title
-                  }}</span>
-                  <p class="text-sm text-gray-600">{{ notification.text }}</p>
-                </div>
-              </div>
-            </div>
-          </notification>
-        </div>
+              </span>
+              Establecer nueva contraseña
+            </button>
+          </div>
+        </form>
       </div>
-    </notificationGroup>
+    </div>
   </section>
 </template>
 
@@ -236,6 +290,9 @@ export default {
       email: "",
       selectedFile: "",
       id_user: "",
+      user_forgot: null,
+      password_forgot: null,
+      email_forgot: null,
     };
   },
   methods: {
@@ -303,6 +360,29 @@ export default {
             });
         }
       });
+    },
+    changePassword() {
+      let json = {
+        username: this.user_forgot,
+        password: this.password_forgot,
+        email: this.email_forgot,
+      };
+      axios
+        .put("http://localhost:8080/api/users/changePassword", json)
+        .then((response) => {
+          console.log(response);
+        });
+    },
+    hiddenForm() {
+      const titleLogin = document.querySelector("#titleLogin");
+      const titleRestore = document.querySelector("#titleRestore");
+      const formLogin = document.querySelector("#formLogin");
+      const formRestore = document.querySelector("#formRestore");
+
+      titleLogin.classList.toggle("hidden");
+      titleRestore.classList.toggle("hidden");
+      formLogin.classList.toggle("hidden");
+      formRestore.classList.toggle("hidden");
     },
     onFileSelected(event) {
       this.selectedFile = event.target.files[0];

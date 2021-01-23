@@ -65,7 +65,6 @@
       </div>
 
       <div
-        v-if="images"
         class="relative mx-auto mb-6 bg-white rounded-lg shadow-2xl carousel"
       >
         <div
@@ -110,7 +109,7 @@
           />
           <div class="absolute opacity-0 carousel-item" style="height:50vh;">
             <div
-              class="block w-full h-full text-5xl text-center text-white bg-orange-500"
+              class="block w-full h-full text-5xl text-center text-black bg-orange-500"
             >
               Slide 2
             </div>

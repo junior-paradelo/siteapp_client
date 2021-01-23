@@ -41,6 +41,7 @@
         </button>
       </div>
       <div
+        v-if="categories"
         class="p-4 m-2 mx-auto border-4 border-double rounded-md shadow-md border-fawn-700 bg-cornsilk-300"
       >
         <div class="grid grid-cols-2 gap-2 mt-2 md:grid-cols-4 lg:grid-cols-6">
@@ -128,8 +129,6 @@ export default {
   },
   methods: {
     search() {
-      document.querySelector("#seekerbg").classList.remove("h-screen");
-      document.querySelector("#seekerbg").classList.add("h-full");
       axios
         .get("http://localhost:8080/api/sites/filter", {
           params: {
@@ -141,7 +140,8 @@ export default {
           },
         })
         .then((response) => {
-          console.log(response);
+          document.querySelector("#seekerbg").classList.remove("h-screen");
+          document.querySelector("#seekerbg").classList.add("h-full");
           this.listSites = response.data;
         });
     },

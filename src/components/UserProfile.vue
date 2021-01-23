@@ -144,8 +144,7 @@
                     alt=""
                     class="inline-block h-6 mr-2 rounded-full shadow-md"
                   />
-                  Updated his status
-                  <span class="text-sm text-gray-400">24 min ago</span>
+                  SITIO 1
                 </a>
 
                 <a
@@ -157,8 +156,7 @@
                     alt=""
                     class="inline-block h-6 mr-2 rounded-full shadow-md"
                   />
-                  Added new profile picture
-                  <span class="text-sm text-gray-400">42 min ago</span>
+                  SITIO 2
                 </a>
 
                 <a
@@ -170,8 +168,7 @@
                     alt=""
                     class="inline-block h-6 mr-2 rounded-full shadow-md"
                   />
-                  Posted new article in <span class="font-bold">Web Dev</span>
-                  <span class="text-sm text-gray-400">49 min ago</span>
+                  SITIO 3
                 </a>
               </div>
             </div>
