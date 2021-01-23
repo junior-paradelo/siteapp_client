@@ -37,9 +37,47 @@
     <div
       class="max-w-screen-md px-4 mx-auto mt-12 text-lg leading-relaxed text-gray-700 lg:px-0"
     >
-      <p class="pb-6">
-        {{ site.siteDetails.header }}
-      </p>
+      <div
+        class="flex flex-wrap -mx-4 -mt-4 -mb-10 space-y-6 sm:-m-4 md:space-y-0"
+      >
+        <div class="flex p-4 text-justify md:w-1/2">
+          {{ site.siteDetails.header }}
+        </div>
+        <div class="flex p-4 md:w-1/2">
+          <aside class="mb-6 overflow-hidden rounded shadow ">
+            <h3 class="px-4 py-3 text-sm text-gray-700 bg-gray-100 border-b">
+              Información detallada
+            </h3>
+            <div class="p-4">
+              <ul class="leading-loose">
+                <li class="text-sm text-gray-darkest">
+                  <h1 class="italic font-extrabold">
+                    {{ site.name }} - {{ site.province }} - {{ site.townHall }}
+                  </h1>
+                </li>
+                <li class="text-sm text-gray-darkest">
+                  <span class="font-semibold">Categoría:</span>
+                  {{ site.categoryName }}
+                </li>
+                <li class="text-sm text-gray-darkest">
+                  <span class="font-semibold">Coordenadas:</span>
+                  {{ site.latitude }} ,
+                  {{ site.longitude }}
+                </li>
+                <li class="text-sm text-gray-darkest">
+                  <span class="font-semibold">Coordenadas aparcamiento:</span>
+                  {{ site.latitude }} ,
+                  {{ site.longitude }}
+                </li>
+                <li class="text-sm text-gray-darkest">
+                  <span class="font-semibold">Restricciones:</span>
+                  {{ site.siteDetails.comment }}
+                </li>
+              </ul>
+            </div>
+          </aside>
+        </div>
+      </div>
       <div class="pb-6">
         <div style="height: 500px; width: 100%">
           <l-map

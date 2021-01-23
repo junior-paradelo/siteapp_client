@@ -369,8 +369,15 @@ export default {
       };
       axios
         .put("http://localhost:8080/api/users/changePassword", json)
-        .then((response) => {
-          console.log(response);
+        .then(() => {
+          this.$notify(
+            {
+              group: "success",
+              title: "Contraseña cambiada correctamente",
+              text: "La contraseña ha sido restablecida correctamente.",
+            },
+            3000
+          );
         });
     },
     hiddenForm() {

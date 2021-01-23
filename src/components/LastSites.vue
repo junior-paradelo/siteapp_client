@@ -25,8 +25,8 @@
               </div>
               <div class="mt-2">
                 <a
-                  href="#"
-                  class="text-2xl font-bold text-gray-700 hover:underline"
+                  @click="loadDetails(site.id)"
+                  class="text-2xl font-bold text-gray-700 cursor-pointer hover:underline"
                   >{{ site.name }}</a
                 >
                 <p class="mt-2 text-gray-600">
@@ -108,6 +108,9 @@ export default {
       if (this.actualPage != this.count - 1) {
         this.search(this.actualPage + 1);
       }
+    },
+    loadDetails(siteid) {
+      this.$router.push("/details/" + siteid);
     },
     search(page) {
       this.actualPage = page;
