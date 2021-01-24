@@ -1,5 +1,5 @@
 <template>
-  <div class="px-6 py-8 background">
+  <div class="h-full px-6 py-8 background">
     <div class="container flex mx-auto">
       <div class="w-full lg:w-8/12">
         <div class="flex text-center">
@@ -8,7 +8,7 @@
             Últimos sitios añadidos
           </h1>
         </div>
-        <div v-for="site in listSites" :key="site.id">
+        <div v-for="site in displayedElements" :key="site.id">
           <div class="mt-6 transition duration-500 transform hover:scale-105">
             <div
               class="max-w-4xl px-10 py-6 bg-white border-t-4 rounded-lg shadow-md border-fawn-600"
@@ -39,25 +39,27 @@
         <div class="flex justify-center w-10/12 mt-4">
           <a
             id="previous"
-            @click="goPrevious()"
-            class="px-3 py-2 mx-1 text-gray-700 rounded-md"
+            @click="page--"
+            v-if="page != 1"
+            class="px-3 py-2 mx-1 text-gray-700 bg-white rounded-md cursor-pointer hover:bg-kombu-300 hover:text-white"
           >
             Anterior
           </a>
 
           <a
-            @click="search(index - 1)"
             class="px-3 py-2 mx-1 text-gray-700 bg-white rounded-md cursor-pointer hover:bg-kombu-300 hover:text-white"
-            v-for="index in count"
-            :key="index"
+            v-for="pageNumber in pages.slice(page - 1, page + 3)"
+            :key="pageNumber"
+            @click="page = pageNumber"
           >
-            {{ index }}
+            {{ pageNumber }}
           </a>
 
           <a
             id="next"
-            @click="goNext()"
-            class="px-3 py-2 mx-1 text-gray-700 rounded-md"
+            v-if="page < pages.length"
+            @click="page++"
+            class="px-3 py-2 mx-1 text-gray-700 bg-white rounded-md cursor-pointer hover:bg-kombu-300 hover:text-white"
           >
             Siguiente
           </a>
@@ -92,136 +94,59 @@ export default {
   name: "LastSites",
   data: function() {
     return {
-      listSites: null,
+      elements: [],
       categories: null,
-      count: null,
-      actualPage: null,
+      page: 1,
+      perPage: 10,
+      pages: [],
     };
   },
   methods: {
-    goPrevious() {
-      if (this.actualPage != 0) {
-        this.search(this.actualPage - 1);
+    setElements() {
+      console.log("setelements");
+      let numberOfPages = Math.ceil(this.elements.length / this.perPage);
+      for (let i = 1; i <= numberOfPages; i++) {
+        this.pages.push(i);
       }
     },
-    goNext() {
-      if (this.actualPage != this.count - 1) {
-        this.search(this.actualPage + 1);
-      }
+    paginate(elements) {
+      let page = this.page;
+      let perPage = this.perPage;
+      let from = page * perPage - perPage;
+      let to = page * perPage;
+      return elements.slice(from, to);
     },
-    loadDetails(siteid) {
-      this.$router.push("/details/" + siteid);
-    },
-    search(page) {
-      this.actualPage = page;
-      if (page == 0) {
-        document
-          .querySelector("#previous")
-          .classList.add(
-            "cursor-not-allowed",
-            "hover:bg-gray-100",
-            "hover:text-gray-700"
+    getElements() {
+      axios.get("http://localhost:8080/api/sites").then((response) => {
+        const options = {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        };
+        response.data.forEach((element) => {
+          element.createdAt = new Date(element.createdAt).toLocaleDateString(
+            "es-ES",
+            options
           );
-        document
-          .querySelector("#previous")
-          .classList.remove(
-            "hover:bg-kombu-300",
-            "hover:text-white",
-            "cursor-pointer"
-          );
-
-        document
-          .querySelector("#next")
-          .classList.remove("cursor-not-allowed", "hover:text-gray-700");
-        document
-          .querySelector("#next")
-          .classList.add(
-            "hover:bg-kombu-300",
-            "hover:text-white",
-            "cursor-pointer"
-          );
-      } else if (page == this.count - 1) {
-        document
-          .querySelector("#next")
-          .classList.add(
-            "cursor-not-allowed",
-            "hover:bg-gray-100",
-            "hover:text-gray-700"
-          );
-        document
-          .querySelector("#next")
-          .classList.remove(
-            "hover:bg-kombu-300",
-            "hover:text-white",
-            "cursor-pointer"
-          );
-        document
-          .querySelector("#previous")
-          .classList.add(
-            "hover:bg-kombu-300",
-            "hover:text-white",
-            "cursor-pointer"
-          );
-        document
-          .querySelector("#previous")
-          .classList.remove("cursor-not-allowed", "hover:text-gray-700");
-      } else {
-        document
-          .querySelector("#previous")
-          .classList.add(
-            "hover:bg-kombu-300",
-            "hover:text-white",
-            "cursor-pointer"
-          );
-        document
-          .querySelector("#previous")
-          .classList.remove("hover:text-gray-700", "cursor-not-allowed");
-        document
-          .querySelector("#next")
-          .classList.add(
-            "hover:bg-kombu-300",
-            "hover:text-white",
-            "cursor-pointer"
-          );
-        document
-          .querySelector("#next")
-          .classList.remove("hover:text-gray-700", "cursor-not-allowed");
-      }
-
-      axios
-        .get("http://localhost:8080/api/sites/pagination", {
-          params: { page: page },
-        })
-        .then((response) => {
-          const options = {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          };
-          response.data.forEach((element) => {
-            element.createdAt = new Date(element.createdAt).toLocaleDateString(
-              "es-ES",
-              options
-            );
-          });
-          this.listSites = response.data;
         });
+        this.elements = response.data;
+      });
       axios
         .get("http://localhost:8080/api/sites/categories")
         .then((response) => {
           this.categories = response.data;
         });
     },
+    loadDetails(siteid) {
+      this.$router.push("/details/" + siteid);
+    },
     searchForCategory(category) {
       axios
         .get("http://localhost:8080/api/sites/filter/category/pagination", {
           params: { categoryId: category },
         })
-        .then((response) => {
-          if (response.data > 0) {
-            this.count = Math.ceil(response.data / 10);
-          }
+        .then(() => {
           axios
             .get("http://localhost:8080/api/sites/filter/category", {
               params: { categoryId: category },
@@ -238,16 +163,25 @@ export default {
                   element.createdAt
                 ).toLocaleDateString("es-ES", options);
               });
-              this.listSites = response.data;
+              this.page = 1;
+              this.pages = [];
+              this.elements = response.data;
             });
         });
     },
   },
-  mounted() {
-    axios.get("http://localhost:8080/api/sites/count").then((response) => {
-      this.count = Math.ceil(response.data / 10);
-    });
-    this.search(0);
+  created() {
+    this.getElements();
+  },
+  watch: {
+    elements() {
+      this.setElements();
+    },
+  },
+  computed: {
+    displayedElements: function() {
+      return this.paginate(this.elements);
+    },
   },
 };
 </script>

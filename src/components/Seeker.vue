@@ -168,81 +168,20 @@ export default {
       }
     },
     search(page) {
+      if (this.checkedId.length == 0) {
+        this.$notify(
+          {
+            group: "info",
+            title: "Debe seleccionar al menos una categoría",
+            text:
+              "Debe seleccionar al menos una categoría para realizar la búsqueda",
+          },
+          3000
+        );
+        return;
+      }
       this.pagination = true;
       this.actualPage = page;
-      if (page == 0) {
-        document
-          .querySelector("#previous")
-          .classList.add(
-            "cursor-not-allowed",
-            "hover:bg-gray-100",
-            "hover:text-gray-700"
-          );
-        document
-          .querySelector("#previous")
-          .classList.remove(
-            "hover:bg-kombu-300",
-            "hover:text-white",
-            "cursor-pointer"
-          );
-
-        document
-          .querySelector("#next")
-          .classList.remove("cursor-not-allowed", "hover:text-gray-700");
-        document
-          .querySelector("#next")
-          .classList.add(
-            "hover:bg-kombu-300",
-            "hover:text-white",
-            "cursor-pointer"
-          );
-      } else if (page == this.count - 1) {
-        document
-          .querySelector("#next")
-          .classList.add(
-            "cursor-not-allowed",
-            "hover:bg-gray-100",
-            "hover:text-gray-700"
-          );
-        document
-          .querySelector("#next")
-          .classList.remove(
-            "hover:bg-kombu-300",
-            "hover:text-white",
-            "cursor-pointer"
-          );
-        document
-          .querySelector("#previous")
-          .classList.add(
-            "hover:bg-kombu-300",
-            "hover:text-white",
-            "cursor-pointer"
-          );
-        document
-          .querySelector("#previous")
-          .classList.remove("cursor-not-allowed", "hover:text-gray-700");
-      } else {
-        document
-          .querySelector("#previous")
-          .classList.add(
-            "hover:bg-kombu-300",
-            "hover:text-white",
-            "cursor-pointer"
-          );
-        document
-          .querySelector("#previous")
-          .classList.remove("hover:text-gray-700", "cursor-not-allowed");
-        document
-          .querySelector("#next")
-          .classList.add(
-            "hover:bg-kombu-300",
-            "hover:text-white",
-            "cursor-pointer"
-          );
-        document
-          .querySelector("#next")
-          .classList.remove("hover:text-gray-700", "cursor-not-allowed");
-      }
 
       axios
         .get("http://localhost:8080/api/sites/filter/pagination", {
@@ -269,10 +208,105 @@ export default {
               },
             })
             .then((response) => {
-              console.log(response);
               document.querySelector("#seekerbg").classList.remove("h-screen");
               document.querySelector("#seekerbg").classList.add("h-full");
               this.listSites = response.data;
+
+              if (page == 0) {
+                document
+                  .querySelector("#previous")
+                  .classList.add(
+                    "cursor-not-allowed",
+                    "hover:bg-gray-100",
+                    "hover:text-gray-700"
+                  );
+                document
+                  .querySelector("#previous")
+                  .classList.remove(
+                    "hover:bg-kombu-300",
+                    "hover:text-white",
+                    "cursor-pointer"
+                  );
+
+                document
+                  .querySelector("#next")
+                  .classList.remove(
+                    "cursor-not-allowed",
+                    "hover:text-gray-700"
+                  );
+                if (this.count == 1) {
+                  document
+                    .querySelector("#next")
+                    .classList.add(
+                      "cursor-not-allowed",
+                      "hover:bg-gray-100",
+                      "hover:text-gray-700"
+                    );
+                } else {
+                  document
+                    .querySelector("#next")
+                    .classList.add(
+                      "hover:bg-kombu-300",
+                      "hover:text-white",
+                      "cursor-pointer"
+                    );
+                }
+              } else if (page == this.count - 1) {
+                document
+                  .querySelector("#next")
+                  .classList.add(
+                    "cursor-not-allowed",
+                    "hover:bg-gray-100",
+                    "hover:text-gray-700"
+                  );
+                document
+                  .querySelector("#next")
+                  .classList.remove(
+                    "hover:bg-kombu-300",
+                    "hover:text-white",
+                    "cursor-pointer"
+                  );
+                document
+                  .querySelector("#previous")
+                  .classList.add(
+                    "hover:bg-kombu-300",
+                    "hover:text-white",
+                    "cursor-pointer"
+                  );
+                document
+                  .querySelector("#previous")
+                  .classList.remove(
+                    "cursor-not-allowed",
+                    "hover:text-gray-700"
+                  );
+              } else {
+                document
+                  .querySelector("#previous")
+                  .classList.add(
+                    "hover:bg-kombu-300",
+                    "hover:text-white",
+                    "cursor-pointer"
+                  );
+                document
+                  .querySelector("#previous")
+                  .classList.remove(
+                    "hover:text-gray-700",
+                    "cursor-not-allowed"
+                  );
+                document
+                  .querySelector("#next")
+                  .classList.add(
+                    "hover:bg-kombu-300",
+                    "hover:text-white",
+                    "cursor-pointer"
+                  );
+                document
+                  .querySelector("#next")
+                  .classList.remove(
+                    "hover:text-gray-700",
+                    "cursor-not-allowed"
+                  );
+              }
             });
         });
     },
