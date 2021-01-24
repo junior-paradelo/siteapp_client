@@ -35,7 +35,7 @@
         <button
           id="search_btn"
           class="p-2 pl-4 pr-4 text-white rounded bg-fawn-900 hover:bg-fawn-600"
-          @click="search"
+          @click="search(0)"
         >
           <p class="text-xs font-semibold">Realizar búsqueda</p>
         </button>
@@ -108,6 +108,32 @@
             </div>
           </div>
         </div>
+        <div v-if="pagination" class="flex justify-center w-full mt-4">
+          <a
+            id="previous"
+            @click="goPrevious()"
+            class="px-3 py-2 mx-1 text-gray-700 rounded-md"
+          >
+            Anterior
+          </a>
+
+          <a
+            @click="search(index - 1)"
+            class="px-3 py-2 mx-1 text-gray-700 bg-white rounded-md cursor-pointer hover:bg-kombu-300 hover:text-white"
+            v-for="index in count"
+            :key="index"
+          >
+            {{ index }}
+          </a>
+
+          <a
+            id="next"
+            @click="goNext()"
+            class="px-3 py-2 mx-1 text-gray-700 rounded-md"
+          >
+            Siguiente
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -121,28 +147,133 @@ export default {
   name: "Seeker",
   data: function() {
     return {
-      searching: "",
+      searching: null,
       listSites: null,
       categories: null,
       checkedId: [],
+      count: null,
+      actualPage: null,
+      pagination: false,
     };
   },
   methods: {
-    search() {
+    goPrevious() {
+      if (this.actualPage != 0) {
+        this.search(this.actualPage - 1);
+      }
+    },
+    goNext() {
+      if (this.actualPage != this.count - 1) {
+        this.search(this.actualPage + 1);
+      }
+    },
+    search(page) {
+      this.pagination = true;
+      this.actualPage = page;
+      if (page == 0) {
+        document
+          .querySelector("#previous")
+          .classList.add(
+            "cursor-not-allowed",
+            "hover:bg-gray-100",
+            "hover:text-gray-700"
+          );
+        document
+          .querySelector("#previous")
+          .classList.remove(
+            "hover:bg-kombu-300",
+            "hover:text-white",
+            "cursor-pointer"
+          );
+
+        document
+          .querySelector("#next")
+          .classList.remove("cursor-not-allowed", "hover:text-gray-700");
+        document
+          .querySelector("#next")
+          .classList.add(
+            "hover:bg-kombu-300",
+            "hover:text-white",
+            "cursor-pointer"
+          );
+      } else if (page == this.count - 1) {
+        document
+          .querySelector("#next")
+          .classList.add(
+            "cursor-not-allowed",
+            "hover:bg-gray-100",
+            "hover:text-gray-700"
+          );
+        document
+          .querySelector("#next")
+          .classList.remove(
+            "hover:bg-kombu-300",
+            "hover:text-white",
+            "cursor-pointer"
+          );
+        document
+          .querySelector("#previous")
+          .classList.add(
+            "hover:bg-kombu-300",
+            "hover:text-white",
+            "cursor-pointer"
+          );
+        document
+          .querySelector("#previous")
+          .classList.remove("cursor-not-allowed", "hover:text-gray-700");
+      } else {
+        document
+          .querySelector("#previous")
+          .classList.add(
+            "hover:bg-kombu-300",
+            "hover:text-white",
+            "cursor-pointer"
+          );
+        document
+          .querySelector("#previous")
+          .classList.remove("hover:text-gray-700", "cursor-not-allowed");
+        document
+          .querySelector("#next")
+          .classList.add(
+            "hover:bg-kombu-300",
+            "hover:text-white",
+            "cursor-pointer"
+          );
+        document
+          .querySelector("#next")
+          .classList.remove("hover:text-gray-700", "cursor-not-allowed");
+      }
+
       axios
-        .get("http://localhost:8080/api/sites/filter", {
+        .get("http://localhost:8080/api/sites/filter/pagination", {
           params: {
             keyword: this.searching,
             categories: this.checkedId,
+            page: page,
           },
           paramsSerializer: function(params) {
             return qs.stringify(params, { arrayFormat: "repeat" });
           },
         })
         .then((response) => {
-          document.querySelector("#seekerbg").classList.remove("h-screen");
-          document.querySelector("#seekerbg").classList.add("h-full");
-          this.listSites = response.data;
+          this.count = Math.ceil(response.data / 8);
+          axios
+            .get("http://localhost:8080/api/sites/filter", {
+              params: {
+                keyword: this.searching,
+                categories: this.checkedId,
+                page: page,
+              },
+              paramsSerializer: function(params) {
+                return qs.stringify(params, { arrayFormat: "repeat" });
+              },
+            })
+            .then((response) => {
+              console.log(response);
+              document.querySelector("#seekerbg").classList.remove("h-screen");
+              document.querySelector("#seekerbg").classList.add("h-full");
+              this.listSites = response.data;
+            });
         });
     },
     loadDetails(siteid) {

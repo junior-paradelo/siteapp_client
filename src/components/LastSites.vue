@@ -18,8 +18,8 @@
                   site.createdAt
                 }}</span
                 ><a
-                  href="#"
-                  class="inline-block px-3 py-1 my-1 mr-2 text-sm font-semibold text-white lowercase rounded-full bg-darkolive-500 hover:bg-darkolive-200"
+                  @click="searchForCategory(site.category)"
+                  class="inline-block px-3 py-1 my-1 mr-2 text-sm font-semibold text-white lowercase rounded-full cursor-pointer bg-darkolive-500 hover:bg-darkolive-200"
                   >#{{ site.categoryName }}</a
                 >
               </div>
@@ -71,8 +71,8 @@
             <h1 class="mb-4 text-xl font-bold text-gray-700">Categorías</h1>
             <div class="px-6 pb-4">
               <a
-                href="#"
-                class="inline-block px-3 py-1 my-1 mr-2 text-sm font-semibold text-white lowercase rounded-full bg-liverdogs-500 hover:bg-liverdogs-100"
+                @click="searchForCategory(category.id)"
+                class="inline-block px-3 py-1 my-1 mr-2 text-sm font-semibold text-white lowercase rounded-full cursor-pointer bg-liverdogs-500 hover:bg-liverdogs-100"
                 v-for="category in categories"
                 :key="category.id"
                 >#{{ category.name }}</a
@@ -115,7 +115,6 @@ export default {
     search(page) {
       this.actualPage = page;
       if (page == 0) {
-        console.log("entro en if");
         document
           .querySelector("#previous")
           .classList.add(
@@ -142,7 +141,6 @@ export default {
             "cursor-pointer"
           );
       } else if (page == this.count - 1) {
-        console.log("entro en elseif");
         document
           .querySelector("#next")
           .classList.add(
@@ -213,6 +211,35 @@ export default {
         .get("http://localhost:8080/api/sites/categories")
         .then((response) => {
           this.categories = response.data;
+        });
+    },
+    searchForCategory(category) {
+      axios
+        .get("http://localhost:8080/api/sites/filter/category/pagination", {
+          params: { categoryId: category },
+        })
+        .then((response) => {
+          if (response.data > 0) {
+            this.count = Math.ceil(response.data / 10);
+          }
+          axios
+            .get("http://localhost:8080/api/sites/filter/category", {
+              params: { categoryId: category },
+            })
+            .then((response) => {
+              const options = {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              };
+              response.data.forEach((element) => {
+                element.createdAt = new Date(
+                  element.createdAt
+                ).toLocaleDateString("es-ES", options);
+              });
+              this.listSites = response.data;
+            });
         });
     },
   },
