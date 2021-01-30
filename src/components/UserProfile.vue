@@ -5,7 +5,7 @@
         class="flex flex-col w-full p-8 mt-10 rounded-lg lg:w-1/2 md:w-1/2 md:ml-auto md:mt-0 "
       >
         <div
-          class="w-full px-5 pt-5 pb-10 mx-auto text-gray-800 bg-white border rounded-lg shadow-lg  border-darkolive-300"
+          class="w-full px-5 pt-5 pb-10 mx-auto text-gray-800 bg-white border rounded-lg shadow-lg border-darkolive-300"
           style="max-width: 500px"
         >
           <div class="w-full pt-1 pb-5">
@@ -126,7 +126,7 @@
         class="flex flex-col w-full p-8 mt-10 rounded-lg lg:w-1/2 md:w-1/2 md:ml-auto md:mt-0"
       >
         <div
-          class="w-full px-5 pt-5 pb-10 mx-auto text-gray-800 bg-white border rounded-lg shadow-lg border-kombu-50"
+          class="w-full px-5 pt-5 pb-10 mx-auto text-gray-800 bg-white border rounded-lg shadow-lg border-kombu-50 "
           style="max-width: 500px"
         >
           <div class="w-full">
@@ -136,41 +136,209 @@
                   Sitios favoritos
                 </h3>
                 <div class="w-full mt-5 border-t-2 border-kombu-400">
-                  <a
-                    href="#"
-                    class="block w-full px-4 py-4 font-medium text-gray-600 transition duration-150 border-t-2 border-gray-100 hover:bg-gray-100"
+                  <div
+                    v-for="(element, index) in displayedElements"
+                    :key="index"
+                    class="flex items-center w-full px-4 py-2 font-medium text-gray-500 transition duration-150 border-b-2 border-gray-300 border-dotted hover:bg-gray-100"
                   >
-                    <img
-                      src="https://pantazisoft.com/img/avatar-2.jpeg"
-                      alt=""
-                      class="inline-block h-6 mr-2 rounded-full shadow-md"
-                    />
-                    SITIO 1
-                  </a>
+                    <div class="flex items-center w-full">
+                      <div class="mx-2 -mt-1 text-black">
+                        {{ element.site.name }}
 
-                  <a
-                    href="#"
-                    class="block w-full px-4 py-4 font-medium text-gray-600 transition duration-150 border-t-2 border-gray-100 hover:bg-gray-100"
-                  >
-                    <img
-                      src="https://pantazisoft.com/img/avatar-2.jpeg"
-                      alt=""
-                      class="inline-block h-6 mr-2 rounded-full shadow-md"
-                    />
-                    SITIO 2
-                  </a>
+                        <div
+                          class="w-full -mt-1 text-xs font-normal text-gray-500 normal-case truncate"
+                        >
+                          {{ element.site.province }} -
+                          {{ element.site.townHall }}
+                        </div>
+                      </div>
+                      <svg
+                        v-for="i in element.rate"
+                        :key="i"
+                        class="float-left w-3 h-3 text-yellow-500 fill-current"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"
+                        />
+                      </svg>
+                    </div>
 
-                  <a
-                    href="#"
-                    class="block w-full px-4 py-4 font-medium text-gray-600 transition duration-150 border-t-2 border-gray-100 hover:bg-gray-100"
+                    <button
+                      class="p-2 ml-4 mr-2 text-blue-500 border-2 border-blue-500 rounded-full hover:bg-blue-500 hover:text-white"
+                      @click="loadDetails(element.site.id)"
+                    >
+                      <svg
+                        class="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                        ></path>
+                      </svg>
+                    </button>
+                    <button
+                      class="p-2 mr-2 text-red-500 border-2 border-red-500 rounded-full hover:bg-red-500 hover:text-white"
+                      @click="deleteFavorited(index, element.site.id)"
+                    >
+                      <svg
+                        class="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                        ></path>
+                      </svg>
+                    </button>
+                  </div>
+                  <div class="container flex mx-auto">
+                    <div class="flex justify-center w-full mt-4 ">
+                      <a
+                        id="previous"
+                        @click="page--"
+                        v-if="page != 1"
+                        class="px-3 py-2 mx-1 text-gray-700 bg-white rounded-md cursor-pointer hover:bg-kombu-300 hover:text-white"
+                      >
+                        Anterior
+                      </a>
+
+                      <a
+                        class="px-3 py-2 mx-1 text-gray-700 bg-white rounded-md cursor-pointer hover:bg-kombu-300 hover:text-white"
+                        v-for="pageNumber in pages.slice(page - 1, page + 3)"
+                        :key="pageNumber"
+                        @click="page = pageNumber"
+                      >
+                        {{ pageNumber }}
+                      </a>
+
+                      <a
+                        id="next"
+                        v-if="page < pages.length"
+                        @click="page++"
+                        class="px-3 py-2 mx-1 text-gray-700 bg-white rounded-md cursor-pointer hover:bg-kombu-300 hover:text-white"
+                      >
+                        Siguiente
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="w-full px-5 pt-5 pb-10 mx-auto mt-2 text-gray-800 bg-white border rounded-lg shadow-lg border-kombu-50 "
+          style="max-width: 500px"
+        >
+          <div class="w-full">
+            <div class="px-5 text-sm text-gray-600">
+              <div class="w-full">
+                <h3 class="px-4 text-lg font-bold text-center text-gray-600 ">
+                  Sitios pendientes visitar
+                </h3>
+                <div class="w-full mt-5 border-t-2 border-kombu-400">
+                  <div
+                    v-for="(element, index) in displayedTodoListElements"
+                    :key="index"
+                    class="flex items-center w-full px-4 py-2 font-medium text-gray-500 transition duration-150 border-b-2 border-gray-300 border-dotted hover:bg-gray-100"
                   >
-                    <img
-                      src="https://pantazisoft.com/img/avatar-2.jpeg"
-                      alt=""
-                      class="inline-block h-6 mr-2 rounded-full shadow-md"
-                    />
-                    SITIO 3
-                  </a>
+                    <div class="flex items-center w-full">
+                      <div class="mx-2 -mt-1 text-black">
+                        {{ element.site.name }}
+                        <div
+                          class="w-full -mt-1 text-xs font-normal text-gray-500 normal-case truncate"
+                        >
+                          {{ element.site.province }} -
+                          {{ element.site.townHall }}
+                          <span class="ml-2 italic">{{ element.rate }}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <button
+                      class="p-2 ml-4 mr-2 text-blue-500 border-2 border-blue-500 rounded-full hover:bg-blue-500 hover:text-white"
+                      @click="loadDetails(element.site.id)"
+                    >
+                      <svg
+                        class="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                        ></path>
+                      </svg>
+                    </button>
+                    <button
+                      class="p-2 mr-2 text-red-500 border-2 border-red-500 rounded-full hover:bg-red-500 hover:text-white"
+                      @click="deleteElementTodoList(index, element.site.id)"
+                    >
+                      <svg
+                        class="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                        ></path>
+                      </svg>
+                    </button>
+                  </div>
+                  <div class="container flex mx-auto">
+                    <div class="flex justify-center w-full mt-4 ">
+                      <a
+                        id="previous"
+                        @click="page_todo--"
+                        v-if="page_todo != 1"
+                        class="px-3 py-2 mx-1 text-gray-700 bg-white rounded-md cursor-pointer hover:bg-kombu-300 hover:text-white"
+                      >
+                        Anterior
+                      </a>
+
+                      <a
+                        class="px-3 py-2 mx-1 text-gray-700 bg-white rounded-md cursor-pointer hover:bg-kombu-300 hover:text-white"
+                        v-for="pageNumber in pages_todo.slice(
+                          page_todo - 1,
+                          page_todo + 3
+                        )"
+                        :key="pageNumber"
+                        @click="page_todo = pageNumber"
+                      >
+                        {{ pageNumber }}
+                      </a>
+
+                      <a
+                        id="next"
+                        v-if="page_todo < pages_todo.length"
+                        @click="page_todo++"
+                        class="px-3 py-2 mx-1 text-gray-700 bg-white rounded-md cursor-pointer hover:bg-kombu-300 hover:text-white"
+                      >
+                        Siguiente
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -187,19 +355,52 @@ import axios from "axios";
 export default {
   data: function() {
     return {
-      img: "",
-      username: "",
-      firstname: "",
-      lastname: "",
-      email: "",
-      firstname_e: "",
-      lastname_e: "",
-      email_e: "",
-      id: "",
-      selectedFile: "",
+      img: null,
+      username: null,
+      firstname: null,
+      lastname: null,
+      email: null,
+      firstname_e: null,
+      lastname_e: null,
+      email_e: null,
+      id: null,
+      selectedFile: [],
+      favoritedList: [],
+      todoList: [],
+      page: 1,
+      perPage: 3,
+      pages: [],
+      page_todo: 1,
+      pages_todo: [],
     };
   },
   methods: {
+    setElements() {
+      let numberOfPages = Math.ceil(this.favoritedList.length / this.perPage);
+      for (let i = 1; i <= numberOfPages; i++) {
+        this.pages.push(i);
+      }
+    },
+    setTodoListElements() {
+      let numberOfPages = Math.ceil(this.todoList.length / this.perPage);
+      for (let i = 1; i <= numberOfPages; i++) {
+        this.pages_todo.push(i);
+      }
+    },
+    paginate(elements) {
+      let page = this.page;
+      let perPage = this.perPage;
+      let from = page * perPage - perPage;
+      let to = page * perPage;
+      return elements.slice(from, to);
+    },
+    paginateTodoList(elements) {
+      let page = this.page_todo;
+      let perPage = this.perPage;
+      let from = page * perPage - perPage;
+      let to = page * perPage;
+      return elements.slice(from, to);
+    },
     loadData() {
       axios
         .get("http://localhost:8080/api/info", {
@@ -215,6 +416,8 @@ export default {
               this.lastname = response.data.lastname;
               this.email = response.data.email;
               this.id = response.data.id;
+              this.loadFavorited();
+              this.loadToDoList();
             });
         });
     },
@@ -268,12 +471,77 @@ export default {
           });
       }
     },
+    loadFavorited() {
+      axios
+        .get("http://localhost:8080/api/userSite/getSitesByUserId", {
+          params: { userId: this.id, state: "FAVORITE" },
+        })
+        .then((response) => {
+          this.favoritedList = response.data;
+        });
+    },
+    loadToDoList() {
+      axios
+        .get("http://localhost:8080/api/userSite/getSitesByUserId", {
+          params: { userId: this.id, state: "TODISCOVER" },
+        })
+        .then((response) => {
+          this.todoList = response.data;
+        });
+    },
     onFileSelected(event) {
       this.selectedFile = event.target.files[0];
     },
+    loadDetails(siteid) {
+      this.$router.push("/details/" + siteid);
+    },
+    deleteFavorited(indexList, siteid) {
+      axios
+        .delete("http://localhost:8080/api/userSite/delete", {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+          params: { userId: this.id, siteId: siteid, state: "FAVORITE" },
+        })
+        .then(() => {
+          this.$delete(this.favoritedList, indexList);
+          this.page = 1;
+          this.pages = [];
+        });
+    },
+    deleteElementTodoList(indexList, siteid) {
+      axios
+        .delete("http://localhost:8080/api/userSite/delete", {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+          params: { userId: this.id, siteId: siteid, state: "TODISCOVER" },
+        })
+        .then(() => {
+          this.$delete(this.todoList, indexList);
+          this.page_todo = 1;
+          this.pages_todo = [];
+        });
+    },
   },
-  mounted() {
+  created() {
     this.loadData();
+  },
+  watch: {
+    favoritedList() {
+      this.setElements();
+    },
+    todoList() {
+      this.setTodoListElements();
+    },
+  },
+  computed: {
+    displayedElements: function() {
+      return this.paginate(this.favoritedList);
+    },
+    displayedTodoListElements: function() {
+      return this.paginateTodoList(this.todoList);
+    },
   },
 };
 </script>
