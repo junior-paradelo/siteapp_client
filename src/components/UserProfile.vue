@@ -135,7 +135,19 @@
                 <h3 class="px-4 text-lg font-bold text-center text-gray-600 ">
                   Sitios favoritos
                 </h3>
-                <div class="w-full mt-5 border-t-2 border-kombu-400">
+                <div
+                  class="w-full mt-5 border-t-2 border-kombu-400"
+                  v-if="favoritedList.length == 0"
+                >
+                  <span class="italic text-center"
+                    >Todavía no tiene ningún elemento en su "Lista de
+                    favoritos".</span
+                  >
+                </div>
+                <div
+                  class="w-full mt-5 border-t-2 border-kombu-400"
+                  v-if="favoritedList.length > 0"
+                >
                   <div
                     v-for="(element, index) in displayedElements"
                     :key="index"
@@ -249,7 +261,19 @@
                 <h3 class="px-4 text-lg font-bold text-center text-gray-600 ">
                   Sitios pendientes visitar
                 </h3>
-                <div class="w-full mt-5 border-t-2 border-kombu-400">
+                <div
+                  class="w-full mt-5 border-t-2 border-kombu-400"
+                  v-if="todoList.length == 0"
+                >
+                  <span class="italic text-center"
+                    >Todavía no tiene ningún elemento "Pendiente de
+                    visitar".</span
+                  >
+                </div>
+                <div
+                  class="w-full mt-5 border-t-2 border-kombu-400"
+                  v-if="todoList.length > 0"
+                >
                   <div
                     v-for="(element, index) in displayedTodoListElements"
                     :key="index"

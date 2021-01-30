@@ -111,6 +111,13 @@
                 role="menuitem"
                 >Administrar cuenta</a
               >
+              <a
+                v-if="isAdmin"
+                href="/newSite"
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                role="menuitem"
+                >Nuevo sitio</a
+              >
               <button
                 @click="logout"
                 type="submit"
@@ -128,18 +135,23 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "Header",
   data() {
     return {
       existRegisterButton: true,
       isOpen: false,
+      isAdmin: false,
     };
   },
   methods: {
     logout() {
       localStorage.removeItem("token");
       localStorage.removeItem("showNotify");
+      localStorage.removeItem("authority");
+      localStorage.removeItem("userId");
       document.querySelector("#home").click();
     },
   },
@@ -154,6 +166,18 @@ export default {
     });
     if (localStorage.getItem("token") != null) {
       this.existRegisterButton = false;
+      axios
+        .get("http://localhost:8080/api/info", {
+          headers: { Authorization: localStorage.getItem("token") },
+        })
+        .then((response) => {
+          response.data.authorities.forEach((element) => {
+            if (element.authority == "ROLE_ADMIN") {
+              this.isAdmin = true;
+            }
+          });
+          localStorage.setItem("userId", response.data.id);
+        });
     }
   },
 };

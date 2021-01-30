@@ -33,7 +33,75 @@
         </div>
       </div>
     </div>
-
+    <div class="max-w-screen-md mx-auto my-4">
+      <div class="text-right ">
+        <a
+          v-if="!inList"
+          class="inline-flex items-center px-6 py-2 mr-2 font-bold border-b-2 rounded cursor-pointer border-darkolive-500 hover:text-darkolive-300 hover:border-darkolive-300"
+          @click="setTodoList()"
+        >
+          <span class="mr-2 text-gray-800">Pendiente</span>
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+            ></path>
+          </svg>
+        </a>
+        <a
+          v-if="inList"
+          class="inline-flex items-center px-6 py-2 mr-2 font-bold border-b-2 rounded cursor-pointer border-darkolive-500 hover:text-red-500 hover:border-darkolive-300"
+          @click="setTodoList()"
+        >
+          <span class="mr-2 text-gray-800"
+            >Eliminar de la lista de pendientes</span
+          >
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+            ></path>
+          </svg>
+        </a>
+        <a
+          class="inline-flex items-center px-6 py-2 font-bold text-yellow-500 border-b-2 border-yellow-500 rounded cursor-pointer hover:text-yellow-400 "
+          @click="setFavourited()"
+        >
+          <span class="mr-2 text-gray-800" id="fav">Marcar como favorito</span>
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            id="star"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+            ></path>
+          </svg>
+        </a>
+      </div>
+    </div>
     <div
       class="max-w-screen-md px-4 mx-auto mt-12 text-lg leading-relaxed text-gray-700 lg:px-0"
     >
@@ -244,6 +312,7 @@ export default {
       showMap: true,
       images: null,
       principal_image: null,
+      inList: false,
     };
   },
   components: {
@@ -251,7 +320,75 @@ export default {
     LTileLayer,
     LMarker,
   },
-  methods: {},
+  methods: {
+    setTodoList() {
+      if (this.inList) {
+        axios
+          .delete("http://localhost:8080/api/userSite/delete", {
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+            params: {
+              userId: parseInt(localStorage.getItem("userId")),
+              siteId: this.id,
+              state: "TODISCOVER",
+            },
+          })
+          .then(() => (this.inList = false));
+      } else {
+        axios
+          .post("http://localhost:8080/api/userSite/saveState", null, {
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+            params: {
+              userId: parseInt(localStorage.getItem("userId")),
+              siteId: this.id,
+              state: "TODISCOVER",
+            },
+          })
+          .then(() => (this.inList = true));
+      }
+    },
+    setFavourited() {
+      let fill = document.querySelector("#star").getAttribute("fill");
+      if (fill == "none") {
+        axios
+          .post("http://localhost:8080/api/userSite/saveState", null, {
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+            params: {
+              userId: parseInt(localStorage.getItem("userId")),
+              siteId: this.id,
+              state: "FAVORITE",
+            },
+          })
+          .then(() => {
+            document
+              .querySelector("#star")
+              .setAttribute("fill", "currentColor");
+            document.querySelector("#fav").innerHTML = "Eliminar de favoritos";
+          });
+      } else {
+        axios
+          .delete("http://localhost:8080/api/userSite/delete", {
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+            params: {
+              userId: parseInt(localStorage.getItem("userId")),
+              siteId: this.id,
+              state: "FAVORITE",
+            },
+          })
+          .then(() => {
+            document.querySelector("#star").setAttribute("fill", "none");
+            document.querySelector("#fav").innerHTML = "Marcar como favorito";
+          });
+      }
+    },
+  },
   mounted() {
     axios.get("http://localhost:8080/api/sites/" + this.id).then((response) => {
       this.principal_image = "data:image/png;base64," + response.data.image;
@@ -261,6 +398,38 @@ export default {
       this.withTooltip = this.center;
       this.site = response.data;
     });
+    if (localStorage.getItem("userId") != null) {
+      axios
+        .get("http://localhost:8080/api/userSite/findByUserAndSiteId", {
+          params: {
+            userId: parseInt(localStorage.getItem("userId")),
+            siteId: this.id,
+            state: "FAVORITE",
+          },
+        })
+        .then((response) => {
+          if (response.data != "") {
+            document
+              .querySelector("#star")
+              .setAttribute("fill", "currentColor");
+            document.querySelector("#fav").innerHTML = "Eliminar de favoritos";
+          }
+        });
+
+      axios
+        .get("http://localhost:8080/api/userSite/findByUserAndSiteId", {
+          params: {
+            userId: parseInt(localStorage.getItem("userId")),
+            siteId: this.id,
+            state: "TODISCOVER",
+          },
+        })
+        .then((response) => {
+          if (response.data != "") {
+            this.inList = true;
+          }
+        });
+    }
   },
 };
 </script>
