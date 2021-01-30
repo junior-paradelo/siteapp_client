@@ -8,6 +8,7 @@ import Notifications from "vt-notifications";
 import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import VueCarousel from "vue-carousel";
 
 delete L.Icon.Default.prototype._getIconUrl;
 
@@ -19,6 +20,7 @@ L.Icon.Default.mergeOptions({
 Vue.config.productionTip = false;
 Vue.use(VueAxios, axios);
 Vue.use(Notifications);
+Vue.use(VueCarousel);
 Vue.component("l-map", LMap);
 Vue.component("l-tile-layer", LTileLayer);
 Vue.component("l-marker", LMarker);

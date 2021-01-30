@@ -271,123 +271,19 @@
         {{ site.siteDetails.resume }}
       </p>
 
+      <carousel
+        autoplay
+        loop
+        autoplayTimeout="8000"
+        speed="5000"
+        v-if="images.length > 0"
+      >
+        <slide v-for="(image, index) in images" :key="index">
+          <img :src="image" />
+        </slide>
+      </carousel>
       <div class="pl-4 mb-6 italic border-l-4 border-gray-500 rounded">
         {{ site.siteDetails.comment }}
-      </div>
-
-      <div
-        class="relative mx-auto mb-6 bg-white rounded-lg shadow-2xl carousel"
-      >
-        <div
-          class="relative w-full max-w-screen-lg overflow-hidden rounded-lg carousel-inner"
-        >
-          <!--Slide 1-->
-          <input
-            class="carousel-open"
-            type="radio"
-            id="carousel-1"
-            name="carousel"
-            aria-hidden="true"
-            hidden=""
-            checked="checked"
-          />
-          <div class="absolute opacity-0 carousel-item" style="height:50vh;">
-            <div
-              class="block w-full h-full text-5xl text-center text-white bg-indigo-500"
-            >
-              Slide 1
-            </div>
-          </div>
-          <label
-            for="carousel-3"
-            class="absolute inset-y-0 left-0 z-10 hidden w-10 h-10 my-auto ml-2 text-3xl font-bold leading-tight text-center text-black bg-white rounded-full cursor-pointer prev control-1 md:ml-10 hover:text-white hover:bg-blue-700"
-            >‹</label
-          >
-          <label
-            for="carousel-2"
-            class="absolute inset-y-0 right-0 z-10 hidden w-10 h-10 my-auto mr-2 text-3xl font-bold leading-tight text-center text-black bg-white rounded-full cursor-pointer next control-1 md:mr-10 hover:text-white hover:bg-blue-700"
-            >›</label
-          >
-
-          <!--Slide 2-->
-          <input
-            class="carousel-open"
-            type="radio"
-            id="carousel-2"
-            name="carousel"
-            aria-hidden="true"
-            hidden=""
-          />
-          <div class="absolute opacity-0 carousel-item" style="height:50vh;">
-            <div
-              class="block w-full h-full text-5xl text-center text-black bg-orange-500"
-            >
-              Slide 2
-            </div>
-          </div>
-          <label
-            for="carousel-1"
-            class="absolute inset-y-0 left-0 z-10 hidden w-10 h-10 my-auto ml-2 text-3xl font-bold leading-tight text-center text-black bg-white rounded-full cursor-pointer prev control-2 md:ml-10 hover:text-white hover:bg-blue-700"
-            >‹</label
-          >
-          <label
-            for="carousel-3"
-            class="absolute inset-y-0 right-0 z-10 hidden w-10 h-10 my-auto mr-2 text-3xl font-bold leading-tight text-center text-black bg-white rounded-full cursor-pointer next control-2 md:mr-10 hover:text-white hover:bg-blue-700"
-            >›</label
-          >
-
-          <!--Slide 3-->
-          <input
-            class="carousel-open"
-            type="radio"
-            id="carousel-3"
-            name="carousel"
-            aria-hidden="true"
-            hidden=""
-          />
-          <div class="absolute opacity-0 carousel-item" style="height:50vh;">
-            <div
-              class="block w-full h-full text-5xl text-center text-white bg-green-500"
-            >
-              Slide 3
-            </div>
-          </div>
-          <label
-            for="carousel-2"
-            class="absolute inset-y-0 left-0 z-10 hidden w-10 h-10 my-auto ml-2 text-3xl font-bold leading-tight text-center text-black bg-white rounded-full cursor-pointer prev control-3 md:ml-10 hover:text-white hover:bg-blue-700"
-            >‹</label
-          >
-          <label
-            for="carousel-1"
-            class="absolute inset-y-0 right-0 z-10 hidden w-10 h-10 my-auto mr-2 text-3xl font-bold leading-tight text-center text-black bg-white rounded-full cursor-pointer next control-3 md:mr-10 hover:text-white hover:bg-blue-700"
-            >›</label
-          >
-
-          <!-- Add additional indicators for each slide-->
-          <ol class="carousel-indicators">
-            <li class="inline-block mr-3">
-              <label
-                for="carousel-1"
-                class="block text-4xl text-white cursor-pointer carousel-bullet hover:text-blue-700"
-                >•</label
-              >
-            </li>
-            <li class="inline-block mr-3">
-              <label
-                for="carousel-2"
-                class="block text-4xl text-white cursor-pointer carousel-bullet hover:text-blue-700"
-                >•</label
-              >
-            </li>
-            <li class="inline-block mr-3">
-              <label
-                for="carousel-3"
-                class="block text-4xl text-white cursor-pointer carousel-bullet hover:text-blue-700"
-                >•</label
-              >
-            </li>
-          </ol>
-        </div>
       </div>
     </div>
   </main>
@@ -398,6 +294,7 @@ import axios from "axios";
 import { latLng } from "leaflet";
 import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
 import StarRating from "vue-star-rating";
+import { Carousel, Slide } from "vue-carousel";
 
 export default {
   data() {
@@ -416,7 +313,7 @@ export default {
         zoomSnap: 0.5,
       },
       showMap: true,
-      images: null,
+      images: [],
       principal_image: null,
       inList: false,
       login: false,
@@ -430,6 +327,8 @@ export default {
     LTileLayer,
     LMarker,
     StarRating,
+    Carousel,
+    Slide,
   },
   methods: {
     deleteSiteDetails() {
@@ -539,6 +438,17 @@ export default {
     },
   },
   mounted() {
+    axios
+      .get("http://localhost:8080/api/downloads/", {
+        params: {
+          siteId: this.id,
+        },
+      })
+      .then((response) => {
+        response.data.forEach((element) => {
+          this.images.push("data:image/png;base64," + element);
+        });
+      });
     let authority = localStorage.getItem("authority");
     if (authority == "ROLE_ADMIN") {
       this.isAdmin = true;
