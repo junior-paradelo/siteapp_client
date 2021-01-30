@@ -21,6 +21,39 @@
         <h2 class="text-4xl font-semibold leading-tight text-gray-100">
           {{ site.name }}
         </h2>
+        <star-rating
+          :star-size="20"
+          :show-rating="false"
+          :animate="true"
+          :active-color="['#ae0000', '#dda15e']"
+          :active-border-color="['#fefae0', '#fefae0']"
+          :border-width="4"
+          :star-points="[
+            23,
+            2,
+            14,
+            17,
+            0,
+            19,
+            10,
+            34,
+            7,
+            50,
+            23,
+            43,
+            38,
+            50,
+            36,
+            34,
+            46,
+            19,
+            31,
+            17,
+          ]"
+          :active-on-click="true"
+          :clearable="true"
+          v-model="rating"
+        ></star-rating>
         <div class="flex mt-3">
           <div>
             <p class="text-sm font-semibold text-gray-200">
@@ -34,7 +67,7 @@
       </div>
     </div>
     <div class="max-w-screen-md mx-auto my-4">
-      <div class="text-right ">
+      <div class="text-right">
         <a
           v-if="!inList && login"
           class="inline-flex items-center px-6 py-2 mr-2 font-bold border-b-2 rounded cursor-pointer border-darkolive-500 hover:text-darkolive-300 hover:border-darkolive-300"
@@ -123,6 +156,41 @@
                   <h1 class="italic font-extrabold">
                     {{ site.name }} - {{ site.province }} - {{ site.townHall }}
                   </h1>
+                </li>
+                <li class="text-sm text-gray-darkest">
+                  <span class="font-semibold">Valoración media usuarios:</span>
+                  <star-rating
+                    :star-size="10"
+                    :show-rating="false"
+                    :read-only="true"
+                    :active-color="['#ae0000', '#dda15e']"
+                    :active-border-color="['#fefae0', '#fefae0']"
+                    :clearable="true"
+                    :border-width="3"
+                    :star-points="[
+                      23,
+                      2,
+                      14,
+                      17,
+                      0,
+                      19,
+                      10,
+                      34,
+                      7,
+                      50,
+                      23,
+                      43,
+                      38,
+                      50,
+                      36,
+                      34,
+                      46,
+                      19,
+                      31,
+                      17,
+                    ]"
+                    v-model="avg_rating"
+                  ></star-rating>
                 </li>
                 <li class="text-sm text-gray-darkest">
                   <span class="font-semibold">Categoría:</span>
@@ -293,6 +361,7 @@
 import axios from "axios";
 import { latLng } from "leaflet";
 import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
+import StarRating from "vue-star-rating";
 
 export default {
   data() {
@@ -315,14 +384,27 @@ export default {
       principal_image: null,
       inList: false,
       login: false,
+      rating: null,
+      avg_rating: null,
     };
   },
   components: {
     LMap,
     LTileLayer,
     LMarker,
+    StarRating,
   },
   methods: {
+    notification(group, title, text, time) {
+      this.$notify(
+        {
+          group: group,
+          title: title,
+          text: text,
+        },
+        time
+      );
+    },
     setTodoList() {
       if (this.inList) {
         axios
@@ -355,23 +437,41 @@ export default {
     setFavourited() {
       let fill = document.querySelector("#star").getAttribute("fill");
       if (fill == "none") {
-        axios
-          .post("http://localhost:8080/api/userSite/saveState", null, {
-            headers: {
-              Authorization: localStorage.getItem("token"),
-            },
-            params: {
-              userId: parseInt(localStorage.getItem("userId")),
-              siteId: this.id,
-              state: "FAVORITE",
-            },
-          })
-          .then(() => {
-            document
-              .querySelector("#star")
-              .setAttribute("fill", "currentColor");
-            document.querySelector("#fav").innerHTML = "Eliminar de favoritos";
-          });
+        console.log(this.rating);
+        if (this.rating == 0 || this.rating == null) {
+          this.notification(
+            "info",
+            "Debe puntuar el sitio",
+            "Para marcar como favorito el sitio, es necesario puntuarlo previamente",
+            5000
+          );
+        } else {
+          axios
+            .post("http://localhost:8080/api/userSite/saveState", null, {
+              headers: {
+                Authorization: localStorage.getItem("token"),
+              },
+              params: {
+                userId: parseInt(localStorage.getItem("userId")),
+                siteId: this.id,
+                state: "FAVORITE",
+                rate: this.rating,
+              },
+            })
+            .then(() => {
+              this.notification(
+                "success",
+                "Guardado exitoso",
+                "Se ha añadido el sitio a su lista de favoritos correctamente",
+                3000
+              );
+              document
+                .querySelector("#star")
+                .setAttribute("fill", "currentColor");
+              document.querySelector("#fav").innerHTML =
+                "Eliminar de favoritos";
+            });
+        }
       } else {
         axios
           .delete("http://localhost:8080/api/userSite/delete", {
@@ -398,8 +498,24 @@ export default {
       this.long = response.data.longitude;
       this.center = latLng(response.data.latitude, response.data.longitude);
       this.withTooltip = this.center;
+      const options = {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      };
+      response.data.createdAt = new Date(
+        response.data.createdAt
+      ).toLocaleDateString("es-ES", options);
       this.site = response.data;
     });
+    axios
+      .get("http://localhost:8080/api/userSite/getAVGRate", {
+        params: { siteId: this.id },
+      })
+      .then((response) => {
+        this.avg_rating = Math.ceil(response.data);
+      });
     if (localStorage.getItem("userId") != null) {
       this.login = true;
       axios
@@ -416,6 +532,7 @@ export default {
               .querySelector("#star")
               .setAttribute("fill", "currentColor");
             document.querySelector("#fav").innerHTML = "Eliminar de favoritos";
+            this.rating = response.data.rate;
           }
         });
 
