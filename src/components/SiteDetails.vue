@@ -36,7 +36,7 @@
     <div class="max-w-screen-md mx-auto my-4">
       <div class="text-right ">
         <a
-          v-if="!inList"
+          v-if="!inList && login"
           class="inline-flex items-center px-6 py-2 mr-2 font-bold border-b-2 rounded cursor-pointer border-darkolive-500 hover:text-darkolive-300 hover:border-darkolive-300"
           @click="setTodoList()"
         >
@@ -57,7 +57,7 @@
           </svg>
         </a>
         <a
-          v-if="inList"
+          v-if="inList && login"
           class="inline-flex items-center px-6 py-2 mr-2 font-bold border-b-2 rounded cursor-pointer border-darkolive-500 hover:text-red-500 hover:border-darkolive-300"
           @click="setTodoList()"
         >
@@ -80,6 +80,7 @@
           </svg>
         </a>
         <a
+          v-if="login"
           class="inline-flex items-center px-6 py-2 font-bold text-yellow-500 border-b-2 border-yellow-500 rounded cursor-pointer hover:text-yellow-400 "
           @click="setFavourited()"
         >
@@ -313,6 +314,7 @@ export default {
       images: null,
       principal_image: null,
       inList: false,
+      login: false,
     };
   },
   components: {
@@ -399,6 +401,7 @@ export default {
       this.site = response.data;
     });
     if (localStorage.getItem("userId") != null) {
+      this.login = true;
       axios
         .get("http://localhost:8080/api/userSite/findByUserAndSiteId", {
           params: {
