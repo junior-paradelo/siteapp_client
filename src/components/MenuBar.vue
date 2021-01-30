@@ -52,6 +52,7 @@
           >
         </div>
       </div>
+
       <div
         v-if="existRegisterButton"
         id="login_button"
@@ -64,7 +65,7 @@
         >
       </div>
       <div v-else id="login_button" class="hidden md:block">
-        <div class="relative inline-block text-left">
+        <div class="relative inline-block text-left ">
           <div>
             <button
               id="fake"
@@ -95,9 +96,10 @@
               </svg>
             </button>
           </div>
+
           <div
             v-if="isOpen"
-            class="absolute right-0 w-56 mt-2 origin-top-right rounded-md shadow-lg bg-cornsilk-400 ring-1 ring-black ring-opacity-5"
+            class="absolute w-56 mt-2 rounded-md shadow-lg bg-cornsilk-400 ring-1 ring-black ring-opacity-5 md:right-0"
           >
             <div
               class="py-1"
@@ -175,6 +177,7 @@ export default {
             if (element.authority == "ROLE_ADMIN") {
               this.isAdmin = true;
             }
+            localStorage.setItem("authority", element.authority);
           });
           localStorage.setItem("userId", response.data.id);
         });
