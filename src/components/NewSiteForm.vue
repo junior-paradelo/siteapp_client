@@ -56,6 +56,42 @@
           </div>
           <div class="px-4 field-group md:w-1/3">
             <label class="pr-2 font-semibold field-label" for="name"
+              >Indicaciones de acceso</label
+            >
+            <input
+              v-model="accessType"
+              type="text"
+              id="name"
+              maxlength="100"
+              class="w-full py-2 mt-2 mb-6 text-gray-700 border-b-2 border-darkolive-200 focus:outline-none focus:border-kombu-700"
+            />
+          </div>
+          <div class="px-4 field-group md:w-1/3">
+            <label class="pr-2 font-semibold field-label" for="name"
+              >Posibilidad de ir con niños</label
+            >
+            <select
+              class="block w-full px-4 py-2 mt-1 border rounded-md form-select border-darkolive-200"
+              v-model="goChildren"
+            >
+              <option value="true">SI</option>
+              <option value="false">NO</option>
+            </select>
+          </div>
+          <div class="px-4 field-group md:w-1/3">
+            <label class="pr-2 font-semibold field-label" for="name"
+              >Posibilidad de ir en automóvil</label
+            >
+            <select
+              class="block w-full px-4 py-2 mt-1 border rounded-md form-select border-darkolive-200"
+              v-model="goCar"
+            >
+              <option value="true">SI</option>
+              <option value="false">NO</option>
+            </select>
+          </div>
+          <div class="px-4 field-group md:w-1/3">
+            <label class="pr-2 font-semibold field-label" for="name"
               >Categoría</label
             >
             <select
@@ -196,7 +232,7 @@
           </div>
           <button
             type="submit"
-            class="relative flex justify-center w-full px-4 py-3 mt-4 text-sm font-medium border rounded-md text-liverdogs-500 border-liverdogs-500 hover:bg-liverdogs-300 hover:text-liverdogs-500 group focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-800"
+            class="relative flex justify-center w-full px-4 py-3 mt-4 text-sm font-medium border rounded-md text-liverdogs-500 border-liverdogs-500 hover:bg-liverdogs-300 hover:text-liverdogs-500 focus:outline-none"
           >
             <span class="absolute inset-y-0 left-0 flex items-center pl-3">
               <svg
@@ -240,6 +276,9 @@ export default {
       comment: null,
       categories: [],
       selectedFile: null,
+      accessType: null,
+      goChildren: null,
+      goCar: null,
     };
   },
   methods: {
@@ -256,6 +295,9 @@ export default {
           comment: this.comment,
           header: this.header,
           resume: this.resume,
+          goCar: this.goCar,
+          goChildren: this.goChildren,
+          accessType: this.accessType,
         },
         latitudePark: this.latitude_p,
         longitudePark: this.longitude_p,
@@ -270,6 +312,14 @@ export default {
       }
       axios.post("http://localhost:8080/api/sites", json).then((response) => {
         if (response.status == "200") {
+          this.$notify(
+            {
+              group: "success",
+              title: "Sitio creado con éxito",
+              text: "El sitio cultural se ha creado con éxito",
+            },
+            3000
+          );
           axios
             .put(
               "http://localhost:8080/api/sites/upload/" + response.data.id,

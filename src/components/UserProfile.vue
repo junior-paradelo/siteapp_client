@@ -178,7 +178,7 @@
                     </div>
 
                     <button
-                      class="p-2 ml-4 mr-2 text-blue-500 border-2 border-blue-500 rounded-full hover:bg-blue-500 hover:text-white"
+                      class="p-2 ml-4 mr-2 text-blue-500 border-2 border-blue-500 rounded-full hover:bg-blue-500 hover:text-white focus:outline-none"
                       @click="loadDetails(element.site.id)"
                     >
                       <svg
@@ -197,7 +197,7 @@
                       </svg>
                     </button>
                     <button
-                      class="p-2 mr-2 text-red-500 border-2 border-red-500 rounded-full hover:bg-red-500 hover:text-white"
+                      class="p-2 mr-2 text-red-500 border-2 border-red-500 rounded-full hover:bg-red-500 hover:text-white focus:outline-none"
                       @click="deleteFavorited(index, element.site.id)"
                     >
                       <svg
@@ -292,7 +292,7 @@
                       </div>
                     </div>
                     <button
-                      class="p-2 ml-4 mr-2 text-blue-500 border-2 border-blue-500 rounded-full hover:bg-blue-500 hover:text-white"
+                      class="p-2 ml-4 mr-2 text-blue-500 border-2 border-blue-500 rounded-full focus:outline-none hover:bg-blue-500 hover:text-white"
                       @click="loadDetails(element.site.id)"
                     >
                       <svg
@@ -311,7 +311,7 @@
                       </svg>
                     </button>
                     <button
-                      class="p-2 mr-2 text-red-500 border-2 border-red-500 rounded-full hover:bg-red-500 hover:text-white"
+                      class="p-2 mr-2 text-red-500 border-2 border-red-500 rounded-full hover:bg-red-500 hover:text-white focus:outline-none"
                       @click="deleteElementTodoList(index, element.site.id)"
                     >
                       <svg

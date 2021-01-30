@@ -14,14 +14,14 @@
       />
       <div class="absolute bottom-0 left-0 z-20 p-4">
         <a
-          href="#"
           class="inline-flex items-center justify-center px-4 py-1 mb-2 text-gray-200 bg-black"
-          >{{ site.category }}</a
+          >#{{ site.categoryName }}</a
         >
         <h2 class="text-4xl font-semibold leading-tight text-gray-100">
           {{ site.name }}
         </h2>
         <star-rating
+          v-if="login"
           :star-size="20"
           :show-rating="false"
           :animate="true"
@@ -69,8 +69,27 @@
     <div class="max-w-screen-md mx-auto my-4">
       <div class="text-right">
         <a
+          v-if="isAdmin"
+          class="inline-flex px-6 py-2 mr-2 font-bold transition duration-200 transform border-b-2 border-red-600 rounded cursor-pointer text-gray-800items-center hover:bg-red-600 hover:scale-105 hover:text-white"
+          @click="deleteSiteDetails()"
+          ><span class="mr-2 ">Eliminar</span
+          ><svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            ></path></svg
+        ></a>
+        <a
           v-if="!inList && login"
-          class="inline-flex items-center px-6 py-2 mr-2 font-bold border-b-2 rounded cursor-pointer border-darkolive-500 hover:text-darkolive-300 hover:border-darkolive-300"
+          class="inline-flex items-center px-6 py-2 mr-2 font-bold transition duration-200 transform border-b-2 rounded cursor-pointer border-darkolive-500 hover:text-darkolive-300 hover:border-darkolive-300 hover:scale-105"
           @click="setTodoList()"
         >
           <span class="mr-2 text-gray-800">Pendiente</span>
@@ -91,7 +110,7 @@
         </a>
         <a
           v-if="inList && login"
-          class="inline-flex items-center px-6 py-2 mr-2 font-bold border-b-2 rounded cursor-pointer border-darkolive-500 hover:text-red-500 hover:border-darkolive-300"
+          class="inline-flex items-center px-6 py-2 mr-2 font-bold transition duration-200 transform border-b-2 rounded cursor-pointer border-darkolive-500 hover:text-red-500 hover:border-darkolive-300 hover:scale-105"
           @click="setTodoList()"
         >
           <span class="mr-2 text-gray-800"
@@ -114,7 +133,7 @@
         </a>
         <a
           v-if="login"
-          class="inline-flex items-center px-6 py-2 font-bold text-yellow-500 border-b-2 border-yellow-500 rounded cursor-pointer hover:text-yellow-400 "
+          class="inline-flex items-center px-6 py-2 font-bold text-yellow-500 transition duration-200 transform border-b-2 border-yellow-500 rounded cursor-pointer hover:text-yellow-400 hover:scale-105"
           @click="setFavourited()"
         >
           <span class="mr-2 text-gray-800" id="fav">Marcar como favorito</span>
@@ -153,7 +172,7 @@
             <div class="p-4">
               <ul class="leading-loose">
                 <li class="text-sm text-gray-darkest">
-                  <h1 class="italic font-extrabold">
+                  <h1 class="text-lg italic font-bold">
                     {{ site.name }} - {{ site.province }} - {{ site.townHall }}
                   </h1>
                 </li>
@@ -209,6 +228,23 @@
                 <li class="text-sm text-gray-darkest">
                   <span class="font-semibold">Restricciones:</span>
                   {{ site.siteDetails.comment }}
+                </li>
+                <li
+                  class="text-sm text-gray-darkest"
+                  v-if="site.siteDetails.goCar"
+                >
+                  <span class="font-semibold"
+                    >Posibilidad de ir en automóvil: SI</span
+                  >
+                </li>
+                <li class="text-sm text-gray-darkest">
+                  <span class="font-semibold" v-if="site.siteDetails.goChildren"
+                    >Posibilidad de ir con niños: SI</span
+                  >
+                </li>
+                <li class="text-sm text-gray-darkest">
+                  <span class="font-semibold">Indicaciones de acceso:</span>
+                  {{ site.siteDetails.accessType }}
                 </li>
               </ul>
             </div>
@@ -386,6 +422,7 @@ export default {
       login: false,
       rating: null,
       avg_rating: null,
+      isAdmin: false,
     };
   },
   components: {
@@ -395,6 +432,17 @@ export default {
     StarRating,
   },
   methods: {
+    deleteSiteDetails() {
+      axios
+        .delete("http://localhost:8080/api/sites/delete/" + this.id, {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        })
+        .then(() => {
+          document.querySelector("#home").click();
+        });
+    },
     notification(group, title, text, time) {
       this.$notify(
         {
@@ -437,7 +485,6 @@ export default {
     setFavourited() {
       let fill = document.querySelector("#star").getAttribute("fill");
       if (fill == "none") {
-        console.log(this.rating);
         if (this.rating == 0 || this.rating == null) {
           this.notification(
             "info",
@@ -492,6 +539,10 @@ export default {
     },
   },
   mounted() {
+    let authority = localStorage.getItem("authority");
+    if (authority == "ROLE_ADMIN") {
+      this.isAdmin = true;
+    }
     axios.get("http://localhost:8080/api/sites/" + this.id).then((response) => {
       this.principal_image = "data:image/png;base64," + response.data.image;
       this.lat = response.data.latitude;
@@ -507,6 +558,7 @@ export default {
       response.data.createdAt = new Date(
         response.data.createdAt
       ).toLocaleDateString("es-ES", options);
+
       this.site = response.data;
     });
     axios
