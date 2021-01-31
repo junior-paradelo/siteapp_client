@@ -63,7 +63,7 @@
             >
               <div
                 class="flex items-end justify-end w-full h-56 bg-cover"
-                style="background-image: url('https://images.unsplash.com/photo-1495856458515-0637185db551?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80')"
+                v-bind:style="{ 'background-image': 'url(' + site.image + ')' }"
               >
                 <button
                   class="p-2 mx-5 -mb-4 text-white rounded-full bg-liverdogs-600 hover:bg-liverdogs-300 focus:bg-liverdogs-300 focus:outline-none"
@@ -208,10 +208,14 @@ export default {
               },
             })
             .then((response) => {
+              console.log(response);
+
               document.querySelector("#seekerbg").classList.remove("h-screen");
               document.querySelector("#seekerbg").classList.add("h-full");
+              response.data.forEach((element) => {
+                element.image = "data:image/png;base64," + element.image;
+              });
               this.listSites = response.data;
-
               if (page == 0) {
                 document
                   .querySelector("#previous")

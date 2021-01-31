@@ -1,5 +1,5 @@
 <template>
-  <main class="mt-10">
+  <main class="pt-10 background">
     <div
       class="relative w-full max-w-screen-lg mx-auto mb-4 md:mb-0"
       style="height: 24em;"
@@ -12,7 +12,7 @@
         v-bind:src="principal_image"
         class="absolute top-0 left-0 z-0 object-cover w-full h-full"
       />
-      <div class="absolute bottom-0 left-0 z-20 p-4">
+      <div class="absolute bottom-0 left-0 z-10 p-4">
         <a
           class="inline-flex items-center justify-center px-4 py-1 mb-2 text-gray-200 bg-black"
           >#{{ site.categoryName }}</a
@@ -173,7 +173,8 @@
               <ul class="leading-loose">
                 <li class="text-sm text-gray-darkest">
                   <h1 class="text-lg italic font-bold">
-                    {{ site.name }} - {{ site.province }} - {{ site.townHall }}
+                    {{ site.name }} - {{ site.province }} -
+                    {{ site.townHall }}
                   </h1>
                 </li>
                 <li class="text-sm text-gray-darkest">
@@ -517,45 +518,8 @@ export default {
 </script>
 
 <style scoped>
-.carousel-open:checked + .carousel-item {
-  position: static;
-  opacity: 100;
-}
-.carousel-item {
-  -webkit-transition: opacity 0.6s ease-out;
-  transition: opacity 0.6s ease-out;
-}
-#carousel-1:checked ~ .control-1,
-#carousel-2:checked ~ .control-2,
-#carousel-3:checked ~ .control-3 {
-  display: block;
-}
-.carousel-indicators {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  position: absolute;
-  bottom: 2%;
-  left: 0;
-  right: 0;
-  text-align: center;
-  z-index: 10;
-}
-#carousel-1:checked
-  ~ .control-1
-  ~ .carousel-indicators
-  li:nth-child(1)
-  .carousel-bullet,
-#carousel-2:checked
-  ~ .control-2
-  ~ .carousel-indicators
-  li:nth-child(2)
-  .carousel-bullet,
-#carousel-3:checked
-  ~ .control-3
-  ~ .carousel-indicators
-  li:nth-child(3)
-  .carousel-bullet {
-  color: #2b6cb0; /*Set to match the Tailwind colour you want the active one to be */
+.background {
+  background-color: #ffffff;
+  background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%237e8a56' fill-opacity='0.05' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
 }
 </style>
