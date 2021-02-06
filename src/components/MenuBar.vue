@@ -41,7 +41,7 @@
             >Últimos sitios</a
           >
           <a
-            href="#"
+            href="/map"
             class="block px-4 py-2 mt-4 text-sm leading-none text-white border-white rounded md:inline-block hover:border-transparent hover:text-gray-700 hover:bg-cornsilk-500 md:mt-0"
             >Mapa</a
           >
