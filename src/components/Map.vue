@@ -6,32 +6,44 @@
           Mapa interactivo de sitios culturales
         </h1>
       </div>
-      <div
-        class="container mx-auto my-4 border-2 rounded-lg border-darkolive-300"
-        style="height: 700px; width: 50%"
-      >
-        <l-map
-          v-if="showMap"
-          :zoom="zoom"
-          :center="center"
-          :options="mapOptions"
-          style="height: 100%"
-          class="rounded-lg"
-          @update:center="centerUpdate"
-          @update:zoom="zoomUpdate"
+      <div class="container z-0 flex flex-wrap px-5 mx-auto">
+        <div
+          class="mx-auto my-4 border-2 rounded-lg border-darkolive-300 lg:w-5/6"
+          style="height: 700px;"
         >
-          <l-tile-layer :url="url" :attribution="attribution" />
-          <v-marker-cluster>
-            <l-marker
-              v-for="marker in markers"
-              :lat-lng="marker.position"
-              :key="marker.position"
-              @click="x()"
+          <l-map
+            v-if="showMap"
+            :zoom="zoom"
+            :center="center"
+            :options="mapOptions"
+            style="height: 100%"
+            class="rounded-lg"
+            @update:center="centerUpdate"
+            @update:zoom="zoomUpdate"
+          >
+            <l-tile-layer :url="url" :attribution="attribution" />
+            <v-marker-cluster>
+              <l-marker
+                v-for="marker in markers"
+                :lat-lng="marker.position"
+                :key="marker.position"
+              >
+                <l-tooltip :content="marker.text"> </l-tooltip>
+              </l-marker>
+            </v-marker-cluster>
+          </l-map>
+        </div>
+        <div class="flex flex-col px-6 mt-4 lg:w-1/6">
+          <select
+            class="px-4 py-2 m-2 transition duration-500 border rounded-md cursor-pointer select-none text-darkolive-300 border-darkolive-300 focus:outline-none focus:shadow-outline"
+            v-model="view"
+            @change="onChangeView($event)"
+          >
+            <option v-for="layer in layers" :value="layer.id" :key="layer.id">
+              {{ layer.title }}</option
             >
-              <l-tooltip :content="marker.text"> </l-tooltip>
-            </l-marker>
-          </v-marker-cluster>
-        </l-map>
+          </select>
+        </div>
       </div>
     </div>
   </main>
@@ -70,19 +82,38 @@ export default {
       markers: [],
       layers: [
         {
-          title: "satellite",
+          id: 1,
+          title: "Vista normal",
+          url: "http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png",
+          attribution:
+            '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+        },
+        {
+          id: 2,
+          title: "Vista satélite",
           url:
             "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
           attribution:
             "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
         },
         {
-          title: "normal",
-          url: "http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png",
+          id: 3,
+          title: "Vista callejera",
+          url:
+            "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
           attribution:
-            '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+            "Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012",
+        },
+        {
+          id: 4,
+          title: "Vista turista",
+          url:
+            "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
         },
       ],
+      view: null,
     };
   },
   methods: {
@@ -95,8 +126,10 @@ export default {
     showLongText() {
       this.showParagraph = !this.showParagraph;
     },
-    innerClick() {
-      alert("Click!");
+    onChangeView(event) {
+      console.log(this.layers[event.target.value - 1]);
+      this.url = this.layers[event.target.value - 1].url;
+      this.attribution = this.layers[event.target.value - 1].attribution;
     },
     cargardatos() {
       this.markers.push({
@@ -143,17 +176,11 @@ export default {
         text: "la coru",
         position: latLng(43.37135, -8.396),
       });
-
-      console.log(this.markers);
-    },
-    x() {
-      console.log("A");
-      this.url = "http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png";
     },
   },
   mounted() {
     this.cargardatos();
-    console.log(this.markers);
+    this.view = 1;
   },
 };
 </script>
