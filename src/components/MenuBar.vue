@@ -12,10 +12,10 @@
           class="inline-block py-2 text-xl font-bold text-white"
           ><span class="text-cornsilk-400">Galisites!</span></a
         >
-        <div class="block lg:hidden">
+        <div class="block md:hidden">
           <button
             id="threelines"
-            class="flex items-center px-3 py-2 border rounded text-kombu-200 border-kombu-400 hover:text-white hover:border-white"
+            class="flex items-center px-3 py-2 border rounded text-kombu-200 border-kombu-400 hover:text-white hover:border-white focus:outline-none"
           >
             <svg
               class="w-4 h-4 fill-current"

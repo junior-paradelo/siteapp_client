@@ -27,7 +27,7 @@
           </svg>
         </span>
         <input
-          class="text-gray-900 placeholder-gray-500 w-96 focus:outline-none"
+          class="text-gray-900 placeholder-gray-500 w-96 focus:outline-none "
           type="text"
           placeholder="Escriba el nombre de algún lugar..."
           v-model="searching"
@@ -102,8 +102,9 @@
                 <span class="mt-2 italic text-gray-700"
                   >{{ site.province }} - {{ site.townHall }}</span
                 ><br />
-                <span class="text-gray-700 lowercase"
-                  >{{ site.category.name }}
+                <span
+                  class="inline-block px-2 py-1 mt-1 text-xs font-bold text-white lowercase duration-300 bg-gray-800 rounded-full md:mr-2 md:px-4 opacity-90"
+                  >{{ site.categoryName }}
                 </span>
               </div>
             </div>

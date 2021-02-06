@@ -1,14 +1,16 @@
 <template>
-  <main class="h-screen pt-6 background">
+  <main class="pt-6 background">
     <div class="flex flex-col justify-center ">
       <div class="p-4 m-2 mx-auto text-center">
-        <h1 class="pt-2 font-bold text-black align-middletext-xl md:text-3xl">
+        <h1
+          class="pt-2 italic font-bold text-black align-middletext-xl md:text-3xl"
+        >
           Mapa interactivo de sitios culturales
         </h1>
       </div>
       <div class="container z-0 flex flex-wrap px-5 mx-auto">
         <div
-          class="mx-auto my-4 border-2 rounded-lg border-darkolive-300 lg:w-5/6"
+          class="w-9/12 mx-auto my-4 border-4 border-double rounded-lg border-darkolive-300"
           style="height: 700px;"
         >
           <l-map
@@ -27,15 +29,17 @@
                 v-for="marker in markers"
                 :lat-lng="marker.position"
                 :key="marker.position"
+                class="focus:outline-none"
+                @click="loadDataSite(marker.id)"
               >
                 <l-tooltip :content="marker.text"> </l-tooltip>
               </l-marker>
             </v-marker-cluster>
           </l-map>
         </div>
-        <div class="flex flex-col px-6 mt-4 lg:w-1/6">
+        <div class="flex flex-col px-6 mt-4 md:w-full lg:w-3/12">
           <select
-            class="px-4 py-2 m-2 transition duration-500 border rounded-md cursor-pointer select-none text-darkolive-300 border-darkolive-300 focus:outline-none focus:shadow-outline"
+            class="w-3/5 px-4 py-2 m-2 text-black transition duration-500 border border-black rounded-md cursor-pointer select-none hover:bg-gray-100 focus:outline-none focus:shadow-outline"
             v-model="view"
             @change="onChangeView($event)"
           >
@@ -43,6 +47,56 @@
               {{ layer.title }}</option
             >
           </select>
+          <div v-for="site in object" :key="site.id">
+            <div
+              class="w-full max-w-sm mx-auto mt-2 ml-2 overflow-hidden transition duration-500 transform rounded-md shadow-md hover:scale-105"
+            >
+              <div
+                class="flex items-end justify-end w-full h-56 bg-cover"
+                v-bind:style="{ 'background-image': 'url(' + site.image + ')' }"
+              >
+                <button
+                  class="p-2 mx-5 -mb-4 text-white rounded-full bg-liverdogs-600 hover:bg-liverdogs-300 focus:bg-liverdogs-300 focus:outline-none"
+                  @click="loadDetails(site.id)"
+                >
+                  <svg
+                    class="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    ></path>
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                    ></path>
+                  </svg>
+                </button>
+              </div>
+              <div class="px-5 py-3 bg-cornsilk-300">
+                <h3 class="font-bold text-gray-900 uppercase">
+                  {{ site.name }}
+                </h3>
+                <p class="text-sm">
+                  {{ site.description }}
+                </p>
+                <span class="mt-2 text-sm italic text-gray-700"
+                  >{{ site.province }} - {{ site.townHall }}</span
+                ><br />
+                <span class="text-sm text-gray-700 lowercase"
+                  >{{ site.categoryName }}
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -53,6 +107,7 @@
 import { latLng } from "leaflet";
 import { LMap, LTileLayer, LMarker, LTooltip } from "vue2-leaflet";
 import Vue2LeafletMarkerCluster from "vue2-leaflet-markercluster";
+import axios from "axios";
 
 export default {
   name: "Example",
@@ -114,6 +169,7 @@ export default {
         },
       ],
       view: null,
+      object: [],
     };
   },
   methods: {
@@ -131,6 +187,9 @@ export default {
       this.url = this.layers[event.target.value - 1].url;
       this.attribution = this.layers[event.target.value - 1].attribution;
     },
+    loadDetails(siteid) {
+      this.$router.push("/details/" + siteid);
+    },
     cargardatos() {
       this.markers.push({
         text: "arteixo",
@@ -139,43 +198,66 @@ export default {
       this.markers.push({
         text: "oleiros",
         position: latLng(43.33333, -8.31667),
+        id: 1,
       });
       this.markers.push({
         text: "cambre",
         position: latLng(43.29438, -8.34736),
+        id: 2,
       });
       this.markers.push({
         text: "carballo",
         position: latLng(43.213, -8.69104),
+        id: 3,
       });
       this.markers.push({
         text: "rianxo",
         position: latLng(42.64977, -8.81763),
+        id: 4,
       });
       this.markers.push({
         text: "ferrol",
         position: latLng(43.48451, -8.23293),
+        id: 5,
       });
       this.markers.push({
         text: "lugo",
         position: latLng(43.00992, -7.55602),
+        id: 10,
       });
       this.markers.push({
         text: "vigo",
         position: latLng(42.23282, -8.72264),
+        id: 11,
       });
       this.markers.push({
         text: "pontevedra",
         position: latLng(42.431, -8.64435),
+        id: 12,
       });
       this.markers.push({
         text: "ourense",
         position: latLng(42.33669, -7.86407),
+        id: 13,
       });
       this.markers.push({
-        text: "la coru",
+        text: "coruña",
         position: latLng(43.37135, -8.396),
+        id: 14,
       });
+    },
+    loadDataSite(siteId) {
+      axios
+        .get("http://localhost:8080/api/sites/" + siteId)
+        .then((response) => {
+          console.log(response);
+          this.object = [];
+          response.data.image = "data:image/png;base64," + response.data.image;
+          this.object.push(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
   mounted() {

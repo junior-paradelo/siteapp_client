@@ -150,6 +150,7 @@
             </p>
             <a
               class="inline-flex items-center mt-3 transition duration-150 transform text-liverdogs-500 hover:text-liverdogs-50 hover:scale-110"
+              href="/map"
               >Ir al mapa
               <svg
                 fill="none"
