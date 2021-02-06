@@ -103,7 +103,6 @@ export default {
   },
   methods: {
     setElements() {
-      console.log("setelements");
       let numberOfPages = Math.ceil(this.elements.length / this.perPage);
       for (let i = 1; i <= numberOfPages; i++) {
         this.pages.push(i);
@@ -117,7 +116,7 @@ export default {
       return elements.slice(from, to);
     },
     getElements() {
-      axios.get("http://localhost:8080/api/sites").then((response) => {
+      axios.get("http://localhost:8080/api/sites/last").then((response) => {
         const options = {
           weekday: "long",
           year: "numeric",
@@ -143,30 +142,25 @@ export default {
     },
     searchForCategory(category) {
       axios
-        .get("http://localhost:8080/api/sites/filter/category/pagination", {
+        .get("http://localhost:8080/api/sites/last", {
           params: { categoryId: category },
         })
-        .then(() => {
-          axios
-            .get("http://localhost:8080/api/sites/filter/category", {
-              params: { categoryId: category },
-            })
-            .then((response) => {
-              const options = {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              };
-              response.data.forEach((element) => {
-                element.createdAt = new Date(
-                  element.createdAt
-                ).toLocaleDateString("es-ES", options);
-              });
-              this.page = 1;
-              this.pages = [];
-              this.elements = response.data;
-            });
+        .then((response) => {
+          const options = {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          };
+          response.data.forEach((element) => {
+            element.createdAt = new Date(element.createdAt).toLocaleDateString(
+              "es-ES",
+              options
+            );
+          });
+          this.page = 1;
+          this.pages = [];
+          this.elements = response.data;
         });
     },
   },

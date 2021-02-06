@@ -57,7 +57,7 @@
         <div
           class="grid grid-cols-1 gap-6 mt-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
         >
-          <div v-for="site in listSites" :key="site.id">
+          <div v-for="site in displayedElements" :key="site.id">
             <div
               class="w-full max-w-sm mx-auto overflow-hidden rounded-md shadow-md"
             >
@@ -108,31 +108,35 @@
             </div>
           </div>
         </div>
-        <div v-if="pagination" class="flex justify-center w-full mt-4">
-          <a
-            id="previous"
-            @click="goPrevious()"
-            class="px-3 py-2 mx-1 text-gray-700 rounded-md"
-          >
-            Anterior
-          </a>
+        <div class="container flex mx-auto">
+          <div class="flex justify-center w-full mt-4 ">
+            <a
+              id="previous"
+              @click="page--"
+              v-if="page != 1"
+              class="px-3 py-2 mx-1 text-gray-700 bg-white rounded-md cursor-pointer hover:bg-kombu-300 hover:text-white"
+            >
+              Anterior
+            </a>
 
-          <a
-            @click="search(index - 1)"
-            class="px-3 py-2 mx-1 text-gray-700 bg-white rounded-md cursor-pointer hover:bg-kombu-300 hover:text-white"
-            v-for="index in count"
-            :key="index"
-          >
-            {{ index }}
-          </a>
+            <a
+              class="px-3 py-2 mx-1 text-gray-700 bg-white rounded-md cursor-pointer hover:bg-kombu-300 hover:text-white"
+              v-for="pageNumber in pages.slice(page - 1, page + 3)"
+              :key="pageNumber"
+              @click="page = pageNumber"
+            >
+              {{ pageNumber }}
+            </a>
 
-          <a
-            id="next"
-            @click="goNext()"
-            class="px-3 py-2 mx-1 text-gray-700 rounded-md"
-          >
-            Siguiente
-          </a>
+            <a
+              id="next"
+              v-if="page < pages.length"
+              @click="page++"
+              class="px-3 py-2 mx-1 text-gray-700 bg-white rounded-md cursor-pointer hover:bg-kombu-300 hover:text-white"
+            >
+              Siguiente
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -148,26 +152,29 @@ export default {
   data: function() {
     return {
       searching: null,
-      listSites: null,
+      listSites: [],
       categories: null,
       checkedId: [],
-      count: null,
-      actualPage: null,
-      pagination: false,
+      page: 1,
+      perPage: 8,
+      pages: [],
     };
   },
   methods: {
-    goPrevious() {
-      if (this.actualPage != 0) {
-        this.search(this.actualPage - 1);
+    setElements() {
+      let numberOfPages = Math.ceil(this.listSites.length / this.perPage);
+      for (let i = 1; i <= numberOfPages; i++) {
+        this.pages.push(i);
       }
     },
-    goNext() {
-      if (this.actualPage != this.count - 1) {
-        this.search(this.actualPage + 1);
-      }
+    paginate(elements) {
+      let page = this.page;
+      let perPage = this.perPage;
+      let from = page * perPage - perPage;
+      let to = page * perPage;
+      return elements.slice(from, to);
     },
-    search(page) {
+    search() {
       if (this.checkedId.length == 0) {
         this.$notify(
           {
@@ -180,138 +187,26 @@ export default {
         );
         return;
       }
-      this.pagination = true;
-      this.actualPage = page;
-
+      this.page = 1;
+      this.pages = [];
       axios
-        .get("http://localhost:8080/api/sites/filter/pagination", {
+        .get("http://localhost:8080/api/sites/filter", {
           params: {
             keyword: this.searching,
             categories: this.checkedId,
-            page: page,
           },
           paramsSerializer: function(params) {
             return qs.stringify(params, { arrayFormat: "repeat" });
           },
         })
         .then((response) => {
-          this.count = Math.ceil(response.data / 8);
-          axios
-            .get("http://localhost:8080/api/sites/filter", {
-              params: {
-                keyword: this.searching,
-                categories: this.checkedId,
-                page: page,
-              },
-              paramsSerializer: function(params) {
-                return qs.stringify(params, { arrayFormat: "repeat" });
-              },
-            })
-            .then((response) => {
-              console.log(response);
-
-              document.querySelector("#seekerbg").classList.remove("h-screen");
-              document.querySelector("#seekerbg").classList.add("h-full");
-              response.data.forEach((element) => {
-                element.image = "data:image/png;base64," + element.image;
-              });
-              this.listSites = response.data;
-              if (page == 0) {
-                document
-                  .querySelector("#previous")
-                  .classList.add(
-                    "cursor-not-allowed",
-                    "hover:bg-gray-100",
-                    "hover:text-gray-700"
-                  );
-                document
-                  .querySelector("#previous")
-                  .classList.remove(
-                    "hover:bg-kombu-300",
-                    "hover:text-white",
-                    "cursor-pointer"
-                  );
-
-                document
-                  .querySelector("#next")
-                  .classList.remove(
-                    "cursor-not-allowed",
-                    "hover:text-gray-700"
-                  );
-                if (this.count == 1) {
-                  document
-                    .querySelector("#next")
-                    .classList.add(
-                      "cursor-not-allowed",
-                      "hover:bg-gray-100",
-                      "hover:text-gray-700"
-                    );
-                } else {
-                  document
-                    .querySelector("#next")
-                    .classList.add(
-                      "hover:bg-kombu-300",
-                      "hover:text-white",
-                      "cursor-pointer"
-                    );
-                }
-              } else if (page == this.count - 1) {
-                document
-                  .querySelector("#next")
-                  .classList.add(
-                    "cursor-not-allowed",
-                    "hover:bg-gray-100",
-                    "hover:text-gray-700"
-                  );
-                document
-                  .querySelector("#next")
-                  .classList.remove(
-                    "hover:bg-kombu-300",
-                    "hover:text-white",
-                    "cursor-pointer"
-                  );
-                document
-                  .querySelector("#previous")
-                  .classList.add(
-                    "hover:bg-kombu-300",
-                    "hover:text-white",
-                    "cursor-pointer"
-                  );
-                document
-                  .querySelector("#previous")
-                  .classList.remove(
-                    "cursor-not-allowed",
-                    "hover:text-gray-700"
-                  );
-              } else {
-                document
-                  .querySelector("#previous")
-                  .classList.add(
-                    "hover:bg-kombu-300",
-                    "hover:text-white",
-                    "cursor-pointer"
-                  );
-                document
-                  .querySelector("#previous")
-                  .classList.remove(
-                    "hover:text-gray-700",
-                    "cursor-not-allowed"
-                  );
-                document
-                  .querySelector("#next")
-                  .classList.add(
-                    "hover:bg-kombu-300",
-                    "hover:text-white",
-                    "cursor-pointer"
-                  );
-                document
-                  .querySelector("#next")
-                  .classList.remove(
-                    "hover:text-gray-700",
-                    "cursor-not-allowed"
-                  );
-              }
-            });
+          console.log(response);
+          document.querySelector("#seekerbg").classList.remove("h-screen");
+          document.querySelector("#seekerbg").classList.add("h-full");
+          response.data.forEach((element) => {
+            element.image = "data:image/png;base64," + element.image;
+          });
+          this.listSites = response.data;
         });
     },
     loadDetails(siteid) {
@@ -325,8 +220,18 @@ export default {
         });
     },
   },
-  mounted() {
+  created() {
     this.loadCategories();
+  },
+  watch: {
+    listSites() {
+      this.setElements();
+    },
+  },
+  computed: {
+    displayedElements: function() {
+      return this.paginate(this.listSites);
+    },
   },
 };
 </script>

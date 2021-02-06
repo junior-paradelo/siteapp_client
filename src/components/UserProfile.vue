@@ -25,6 +25,15 @@
             <p class="px-5 text-center text-gray-600 text-md">
               Correo electrónico: {{ email }}
             </p>
+            <p class="px-5 text-center text-gray-600 text-md">
+              <button
+                type="button"
+                class="px-4 py-2 m-2 text-red-500 transition duration-500 border border-red-500 rounded-md hover:text-white hover:bg-red-600 focus:outline-none focus:shadow-outline"
+                @click="deleteUser()"
+              >
+                Eliminar usuario
+              </button>
+            </p>
           </div>
           <form
             class="border-t-2 border-gray-500 md:flex md:flex-wrap md:justify-between"
@@ -399,6 +408,19 @@ export default {
     };
   },
   methods: {
+    deleteUser() {
+      axios
+        .delete("http://localhost:8080/api/users/delete/" + this.id, {
+          headers: { Authorization: localStorage.getItem("token") },
+        })
+        .then(() => {
+          localStorage.removeItem("token");
+          localStorage.removeItem("showNotify");
+          localStorage.removeItem("authority");
+          localStorage.removeItem("userId");
+          document.querySelector("#home").click();
+        });
+    },
     setElements() {
       let numberOfPages = Math.ceil(this.favoritedList.length / this.perPage);
       for (let i = 1; i <= numberOfPages; i++) {
