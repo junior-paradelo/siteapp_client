@@ -21,14 +21,16 @@
           @update:zoom="zoomUpdate"
         >
           <l-tile-layer :url="url" :attribution="attribution" />
-
-          <l-marker
-            v-for="marker in markers"
-            :lat-lng="marker.position"
-            :key="marker.position"
-          >
-            <l-tooltip :content="marker.text"> </l-tooltip>
-          </l-marker>
+          <v-marker-cluster>
+            <l-marker
+              v-for="marker in markers"
+              :lat-lng="marker.position"
+              :key="marker.position"
+              @click="x()"
+            >
+              <l-tooltip :content="marker.text"> </l-tooltip>
+            </l-marker>
+          </v-marker-cluster>
         </l-map>
       </div>
     </div>
@@ -38,6 +40,7 @@
 <script>
 import { latLng } from "leaflet";
 import { LMap, LTileLayer, LMarker, LTooltip } from "vue2-leaflet";
+import Vue2LeafletMarkerCluster from "vue2-leaflet-markercluster";
 
 export default {
   name: "Example",
@@ -46,6 +49,7 @@ export default {
     LTileLayer,
     LMarker,
     LTooltip,
+    "v-marker-cluster": Vue2LeafletMarkerCluster,
   },
   data() {
     return {
@@ -64,6 +68,21 @@ export default {
       },
       showMap: true,
       markers: [],
+      layers: [
+        {
+          title: "satellite",
+          url:
+            "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+          attribution:
+            "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
+        },
+        {
+          title: "normal",
+          url: "http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png",
+          attribution:
+            '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+        },
+      ],
     };
   },
   methods: {
@@ -126,6 +145,10 @@ export default {
       });
 
       console.log(this.markers);
+    },
+    x() {
+      console.log("A");
+      this.url = "http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png";
     },
   },
   mounted() {

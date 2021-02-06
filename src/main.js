@@ -9,6 +9,8 @@ import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import VueCarousel from "vue-carousel";
+import "../public/MarkerCluster.css";
+import "../public/MarkerCluster.Default.css";
 
 delete L.Icon.Default.prototype._getIconUrl;
 
