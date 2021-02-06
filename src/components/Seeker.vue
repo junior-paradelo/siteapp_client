@@ -31,11 +31,12 @@
           type="text"
           placeholder="Escriba el nombre de algún lugar..."
           v-model="searching"
+          @keyup.enter="search()"
         />
         <button
           id="search_btn"
           class="p-2 pl-4 pr-4 text-white rounded bg-fawn-900 hover:bg-fawn-600 focus:outline-none"
-          @click="search(0)"
+          @click="search()"
         >
           <p class="text-xs font-semibold">Realizar búsqueda</p>
         </button>

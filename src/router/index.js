@@ -1,64 +1,69 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import Seeker from '../components/Seeker.vue'
-import Register from '../components/Register.vue'
-import LastSites from '../components/LastSites.vue'
-import Mapa from '../components/Map.vue'
-import SiteDetails from '../components/SiteDetails.vue'
-import UserProfile from '../components/UserProfile.vue'
-import NewSiteForm from '../components/NewSiteForm.vue'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import Home from "../views/Home.vue";
+import Seeker from "../components/Seeker.vue";
+import Register from "../components/Register.vue";
+import LastSites from "../components/LastSites.vue";
+import Mapa from "../components/Map.vue";
+import SiteDetails from "../components/SiteDetails.vue";
+import UserProfile from "../components/UserProfile.vue";
+import NewSiteForm from "../components/NewSiteForm.vue";
+import AdminPanel from "../components/AdminPanel.vue";
 
-
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
-  }, 
-  {
-   path: '/seeker' ,
-   name: 'Seeker',
-   component: Seeker
+    path: "/",
+    name: "Home",
+    component: Home,
   },
   {
-    path: '/register',
-    name: 'Register',
-    component: Register
+    path: "/seeker",
+    name: "Seeker",
+    component: Seeker,
   },
   {
-    path: '/last' ,
-    name: 'LastSites',
-    component: LastSites
-   },
-   {
-    path: '/map' ,
-    name: 'Map',
-    component: Mapa
-   },
-   {
-    path: '/details/:id' ,
-    name: 'SiteDetails',
-    component: SiteDetails
-   },
-   {
-    path: '/userProfile',
-    name: 'UserProfile',
-    component: UserProfile
-   },
-   {
-    path: '/newSite',
-    name: 'NewSiteForm',
-    component: NewSiteForm
-   }
-]
+    path: "/register",
+    name: "Register",
+    component: Register,
+  },
+  {
+    path: "/last",
+    name: "LastSites",
+    component: LastSites,
+  },
+  {
+    path: "/map",
+    name: "Map",
+    component: Mapa,
+  },
+  {
+    path: "/details/:id",
+    name: "SiteDetails",
+    component: SiteDetails,
+  },
+  {
+    path: "/userProfile",
+    name: "UserProfile",
+    component: UserProfile,
+  },
+  {
+    path: "/newSite",
+    name: "NewSiteForm",
+    component: NewSiteForm,
+  },
+  {
+    path: "/adminPanel",
+    name: "AdminPanel",
+    component: AdminPanel,
+  },
+];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;
