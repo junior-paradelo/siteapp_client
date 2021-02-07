@@ -164,20 +164,22 @@
         <div class="flex p-4 text-justify md:w-1/2">
           {{ site.siteDetails.header }}
         </div>
-        <div class="flex p-4 md:w-1/2">
-          <aside class="mb-6 overflow-hidden rounded shadow ">
-            <h3 class="px-4 py-3 text-sm text-gray-700 bg-gray-100 border-b">
-              Información detallada
+        <div class="flex p-4 md:w-1/2 ">
+          <aside class="mb-6 overflow-hidden rounded shadow bg-cornsilk-100">
+            <h3
+              class="px-4 py-3 font-medium text-gray-700 bg-gray-100 border-b"
+            >
+              Información importante
             </h3>
             <div class="p-4">
               <ul class="leading-loose">
                 <li class="text-sm text-gray-darkest">
-                  <h1 class="text-lg italic font-bold">
-                    {{ site.name }} - {{ site.province }} -
-                    {{ site.townHall }}
+                  <h1 class="text-lg italic font-semibold">
+                    {{ site.name }}
                   </h1>
+                  <p>{{ site.province }} - {{ site.townHall }}</p>
                 </li>
-                <li class="text-sm text-gray-darkest">
+                <li class="inline-flex text-sm text-gray-darkest">
                   <span class="font-semibold">Valoración media usuarios:</span>
                   <star-rating
                     :star-size="10"
@@ -212,29 +214,110 @@
                     v-model="avg_rating"
                   ></star-rating>
                 </li>
-                <li class="text-sm text-gray-darkest">
-                  <span class="font-semibold">Categoría:</span>
+                <li class="inline-flex text-sm text-gray-darkest">
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"
+                    ></path>
+                  </svg>
+                  <span class="mx-2 font-semibold">Categoría:</span>
                   {{ site.categoryName }}
                 </li>
-                <li class="text-sm text-gray-darkest">
-                  <span class="font-semibold">Coordenadas:</span>
+                <li class="inline-flex text-sm text-gray-darkest">
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    ></path>
+                  </svg>
+                  <span class="mx-2 font-semibold">Coordenadas:</span>
                   {{ site.latitude }} ,
                   {{ site.longitude }}
                 </li>
-                <li class="text-sm text-gray-darkest">
-                  <span class="font-semibold">Coordenadas aparcamiento:</span>
+                <li class="inline-flex text-sm text-gray-darkest">
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                    ></path>
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                    ></path>
+                  </svg>
+                  <span class="mx-2 font-semibold"
+                    >Coordenadas aparcamiento:</span
+                  >
                   {{ site.latitude }} ,
                   {{ site.longitude }}
                 </li>
-                <li class="text-sm text-gray-darkest">
-                  <span class="font-semibold">Restricciones:</span>
-                  {{ site.siteDetails.comment }}
+                <li class="inline-flex text-sm text-gray-darkest">
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M20.618 5.984A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016zM12 9v2m0 4h.01"
+                    ></path>
+                  </svg>
+                  <span class="mx-2 font-semibold">Restricciones:</span>
+                  <p class="w-3/5">{{ site.siteDetails.comment }}</p>
                 </li>
                 <li
-                  class="text-sm text-gray-darkest"
+                  class="inline-flex text-sm text-gray-darkest"
                   v-if="site.siteDetails.goCar"
                 >
-                  <span class="font-semibold"
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"
+                    ></path>
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"
+                    ></path>
+                  </svg>
+                  <span class="mx-2 font-semibold"
                     >Posibilidad de ir en automóvil: SI</span
                   >
                 </li>
@@ -243,8 +326,24 @@
                     >Posibilidad de ir con niños: SI</span
                   >
                 </li>
-                <li class="text-sm text-gray-darkest">
-                  <span class="font-semibold">Indicaciones de acceso:</span>
+                <li class="inline-flex text-sm text-gray-darkest">
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5.636 18.364a9 9 0 010-12.728m12.728 0a9 9 0 010 12.728m-9.9-2.829a5 5 0 010-7.07m7.072 0a5 5 0 010 7.07M13 12a1 1 0 11-2 0 1 1 0 012 0z"
+                    ></path>
+                  </svg>
+                  <span class="mx-2 font-semibold"
+                    >Indicaciones de acceso:</span
+                  >
                   {{ site.siteDetails.accessType }}
                 </li>
               </ul>
@@ -273,6 +372,7 @@
       </p>
 
       <carousel
+        class="pb-8"
         autoplay
         loop
         autoplayTimeout="8000"
@@ -283,9 +383,6 @@
           <img :src="image" />
         </slide>
       </carousel>
-      <div class="pl-4 mb-6 italic border-l-4 border-gray-500 rounded">
-        {{ site.siteDetails.comment }}
-      </div>
     </div>
   </main>
 </template>
@@ -303,8 +400,6 @@ export default {
       id: this.$route.params.id,
       site: "",
       zoom: 14,
-      lat: 0,
-      long: 0,
       center: "",
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       attribution:
