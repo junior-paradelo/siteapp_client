@@ -67,7 +67,7 @@
                 v-bind:style="{ 'background-image': 'url(' + site.image + ')' }"
               >
                 <button
-                  class="p-2 mx-5 -mb-4 text-white rounded-full bg-liverdogs-600 hover:bg-liverdogs-300 focus:bg-liverdogs-300 focus:outline-none"
+                  class="p-2 mx-5 -mb-4 text-white transition duration-500 transform rounded-full bg-liverdogs-600 hover:bg-liverdogs-300 focus:bg-liverdogs-300 focus:outline-none hover:scale-110"
                   @click="loadDetails(site.id)"
                 >
                   <svg

@@ -20,15 +20,13 @@
             :options="mapOptions"
             style="height: 100%"
             class="rounded-lg"
-            @update:center="centerUpdate"
-            @update:zoom="zoomUpdate"
           >
             <l-tile-layer :url="url" :attribution="attribution" />
             <v-marker-cluster>
               <l-marker
                 v-for="marker in markers"
                 :lat-lng="marker.position"
-                :key="marker.position"
+                :key="marker.id"
                 class="focus:outline-none"
                 @click="loadDataSite(marker.id)"
               >
@@ -47,16 +45,54 @@
               {{ layer.title }}</option
             >
           </select>
+          <div
+            class="hidden p-2 mx-auto ml-2 bg-white border-2 border-dashed rounded-lg shadow-md border-darkolive-50"
+            id="categories_tab"
+          >
+            <a
+              @click="searchForCategory(category.id)"
+              class="inline-block px-3 py-1 my-1 mr-2 text-xs text-white lowercase rounded-full cursor-pointer bg-liverdogs-500 hover:bg-liverdogs-100"
+              v-for="category in categories"
+              :key="category.id"
+              >#{{ category.name }}</a
+            >
+          </div>
+          <div
+            class="flex items-center w-3/5 px-4 py-2 ml-2 transition rounded-lg cursor-pointer duration-30 bg-liverdogs-50 hover:bg-liverdogs-400 hover:text-gray-100"
+            @click="showFilters()"
+            id="filter_button"
+          >
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+              ></path>
+            </svg>
+            <div>
+              <p class="ml-2 text-xs font-medium text-uppercase">
+                Filtro de categorías
+              </p>
+            </div>
+          </div>
+
           <div v-for="site in object" :key="site.id">
             <div
-              class="w-full max-w-sm mx-auto mt-2 ml-2 overflow-hidden transition duration-500 transform rounded-md shadow-md hover:scale-105"
+              class="w-full max-w-sm mx-auto mt-2 ml-2 overflow-hidden rounded-md shadow-md "
             >
               <div
                 class="flex items-end justify-end w-full h-56 bg-cover"
                 v-bind:style="{ 'background-image': 'url(' + site.image + ')' }"
               >
                 <button
-                  class="p-2 mx-5 -mb-4 text-white rounded-full bg-liverdogs-600 hover:bg-liverdogs-300 focus:bg-liverdogs-300 focus:outline-none"
+                  class="p-2 mx-5 -mb-4 text-white transition duration-500 transform rounded-full bg-liverdogs-600 hover:bg-liverdogs-300 focus:bg-liverdogs-300 focus:outline-none hover:scale-110"
                   @click="loadDetails(site.id)"
                 >
                   <svg
@@ -108,6 +144,7 @@ import { latLng } from "leaflet";
 import { LMap, LTileLayer, LMarker, LTooltip } from "vue2-leaflet";
 import Vue2LeafletMarkerCluster from "vue2-leaflet-markercluster";
 import axios from "axios";
+import "leaflet/dist/images/marker-shadow.png";
 
 export default {
   name: "Example",
@@ -125,10 +162,7 @@ export default {
       url: "http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png",
       attribution:
         '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      withPopup: latLng(43.37135, -8.396),
-      withTooltip: latLng(43.37135, -8.396),
       currentZoom: 11.5,
-      currentCenter: latLng(42.88052, -8.54569),
       showParagraph: false,
       mapOptions: {
         zoomSnap: 0.5,
@@ -170,18 +204,10 @@ export default {
       ],
       view: null,
       object: [],
+      categories: [],
     };
   },
   methods: {
-    zoomUpdate(zoom) {
-      this.currentZoom = zoom;
-    },
-    centerUpdate(center) {
-      this.currentCenter = center;
-    },
-    showLongText() {
-      this.showParagraph = !this.showParagraph;
-    },
     onChangeView(event) {
       console.log(this.layers[event.target.value - 1]);
       this.url = this.layers[event.target.value - 1].url;
@@ -247,6 +273,8 @@ export default {
       });
     },
     loadDataSite(siteId) {
+      document.querySelector("#categories_tab").classList.add("hidden");
+      document.querySelector("#filter_button").classList.remove("hidden");
       axios
         .get("http://localhost:8080/api/sites/" + siteId)
         .then((response) => {
@@ -259,8 +287,37 @@ export default {
           console.log(error);
         });
     },
+    showFilters() {
+      document.querySelector("#filter_button").classList.add("hidden");
+      document.querySelector("#categories_tab").classList.remove("hidden");
+      /* document.querySelector("#categories_tab").classList.add("hidden"); */
+    },
+    searchForCategory(category) {
+      axios
+        .get("http://localhost:8080/api/sites/filter/category", {
+          params: { categoryId: category },
+        })
+        .then((response) => {
+          this.markers = [];
+          console.log(response);
+          response.data.forEach((element) => {
+            this.markers.push({
+              text: element.name,
+              position: latLng(element.latitude, element.longitude),
+              id: element.id,
+              category: element.category,
+            });
+          });
+          console.log(this.markers);
+        });
+    },
   },
   mounted() {
+    axios.get("http://localhost:8080/api/sites/categories").then((response) => {
+      console.log(response);
+      this.categories = response.data;
+    });
+    console.log(this.categories);
     this.cargardatos();
     this.view = 1;
   },
