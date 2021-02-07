@@ -147,7 +147,7 @@ import axios from "axios";
 import "leaflet/dist/images/marker-shadow.png";
 
 export default {
-  name: "Example",
+  name: "Map",
   components: {
     LMap,
     LTileLayer,

@@ -9,6 +9,7 @@ import SiteDetails from "../components/SiteDetails.vue";
 import UserProfile from "../components/UserProfile.vue";
 import NewSiteForm from "../components/NewSiteForm.vue";
 import AdminPanel from "../components/AdminPanel.vue";
+import ErrorPage from "../components/ErrorPage.vue";
 
 Vue.use(VueRouter);
 
@@ -57,6 +58,11 @@ const routes = [
     path: "/adminPanel",
     name: "AdminPanel",
     component: AdminPanel,
+  },
+  {
+    path: "/error",
+    name: "ErrorPage",
+    component: ErrorPage,
   },
 ];
 
