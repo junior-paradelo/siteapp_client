@@ -61,7 +61,24 @@
             <div class="flex items-center w-full">
               <div class="mx-2 -mt-1 text-black">
                 {{ element.username }}
+                <div class="flex pb-2 pr-2 text-xs">
+                  <div class="px-2 py-1 text-gray-600 bg-gray-300 rounded-l">
+                    Estado
+                  </div>
 
+                  <div
+                    v-if="element.enabled"
+                    class="px-2 py-1 text-green-700 bg-green-200 rounded-r"
+                  >
+                    Activo
+                  </div>
+                  <div
+                    v-else
+                    class="px-2 py-1 text-red-900 bg-red-200 rounded-r"
+                  >
+                    Bloqueado
+                  </div>
+                </div>
                 <div
                   class="w-full -mt-1 text-xs font-normal text-gray-500 normal-case truncate"
                 >
@@ -188,7 +205,24 @@
             <div class="flex items-center w-full">
               <div class="mx-2 -mt-1 text-black">
                 {{ element.name }}
+                <div class="flex pb-2 pr-2 text-xs">
+                  <div class="px-2 py-1 text-gray-600 bg-gray-300 rounded-l">
+                    Estado
+                  </div>
 
+                  <div
+                    v-if="element.enabled"
+                    class="px-2 py-1 text-green-700 bg-green-200 rounded-r"
+                  >
+                    Activo
+                  </div>
+                  <div
+                    v-else
+                    class="px-2 py-1 text-red-900 bg-red-200 rounded-r"
+                  >
+                    Bloqueado
+                  </div>
+                </div>
                 <div
                   class="w-full -mt-1 text-xs font-normal text-gray-500 normal-case truncate"
                 >

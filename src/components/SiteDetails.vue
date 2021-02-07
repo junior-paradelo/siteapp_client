@@ -294,7 +294,7 @@
                     ></path>
                   </svg>
                   <span class="mx-2 font-semibold">Restricciones:</span>
-                  <p class="w-3/5">{{ site.siteDetails.comment }}</p>
+                  <p class="w-3/5">{{ site.siteDetails.constraints }}</p>
                 </li>
                 <li
                   class="inline-flex text-sm text-gray-darkest"
@@ -383,6 +383,69 @@
           <img :src="image" />
         </slide>
       </carousel>
+
+      <!-- add comment -->
+      <div
+        v-if="login"
+        class="flex items-center justify-center max-w-lg mx-auto my-4 rounded-lg"
+      >
+        <div
+          class="w-full max-w-xl px-4 border-2 border-dashed rounded-lg border-fawn-400 bg-cornsilk-300 border-opacity-70"
+        >
+          <div class="flex flex-wrap mb-6 -mx-3">
+            <h2 class="px-4 pt-3 pb-2 text-lg text-gray-800">
+              Añadir un nuevo comentario
+            </h2>
+            <div class="w-full px-3 mt-2 mb-2 md:w-full">
+              <textarea
+                class="w-full h-20 px-3 py-2 font-light leading-normal placeholder-gray-700 bg-gray-100 border border-gray-400 rounded resize-none focus:outline-none focus:bg-white"
+                name="body"
+                placeholder="Escribe aquí tu comentario..."
+                required
+                v-model="comment_text"
+              ></textarea>
+            </div>
+            <div class="flex items-start w-full px-3 md:w-full">
+              <div class="-mr-1">
+                <input
+                  type="submit"
+                  class="px-4 py-1 mr-1 font-medium tracking-wide text-gray-700 bg-white border border-gray-400 rounded-lg outline-none cursor-pointer hover:bg-gray-100"
+                  value="Publicar comentario"
+                  @click="post()"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- list comments -->
+      <h1 class="font-bold">Tablón de comentarios</h1>
+      <div
+        class="container flex items-center justify-center w-full pb-10 border-t-2 border-blue-300 border-opacity-70"
+      >
+        <ul class="flex flex-col p-4 ">
+          <li
+            class="flex flex-row mb-2"
+            v-for="comment in comments"
+            :key="comment.id"
+          >
+            <div
+              class="flex items-center flex-1 p-4 border-2 rounded-md select-none bg-cornsilk-300 border-fawn-200"
+            >
+              <div class="flex-1 pl-1 mr-16">
+                <div class="font-medium">{{ comment.autor }}</div>
+                <div class="text-sm italic text-gray-600">
+                  {{ comment.text }}
+                </div>
+              </div>
+              <div class="w-1/5 text-xs text-gray-600">
+                {{ comment.createdAt }}
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
   </main>
 </template>
@@ -393,6 +456,7 @@ import { latLng } from "leaflet";
 import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
 import StarRating from "vue-star-rating";
 import { Carousel, Slide } from "vue-carousel";
+const qs = require("qs");
 
 export default {
   data() {
@@ -416,6 +480,8 @@ export default {
       rating: null,
       avg_rating: null,
       isAdmin: false,
+      comments: [],
+      comment_text: null,
     };
   },
   components: {
@@ -455,7 +521,7 @@ export default {
             headers: {
               Authorization: localStorage.getItem("token"),
             },
-            params: {
+            data: {
               userId: parseInt(localStorage.getItem("userId")),
               siteId: this.id,
               state: "TODISCOVER",
@@ -532,6 +598,22 @@ export default {
           });
       }
     },
+    post() {
+      axios
+        .post("http://localhost:8080/api/sites/comment/", {
+          params: {
+            id: parseInt(this.id),
+            autorId: parseInt(localStorage.getItem("userId")),
+            comment: this.comment_text,
+          },
+          paramsSerializer: function(params) {
+            return qs.stringify(params);
+          },
+        })
+        .then((response) => {
+          console.log(response);
+        });
+    },
   },
   mounted() {
     axios
@@ -606,6 +688,28 @@ export default {
           if (response.data != "") {
             this.inList = true;
           }
+        });
+      axios
+        .get("http://localhost:8080/api/sites/comments/" + this.id)
+        .then((response) => {
+          const optionsTime = {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            timeZone: "Europe/Madrid",
+            hour12: true,
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          };
+          response.data.forEach((element) => {
+            element.createdAt = new Date(element.createdAt).toLocaleTimeString(
+              "es-ES",
+              optionsTime
+            );
+          });
+          this.comments = response.data;
         });
     }
   },
