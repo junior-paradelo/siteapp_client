@@ -421,7 +421,10 @@
 
       <!-- list comments -->
       <h1 class="font-bold">Tablón de comentarios</h1>
-      <div class="container pb-10 border-t-2 border-blue-300 border-opacity-70">
+      <div
+        v-if="comments.length > 0"
+        class="container pb-10 border-t-2 border-blue-300 border-opacity-70"
+      >
         <ul class="flex flex-col items-center justify-center p-4">
           <li
             class="flex flex-row w-full mb-2"
@@ -472,7 +475,12 @@
           </a>
         </div>
       </div>
-      <div class="container flex mx-auto"></div>
+      <div
+        v-else
+        class="container pb-10 italic font-light border-t-2 border-blue-300 border-opacity-70"
+      >
+        Todavía no hay comentarios en esta publicación
+      </div>
     </div>
   </main>
 </template>
@@ -758,8 +766,8 @@ export default {
             this.inList = true;
           }
         });
-      this.loadComments();
     }
+    this.loadComments();
   },
   watch: {
     comments() {
