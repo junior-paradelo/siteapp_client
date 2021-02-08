@@ -421,20 +421,18 @@
 
       <!-- list comments -->
       <h1 class="font-bold">Tablón de comentarios</h1>
-      <div
-        class="container flex items-center justify-center w-full pb-10 border-t-2 border-blue-300 border-opacity-70"
-      >
-        <ul class="flex flex-col p-4 ">
+      <div class="container pb-10 border-t-2 border-blue-300 border-opacity-70">
+        <ul class="flex flex-col items-center justify-center p-4">
           <li
-            class="flex flex-row mb-2"
-            v-for="comment in comments"
+            class="flex flex-row w-full mb-2"
+            v-for="comment in displayedElements"
             :key="comment.id"
           >
             <div
               class="flex items-center flex-1 p-4 border-2 rounded-md select-none bg-cornsilk-300 border-fawn-200"
             >
               <div class="flex-1 pl-1 mr-16">
-                <div class="font-medium">{{ comment.autor }}</div>
+                <div class="font-medium">{{ comment.autorName }}</div>
                 <div class="text-sm italic text-gray-600">
                   {{ comment.text }}
                 </div>
@@ -445,7 +443,36 @@
             </div>
           </li>
         </ul>
+        <div class="flex justify-center w-full mt-4">
+          <a
+            id="previous"
+            @click="page--"
+            v-if="page != 1"
+            class="px-3 py-2 mx-1 text-gray-700 bg-white rounded-md cursor-pointer hover:bg-kombu-300 hover:text-white"
+          >
+            Anterior
+          </a>
+
+          <a
+            class="px-3 py-2 mx-1 text-gray-700 bg-white rounded-md cursor-pointer hover:bg-kombu-300 hover:text-white"
+            v-for="pageNumber in pages.slice(page - 1, page + 3)"
+            :key="pageNumber"
+            @click="page = pageNumber"
+          >
+            {{ pageNumber }}
+          </a>
+
+          <a
+            id="next"
+            v-if="page < pages.length"
+            @click="page++"
+            class="px-3 py-2 mx-1 text-gray-700 bg-white rounded-md cursor-pointer hover:bg-kombu-300 hover:text-white"
+          >
+            Siguiente
+          </a>
+        </div>
       </div>
+      <div class="container flex mx-auto"></div>
     </div>
   </main>
 </template>
@@ -456,7 +483,6 @@ import { latLng } from "leaflet";
 import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
 import StarRating from "vue-star-rating";
 import { Carousel, Slide } from "vue-carousel";
-const qs = require("qs");
 
 export default {
   data() {
@@ -482,6 +508,9 @@ export default {
       isAdmin: false,
       comments: [],
       comment_text: null,
+      page: 1,
+      perPage: 4,
+      pages: [],
     };
   },
   components: {
@@ -493,6 +522,19 @@ export default {
     Slide,
   },
   methods: {
+    setElements() {
+      let numberOfPages = Math.ceil(this.comments.length / this.perPage);
+      for (let i = 1; i <= numberOfPages; i++) {
+        this.pages.push(i);
+      }
+    },
+    paginate(elements) {
+      let page = this.page;
+      let perPage = this.perPage;
+      let from = page * perPage - perPage;
+      let to = page * perPage;
+      return elements.slice(from, to);
+    },
     deleteSiteDetails() {
       axios
         .delete("http://localhost:8080/api/sites/delete/" + this.id, {
@@ -598,20 +640,47 @@ export default {
           });
       }
     },
-    post() {
+    loadComments() {
       axios
-        .post("http://localhost:8080/api/sites/comment/", {
-          params: {
-            id: parseInt(this.id),
-            autorId: parseInt(localStorage.getItem("userId")),
-            comment: this.comment_text,
-          },
-          paramsSerializer: function(params) {
-            return qs.stringify(params);
-          },
-        })
+        .get("http://localhost:8080/api/sites/comments/" + this.id)
         .then((response) => {
-          console.log(response);
+          const optionsTime = {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            timeZone: "Europe/Madrid",
+            hour12: true,
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          };
+          response.data.forEach((element) => {
+            element.createdAt = new Date(element.createdAt).toLocaleTimeString(
+              "es-ES",
+              optionsTime
+            );
+          });
+          this.comments = response.data;
+        });
+    },
+    post() {
+      let json = {
+        autorId: parseInt(localStorage.getItem("userId")),
+        text: this.comment_text,
+      };
+      axios
+        .post("http://localhost:8080/api/sites/comment/" + this.id, json)
+        .then(() => {
+          this.notification(
+            "success",
+            "Comentario publicado",
+            "Se ha publicado el comentario correctamente",
+            5000
+          );
+          this.comment_text = "";
+          this.comments = [];
+          this.loadComments();
         });
     },
   },
@@ -689,29 +758,18 @@ export default {
             this.inList = true;
           }
         });
-      axios
-        .get("http://localhost:8080/api/sites/comments/" + this.id)
-        .then((response) => {
-          const optionsTime = {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-            timeZone: "Europe/Madrid",
-            hour12: true,
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit",
-          };
-          response.data.forEach((element) => {
-            element.createdAt = new Date(element.createdAt).toLocaleTimeString(
-              "es-ES",
-              optionsTime
-            );
-          });
-          this.comments = response.data;
-        });
+      this.loadComments();
     }
+  },
+  watch: {
+    comments() {
+      this.setElements();
+    },
+  },
+  computed: {
+    displayedElements: function() {
+      return this.paginate(this.comments);
+    },
   },
 };
 </script>
