@@ -177,18 +177,6 @@ export default {
       return elements.slice(from, to);
     },
     search() {
-      if (this.checkedId.length == 0) {
-        this.$notify(
-          {
-            group: "info",
-            title: "Debe seleccionar al menos una categoría",
-            text:
-              "Debe seleccionar al menos una categoría para realizar la búsqueda",
-          },
-          3000
-        );
-        return;
-      }
       this.page = 1;
       this.pages = [];
       axios
