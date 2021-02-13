@@ -50,10 +50,16 @@
             id="categories_tab"
           >
             <a
-              @click="searchForCategory(category.id)"
+              class="inline-block px-3 py-1 my-1 mr-2 text-xs text-white bg-red-600 rounded-full cursor-pointer hover:bg-red-500"
+              @click="deleteAll()"
+              >Eliminar todas las categorías seleccionadas</a
+            ><br />
+            <a
+              @click="markerControl(category.id)"
               class="inline-block px-3 py-1 my-1 mr-2 text-xs text-white lowercase rounded-full cursor-pointer bg-liverdogs-500 hover:bg-liverdogs-100"
               v-for="category in categories"
               :key="category.id"
+              :id="category.id"
               >#{{ category.name }}</a
             >
           </div>
@@ -205,6 +211,8 @@ export default {
       view: null,
       object: [],
       categories: [],
+      favorites_visible: true,
+      filters_marked: [],
     };
   },
   methods: {
@@ -292,14 +300,54 @@ export default {
       document.querySelector("#categories_tab").classList.remove("hidden");
       /* document.querySelector("#categories_tab").classList.add("hidden"); */
     },
+    deleteAll() {
+      for (let i = 0; i < this.filters_marked.length; i++) {
+        this.markerControl(this.filters_marked[i]);
+        i--;
+      }
+    },
+    markerControl(category) {
+      if (this.favorites_visible) {
+        this.favorites_visible = false;
+        this.markers = [];
+      }
+      let input = document.getElementById(category);
+      if (input.classList.contains("bg-liverdogs-500")) {
+        input.classList.remove("bg-liverdogs-500");
+        input.classList.add("bg-kombu-200");
+      } else {
+        input.classList.remove("bg-kombu-200");
+        input.classList.add("bg-liverdogs-500");
+      }
+      let search = true;
+      for (let i = 0; i < this.markers.length; i++) {
+        if (this.markers[i].category === category) {
+          search = false;
+          this.markers.splice(i, 1);
+          i--;
+        }
+      }
+      if (search) {
+        this.searchForCategory(category);
+      }
+      let find = false;
+      for (let i = 0; i < this.filters_marked.length; i++) {
+        if (this.filters_marked[i] === category) {
+          find = true;
+          this.filters_marked.splice(i, 1);
+          i--;
+        }
+      }
+      if (!find) {
+        this.filters_marked.push(category);
+      }
+    },
     searchForCategory(category) {
       axios
         .get("http://localhost:8080/api/sites/filter/category", {
           params: { categoryId: category },
         })
         .then((response) => {
-          this.markers = [];
-          console.log(response);
           response.data.forEach((element) => {
             this.markers.push({
               text: element.name,
