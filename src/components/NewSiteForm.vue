@@ -195,14 +195,14 @@
           <div class="px-4 field-group md:w-1/3">
             <label class="pr-2 font-semibold field-label" for="name"
               ><label class="font-light">Detalles del sitio: </label
-              >Comentarios</label
+              >Restricciones</label
             >
             <textarea
               placeholder="Escriba un comentario de importancia..."
               class="flex-1 w-full p-2 text-black bg-transparent border rounded border-darkolive-200"
               rows="6"
-              name="comment"
-              v-model="comment"
+              name="constraints"
+              v-model="constraints"
             ></textarea>
           </div>
           <div class="px-4 field-group md:w-2/3">
@@ -273,7 +273,7 @@ export default {
       description: null,
       header: null,
       resume: null,
-      comment: null,
+      constraints: null,
       categories: [],
       selectedFile: null,
       accessType: null,
@@ -292,7 +292,7 @@ export default {
         longitude: this.longitude,
         description: this.description,
         siteDetails: {
-          comment: this.comment,
+          constraints: this.constraints,
           header: this.header,
           resume: this.resume,
           goCar: this.goCar,

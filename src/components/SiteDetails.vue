@@ -669,6 +669,9 @@ export default {
               optionsTime
             );
           });
+          this.comments = [];
+          this.pages = [];
+          this.page = 1;
           this.comments = response.data;
         });
     },

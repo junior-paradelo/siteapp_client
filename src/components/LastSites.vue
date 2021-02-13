@@ -97,7 +97,7 @@ export default {
       elements: [],
       categories: null,
       page: 1,
-      perPage: 10,
+      perPage: 5,
       pages: [],
     };
   },
