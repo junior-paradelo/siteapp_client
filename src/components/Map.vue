@@ -362,11 +362,42 @@ export default {
   },
   mounted() {
     axios.get("http://localhost:8080/api/sites/categories").then((response) => {
-      console.log(response);
       this.categories = response.data;
     });
-    console.log(this.categories);
-    this.cargardatos();
+    if (localStorage.getItem("userId") != null) {
+      axios
+        .get("http://localhost:8080/api/userSite/getSitesByUserId", {
+          params: { userId: localStorage.getItem("userId"), state: "FAVORITE" },
+        })
+        .then((response) => {
+          for (let i = 0; i < response.data.length; i++) {
+            /* this.markers = response.data; */
+            console.log(response.data[i].site);
+            this.markers.push({
+              text: response.data[i].site.name,
+              position: latLng(
+                response.data[i].site.latitude,
+                response.data[i].site.longitude
+              ),
+              id: response.data[i].site.id,
+            });
+          }
+        });
+    } else {
+      axios.get("http://localhost:8080/api/sites/last").then((response) => {
+        for (let i = 0; i < response.data.length; i++) {
+          this.markers.push({
+            text: response.data[i].name,
+            position: latLng(
+              response.data[i].latitude,
+              response.data[i].longitude
+            ),
+            id: response.data[i].id,
+          });
+        }
+      });
+    }
+    /* this.cargardatos(); */
     this.view = 1;
   },
 };
