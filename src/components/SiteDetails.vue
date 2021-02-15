@@ -381,7 +381,15 @@
           >
             <l-tile-layer :url="url" :attribution="attribution" />
 
-            <l-marker :lat-lng="withTooltip"> </l-marker>
+            <l-marker
+              v-for="marker in markers"
+              :lat-lng="marker.position"
+              :key="marker.id"
+              class="focus:outline-none"
+              :icon="marker.icon"
+            >
+              <l-tooltip :content="marker.text"> </l-tooltip>
+            </l-marker>
           </l-map>
         </div>
       </div>
@@ -510,6 +518,7 @@ import { latLng } from "leaflet";
 import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
 import StarRating from "vue-star-rating";
 import { Carousel, Slide } from "vue-carousel";
+import L from "leaflet";
 
 export default {
   data() {
@@ -526,6 +535,7 @@ export default {
         zoomSnap: 0.5,
       },
       showMap: true,
+      markers: [],
       images: [],
       principal_image: null,
       inList: false,
@@ -538,6 +548,14 @@ export default {
       page: 1,
       perPage: 4,
       pages: [],
+      parkingIcon: L.icon({
+        iconUrl: require("@/assets/img/parking.svg"),
+        iconSize: [38, 95],
+        shadowSize: [50, 64],
+        iconAnchor: [22, 94],
+        shadowAnchor: [4, 62],
+        popupAnchor: [-3, -76],
+      }),
     };
   },
   components: {
@@ -734,10 +752,31 @@ export default {
       this.isAdmin = true;
     }
     axios.get("http://localhost:8080/api/sites/" + this.id).then((response) => {
+      this.markers = [];
       this.principal_image = "data:image/png;base64," + response.data.image;
       this.lat = response.data.latitude;
       this.long = response.data.longitude;
       this.center = latLng(response.data.latitude, response.data.longitude);
+      this.markers.push({
+        text: response.data.name,
+        position: latLng(response.data.latitude, response.data.longitude),
+        id: response.data.id,
+      });
+      if (
+        response.data.latitudePark != null &&
+        response.data.longitudePark != null
+      ) {
+        this.markers.push({
+          text: response.data.name,
+          position: latLng(
+            response.data.latitudePark,
+            response.data.longitudePark
+          ),
+          id: response.data.id,
+          icon: this.parkingIcon,
+        });
+      }
+      console.log(this.markers.length);
       this.withTooltip = this.center;
       const options = {
         weekday: "long",

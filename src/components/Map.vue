@@ -1,5 +1,5 @@
 <template>
-  <main class="pt-6 background">
+  <main class="h-screen pt-6 background">
     <div class="flex flex-col justify-center ">
       <div class="p-4 m-2 mx-auto text-center">
         <h1
@@ -217,68 +217,11 @@ export default {
   },
   methods: {
     onChangeView(event) {
-      console.log(this.layers[event.target.value - 1]);
       this.url = this.layers[event.target.value - 1].url;
       this.attribution = this.layers[event.target.value - 1].attribution;
     },
     loadDetails(siteid) {
       this.$router.push("/details/" + siteid);
-    },
-    cargardatos() {
-      this.markers.push({
-        text: "arteixo",
-        position: latLng(43.30482, -8.50749),
-      });
-      this.markers.push({
-        text: "oleiros",
-        position: latLng(43.33333, -8.31667),
-        id: 1,
-      });
-      this.markers.push({
-        text: "cambre",
-        position: latLng(43.29438, -8.34736),
-        id: 2,
-      });
-      this.markers.push({
-        text: "carballo",
-        position: latLng(43.213, -8.69104),
-        id: 3,
-      });
-      this.markers.push({
-        text: "rianxo",
-        position: latLng(42.64977, -8.81763),
-        id: 4,
-      });
-      this.markers.push({
-        text: "ferrol",
-        position: latLng(43.48451, -8.23293),
-        id: 5,
-      });
-      this.markers.push({
-        text: "lugo",
-        position: latLng(43.00992, -7.55602),
-        id: 10,
-      });
-      this.markers.push({
-        text: "vigo",
-        position: latLng(42.23282, -8.72264),
-        id: 11,
-      });
-      this.markers.push({
-        text: "pontevedra",
-        position: latLng(42.431, -8.64435),
-        id: 12,
-      });
-      this.markers.push({
-        text: "ourense",
-        position: latLng(42.33669, -7.86407),
-        id: 13,
-      });
-      this.markers.push({
-        text: "coruña",
-        position: latLng(43.37135, -8.396),
-        id: 14,
-      });
     },
     loadDataSite(siteId) {
       document.querySelector("#categories_tab").classList.add("hidden");
@@ -286,19 +229,14 @@ export default {
       axios
         .get("http://localhost:8080/api/sites/" + siteId)
         .then((response) => {
-          console.log(response);
           this.object = [];
           response.data.image = "data:image/png;base64," + response.data.image;
           this.object.push(response.data);
-        })
-        .catch((error) => {
-          console.log(error);
         });
     },
     showFilters() {
       document.querySelector("#filter_button").classList.add("hidden");
       document.querySelector("#categories_tab").classList.remove("hidden");
-      /* document.querySelector("#categories_tab").classList.add("hidden"); */
     },
     deleteAll() {
       for (let i = 0; i < this.filters_marked.length; i++) {
@@ -356,7 +294,6 @@ export default {
               category: element.category,
             });
           });
-          console.log(this.markers);
         });
     },
   },
@@ -371,8 +308,6 @@ export default {
         })
         .then((response) => {
           for (let i = 0; i < response.data.length; i++) {
-            /* this.markers = response.data; */
-            console.log(response.data[i].site);
             this.markers.push({
               text: response.data[i].site.name,
               position: latLng(
@@ -397,7 +332,6 @@ export default {
         }
       });
     }
-    /* this.cargardatos(); */
     this.view = 1;
   },
 };
