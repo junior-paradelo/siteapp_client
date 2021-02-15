@@ -231,6 +231,25 @@
               </div>
             </div>
             <button
+              class="p-2 ml-4 mr-2 text-blue-500 border-2 border-blue-500 rounded-full focus:outline-none hover:bg-blue-500 hover:text-white"
+              @click="editSite(element.id)"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                ></path>
+              </svg>
+            </button>
+            <button
               class="p-2 mr-2 text-red-500 border-2 border-red-500 rounded-full hover:bg-red-500 hover:text-white focus:outline-none"
               @click="deleteSite(index, element.id)"
             >
@@ -421,6 +440,9 @@ export default {
       let from = page * perPage - perPage;
       let to = page * perPage;
       return elements.slice(from, to);
+    },
+    editSite(siteId) {
+      this.$router.push("/edit/" + siteId);
     },
   },
   watch: {

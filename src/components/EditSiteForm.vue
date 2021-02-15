@@ -5,16 +5,17 @@
         class="flex flex-col w-full p-8 mt-10 bg-white border rounded-lg shadow-lg border-darkolive-300 md:ml-auto md:mt-0"
       >
         <div class="text-2xl font-medium text-gray-700">
-          <h2>Alta sitio cultural</h2>
+          <h2>Editar sitio cultural</h2>
           <p class="mt-2 text-sm italic text-gray">
-            Formulario para dar de alta un sitio cultural en la aplicación
+            Formulario para editar los datos de un sitio cultural en la
+            aplicación
           </p>
         </div>
         <form
           class="mt-4 mb-4 md:flex md:flex-wrap md:justify-between"
           action="#"
           method="POST"
-          v-on:submit.prevent="create"
+          v-on:submit.prevent="edit"
           enctype="multipart/form-data"
         >
           <div class="px-4 field-group md:w-1/3">
@@ -244,18 +245,20 @@
             <span class="absolute inset-y-0 left-0 flex items-center pl-3">
               <svg
                 class="w-6 h-6"
-                fill="currentColor"
-                viewBox="0 0 20 20"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
-                  fill-rule="evenodd"
-                  d="M10.496 2.132a1 1 0 00-.992 0l-7 4A1 1 0 003 8v7a1 1 0 100 2h14a1 1 0 100-2V8a1 1 0 00.496-1.868l-7-4zM6 9a1 1 0 00-1 1v3a1 1 0 102 0v-3a1 1 0 00-1-1zm3 1a1 1 0 012 0v3a1 1 0 11-2 0v-3zm5-1a1 1 0 00-1 1v3a1 1 0 102 0v-3a1 1 0 00-1-1z"
-                  clip-rule="evenodd"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
                 ></path>
               </svg>
             </span>
-            Crear sitio de interés cultural
+            Editar sitio de interés cultural
           </button>
         </form>
       </div>
@@ -269,6 +272,7 @@ import axios from "axios";
 export default {
   data: function() {
     return {
+      id: this.$route.params.id,
       name: null,
       province: null,
       townhall: null,
@@ -290,7 +294,7 @@ export default {
     };
   },
   methods: {
-    create() {
+    edit() {
       let json = {
         name: this.name,
         province: this.province,
@@ -318,48 +322,52 @@ export default {
       for (let i = 0; i < this.selectedFiles.length; i++) {
         images.append("images", this.selectedFiles[i]);
       }
-      axios.post("http://localhost:8080/api/sites", json).then((response) => {
-        if (response.status == "200") {
+      axios
+        .put("http://localhost:8080/api/sites/update/" + this.id, json)
+        .then(() => {
           this.$notify(
             {
               group: "success",
-              title: "Sitio creado con éxito",
-              text: "El sitio cultural se ha creado con éxito",
+              title: "Sitio editado correctamente",
+              text: "El sitio cultural se ha editado con éxito",
             },
             3000
           );
-          axios
-            .put(
-              "http://localhost:8080/api/sites/upload/" + response.data.id,
-              image,
-              {
-                headers: { Authorization: localStorage.getItem("token") },
-              }
-            )
-            .then(() => {
-              console.log("Imagen principal subida con éxito");
-            });
-
-          axios
-            .post(
-              "http://localhost:8080/api/uploads/" + response.data.id,
-              images,
-              {
-                headers: { Authorization: localStorage.getItem("token") },
-              }
-            )
-            .then(() => {
-              console.log("Imágenes complementarias subidas con éxito");
-            });
-        }
-      });
-    },
-    loadData() {
-      axios
-        .get("http://localhost:8080/api/sites/categories")
-        .then((response) => {
-          this.categories = response.data;
         });
+      if (this.selectedFile != null) {
+        axios
+          .put("http://localhost:8080/api/sites/upload/" + this.id, image, {
+            headers: { Authorization: localStorage.getItem("token") },
+          })
+          .then(() => {
+            this.$notify(
+              {
+                group: "success",
+                title: "Imagen principal subida con éxito",
+                text:
+                  "La imagen principal ha sido subida al servidor correctamente",
+              },
+              3000
+            );
+          });
+      }
+      if (this.selectedFiles.length > 0) {
+        axios
+          .post("http://localhost:8080/api/uploads/" + this.id, images, {
+            headers: { Authorization: localStorage.getItem("token") },
+          })
+          .then(() => {
+            this.$notify(
+              {
+                group: "success",
+                title: "Imágenes complementarias subidas con éxito",
+                text:
+                  "Las imágenes complementarias han sido subidas al servidor correctamente",
+              },
+              3000
+            );
+          });
+      }
     },
     onFileSelected(event) {
       this.selectedFile = event.target.files[0];
@@ -369,7 +377,28 @@ export default {
     },
   },
   mounted() {
-    this.loadData();
+    axios.get("http://localhost:8080/api/sites/categories").then((response) => {
+      this.categories = response.data;
+    });
+
+    axios.get("http://localhost:8080/api/sites/" + this.id).then((response) => {
+      console.log(response.data);
+      this.name = response.data.name;
+      this.province = response.data.province;
+      this.townhall = response.data.townHall;
+      this.latitude = response.data.latitude;
+      this.longitude = response.data.longitude;
+      this.longitude_p = response.data.longitude_p;
+      this.latitude_p = response.data.latitude_p;
+      this.description = response.data.description;
+      this.header = response.data.siteDetails.header;
+      this.resume = response.data.siteDetails.resume;
+      this.constraints = response.data.siteDetails.constraints;
+      this.accessType = response.data.siteDetails.accessType;
+      this.category = response.data.category;
+      this.goChildren = response.data.goChildren;
+      this.goCar = response.data.goCar;
+    });
   },
 };
 </script>

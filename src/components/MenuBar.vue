@@ -6,12 +6,32 @@
       class="md:max-w-6xl md:mx-auto md:flex md:items-center md:justify-between"
     >
       <div class="flex items-center justify-between">
+        <!-- <div class="self-center w-10 h-10 mr-2">
+          <img class="self-center w-10 h-10" src="../assets/img/global.svg" />
+        </div> -->
+        <!--    <div class="self-center w-10 h-10 mr-2">
+          <img
+            class="self-center w-10 h-10"
+            src="../assets/img/planet-earth.svg"
+          />
+        </div> -->
+        <!-- <div class="self-center w-10 h-10 mr-2">
+          <img
+            class="self-center w-10 h-10"
+            src="../assets/img/biomimetic_color.svg"
+          />
+        </div> -->
+
+        <div class="self-center w-10 h-10 mr-2">
+          <img class="self-center w-10 h-10" src="../assets/img/oak-leaf.svg" />
+        </div>
         <a
           href="/"
           id="home"
           class="inline-block py-2 text-xl font-bold text-white"
           ><span class="text-cornsilk-400">Galisites!</span></a
         >
+
         <div class="block md:hidden">
           <button
             id="threelines"

@@ -10,6 +10,7 @@ import UserProfile from "../components/UserProfile.vue";
 import NewSiteForm from "../components/NewSiteForm.vue";
 import AdminPanel from "../components/AdminPanel.vue";
 import ErrorPage from "../components/ErrorPage.vue";
+import EditSiteForm from "../components/EditSiteForm.vue";
 
 Vue.use(VueRouter);
 
@@ -55,12 +56,17 @@ const routes = [
     component: NewSiteForm,
   },
   {
+    path: "/edit/:id",
+    name: "EditSiteForm",
+    component: EditSiteForm,
+  },
+  {
     path: "/adminPanel",
     name: "AdminPanel",
     component: AdminPanel,
   },
   {
-    path: "/error",
+    path: "*",
     name: "ErrorPage",
     component: ErrorPage,
   },
