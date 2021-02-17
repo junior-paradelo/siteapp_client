@@ -11,6 +11,7 @@ import NewSiteForm from "../components/NewSiteForm.vue";
 import AdminPanel from "../components/AdminPanel.vue";
 import ErrorPage from "../components/ErrorPage.vue";
 import EditSiteForm from "../components/EditSiteForm.vue";
+import Categories from "../components/Categories.vue";
 
 Vue.use(VueRouter);
 
@@ -64,6 +65,11 @@ const routes = [
     path: "/adminPanel",
     name: "AdminPanel",
     component: AdminPanel,
+  },
+  {
+    path: "/categories",
+    name: "Categories",
+    component: Categories,
   },
   {
     path: "*",
