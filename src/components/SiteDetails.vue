@@ -388,7 +388,7 @@
               class="focus:outline-none"
               :icon="marker.icon"
             >
-              <l-tooltip :content="marker.text"> </l-tooltip>
+              <l-tooltip :content="marker.text"></l-tooltip>
             </l-marker>
           </l-map>
         </div>
@@ -604,6 +604,28 @@ export default {
     editSiteDetails() {
       this.$router.push("/edit/" + this.id);
     },
+    setRating() {
+      axios
+        .post("http://localhost:8080/api/userSite/saveState", null, {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+          params: {
+            userId: parseInt(localStorage.getItem("userId")),
+            siteId: this.id,
+            state: "ONLYRATING",
+            rate: this.rating,
+          },
+        })
+        .then(() => {
+          this.notification(
+            "success",
+            "Sitio puntuado correctamente",
+            "Se ha añadido la puntuación correctamente",
+            3000
+          );
+        });
+    },
     setTodoList() {
       if (this.inList) {
         axios
@@ -644,6 +666,16 @@ export default {
             5000
           );
         } else {
+          axios.delete("http://localhost:8080/api/userSite/delete", {
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+            params: {
+              userId: parseInt(localStorage.getItem("userId")),
+              siteId: this.id,
+              state: "ONLYRATING",
+            },
+          });
           axios
             .post("http://localhost:8080/api/userSite/saveState", null, {
               headers: {
@@ -776,7 +808,6 @@ export default {
           icon: this.parkingIcon,
         });
       }
-      console.log(this.markers.length);
       this.withTooltip = this.center;
       const options = {
         weekday: "long",
@@ -836,6 +867,9 @@ export default {
   watch: {
     comments() {
       this.setElements();
+    },
+    rating() {
+      this.setRating();
     },
   },
   computed: {
