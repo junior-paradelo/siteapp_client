@@ -28,6 +28,7 @@
                 :lat-lng="marker.position"
                 :key="marker.id"
                 class="focus:outline-none"
+                :icon="marker.icon"
                 @click="loadDataSite(marker.id)"
               >
                 <l-tooltip :content="marker.text"> </l-tooltip>
@@ -151,6 +152,7 @@ import { LMap, LTileLayer, LMarker, LTooltip } from "vue2-leaflet";
 import Vue2LeafletMarkerCluster from "vue2-leaflet-markercluster";
 import axios from "axios";
 import "leaflet/dist/images/marker-shadow.png";
+import L from "leaflet";
 
 export default {
   name: "Map",
@@ -213,6 +215,15 @@ export default {
       categories: [],
       favorites_visible: true,
       filters_marked: [],
+      parkingIcon: L.icon({
+        iconUrl: require("@/assets/img/parking.svg"),
+        iconSize: [38, 95],
+        shadowSize: [50, 64],
+        iconAnchor: [22, 50],
+        shadowAnchor: [4, 62],
+        popupAnchor: [-3, -76],
+      }),
+      show_parking: false,
     };
   },
   methods: {
@@ -229,6 +240,26 @@ export default {
       axios
         .get("http://localhost:8080/api/sites/" + siteId)
         .then((response) => {
+          if (this.show_parking) {
+            this.markers.pop();
+            this.show_parking = false;
+          }
+          if (
+            response.data.latitudePark != null &&
+            response.data.longitudePark != null
+          ) {
+            this.show_parking = true;
+            this.markers.push({
+              text: "Parking de " + response.data.name,
+              position: latLng(
+                response.data.latitudePark,
+                response.data.longitudePark
+              ),
+              id: "park" + response.data.id,
+              category: response.data.category,
+              icon: this.parkingIcon,
+            });
+          }
           this.object = [];
           response.data.image = "data:image/png;base64," + response.data.image;
           this.object.push(response.data);
@@ -248,6 +279,10 @@ export default {
       if (this.favorites_visible) {
         this.favorites_visible = false;
         this.markers = [];
+      }
+      if (this.show_parking) {
+        this.markers.pop();
+        this.show_parking = false;
       }
       let input = document.getElementById(category);
       if (input.classList.contains("bg-liverdogs-500")) {
