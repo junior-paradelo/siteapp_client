@@ -54,6 +54,34 @@
           </div>
         </div>
       </div>
+
+      <div class="flex mx-auto">
+        <div class="inline-flex items-center px-4 field-group">
+          <label for="children">Posibilidad de ir con niños</label>
+          <select
+            id="children"
+            class="block w-full px-4 py-2 mt-1 border rounded-md form-select border-darkolive-200 focus:outline-none"
+            @change="filterChildren($event)"
+          >
+            <option value="all">TODOS</option>
+            <option value="true">SI</option>
+            <option value="false">NO</option>
+          </select>
+        </div>
+        <div class="inline-flex items-center px-4 field-group">
+          <label for="car">Posibilidad de ir en automóvil</label>
+          <select
+            id="car"
+            class="block w-full px-4 py-2 mt-1 border rounded-md form-select border-darkolive-200 focus:outline-none"
+            @change="filterCar($event)"
+          >
+            <option value="all">TODOS</option>
+            <option value="true">SI</option>
+            <option value="false">NO</option>
+          </select>
+        </div>
+      </div>
+
       <div class="container px-6 py-6 mx-auto">
         <div
           class="grid grid-cols-1 gap-6 mt-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
@@ -160,9 +188,48 @@ export default {
       page: 1,
       perPage: 8,
       pages: [],
+      list_pre_filter: [],
     };
   },
   methods: {
+    filterChildren(event) {
+      document.querySelector("#car").value = "all";
+      if (event.target.value == "all") {
+        this.page = 1;
+        this.pages = [];
+        this.listSites = this.list_pre_filter;
+        return;
+      }
+      let condition = event.target.value == "true";
+      console.log(condition);
+      this.page = 1;
+      this.pages = [];
+      this.listSites = this.list_pre_filter;
+      if (condition != "all") {
+        this.listSites = this.listSites.filter(function(element) {
+          return element.siteDetails.goChildren == condition;
+        });
+      }
+    },
+    filterCar(event) {
+      document.querySelector("#children").value = "all";
+      if (event.target.value == "all") {
+        this.page = 1;
+        this.pages = [];
+        this.listSites = this.list_pre_filter;
+        return;
+      }
+      let condition = event.target.value == "true";
+      console.log(condition);
+      this.page = 1;
+      this.pages = [];
+      this.listSites = this.list_pre_filter;
+      if (condition != "all") {
+        this.listSites = this.listSites.filter(function(element) {
+          return element.siteDetails.goCar == condition;
+        });
+      }
+    },
     setElements() {
       let numberOfPages = Math.ceil(this.listSites.length / this.perPage);
       for (let i = 1; i <= numberOfPages; i++) {
@@ -190,13 +257,13 @@ export default {
           },
         })
         .then((response) => {
-          console.log(response);
           document.querySelector("#seekerbg").classList.remove("h-screen");
           document.querySelector("#seekerbg").classList.add("h-full");
           response.data.forEach((element) => {
             element.image = "data:image/png;base64," + element.image;
           });
           this.listSites = response.data;
+          this.list_pre_filter = this.listSites;
         });
     },
     loadDetails(siteid) {
