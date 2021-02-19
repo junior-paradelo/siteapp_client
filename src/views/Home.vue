@@ -3,7 +3,7 @@
     <div class="container relative px-5 py-24 mx-auto">
       <div class="mb-20 text-center">
         <h1
-          class="mb-4 text-2xl font-medium text-gray-900 sm:text-3xl title-font"
+          class="z-10 mb-4 text-2xl font-medium text-gray-900 sm:text-3xl title-font"
         >
           Galisites!
         </h1>
@@ -216,7 +216,7 @@
         </div>
       </div>
     </div>
-    <div class="hidden lg:block">
+    <div class="z-0 hidden lg:block">
       <svg
         class="absolute top-0 left-0 w-full h-full"
         xmlns="http://www.w3.org/2000/svg"

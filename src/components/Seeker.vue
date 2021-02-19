@@ -3,7 +3,7 @@
     <div class="flex flex-col justify-center pt-10">
       <div class="p-4 m-2 mx-auto text-center">
         <img src="../assets/img/busqueda_global.svg" class="w-full h-32" />
-        <h1 class="pt-2 font-bold text-black align-middletext-xl md:text-3xl">
+        <h1 class="pt-2 text-2xl font-bold text-black align-middle sm:text-3xl">
           Buscador de sitios de interés cultural
         </h1>
       </div>
