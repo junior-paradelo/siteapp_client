@@ -1,5 +1,5 @@
 <template>
-  <main class="h-screen pt-6 background">
+  <main class="h-screen pt-6 background" id="categoriespage">
     <div class="flex flex-col justify-center ">
       <div class="p-4 m-2 mx-auto text-center">
         <h1 class="pt-2 font-bold text-black align-middletext-xl md:text-3xl">
@@ -207,6 +207,10 @@ export default {
           this.page = 1;
           this.pages = [];
           this.sites = response.data;
+          document
+            .querySelector("#categoriespage")
+            .classList.remove("h-screen");
+          document.querySelector("#categoriespage").classList.add("h-full");
         });
     },
     loadDetails(siteid) {

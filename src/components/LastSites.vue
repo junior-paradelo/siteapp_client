@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full px-6 py-8 background">
+  <div class="h-full px-6 py-8 background" id="lastsites">
     <div class="container flex mx-auto">
       <div class="w-full lg:w-8/12">
         <div class="flex text-center">
@@ -36,7 +36,7 @@
             </div>
           </div>
         </div>
-        <div class="flex justify-center w-10/12 mt-4">
+        <div class="flex justify-center w-10/12 my-4">
           <a
             id="previous"
             @click="page--"
@@ -161,6 +161,8 @@ export default {
           this.page = 1;
           this.pages = [];
           this.elements = response.data;
+          document.querySelector("#lastsites").classList.remove("h-full");
+          document.querySelector("#lastsites").classList.add("h-screen");
         });
     },
   },

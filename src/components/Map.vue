@@ -134,7 +134,8 @@
                 <span class="mt-2 text-sm italic text-gray-700"
                   >{{ site.province }} - {{ site.townHall }}</span
                 ><br />
-                <span class="text-sm text-gray-700 lowercase"
+                <span
+                  class="inline-block px-2 py-1 mt-1 text-xs font-bold text-white lowercase duration-300 bg-gray-800 rounded-full md:mr-2 md:px-4 opacity-90"
                   >{{ site.categoryName }}
                 </span>
               </div>

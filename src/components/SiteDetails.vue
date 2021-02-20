@@ -297,7 +297,10 @@
                   {{ site.latitude }} ,
                   {{ site.longitude }}
                 </li>
-                <li class="inline-flex text-sm text-gray-darkest">
+                <li
+                  class="inline-flex text-sm text-gray-darkest"
+                  v-if="site.siteDetails.constraints"
+                >
                   <svg
                     class="w-4 h-4"
                     fill="none"
@@ -313,7 +316,7 @@
                     ></path>
                   </svg>
                   <span class="mx-2 font-semibold">Restricciones:</span>
-                  <p class="w-3/5">{{ site.siteDetails.constraints }}</p>
+                  <p class="w-48">{{ site.siteDetails.constraints }}</p>
                 </li>
                 <li
                   class="inline-flex text-sm text-gray-darkest"
@@ -340,12 +343,32 @@
                     >Posibilidad de ir en automóvil: SI</span
                   >
                 </li>
-                <li class="text-sm text-gray-darkest">
-                  <span class="font-semibold" v-if="site.siteDetails.goChildren"
+                <li
+                  class="inline-flex text-sm text-gray-darkest"
+                  v-if="site.siteDetails.goChildren"
+                >
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                    ></path>
+                  </svg>
+                  <span class="mx-2 font-semibold"
                     >Posibilidad de ir con niños: SI</span
                   >
                 </li>
-                <li class="inline-flex text-sm text-gray-darkest">
+                <li
+                  class="inline-flex text-sm text-gray-darkest"
+                  v-if="site.siteDetails.accessType"
+                >
                   <svg
                     class="w-4 h-4"
                     fill="none"
@@ -548,6 +571,7 @@ export default {
       page: 1,
       perPage: 4,
       pages: [],
+      first_entry: false,
       parkingIcon: L.icon({
         iconUrl: require("@/assets/img/parking.svg"),
         iconSize: [38, 95],
@@ -844,6 +868,7 @@ export default {
               .querySelector("#star")
               .setAttribute("fill", "currentColor");
             document.querySelector("#fav").innerHTML = "Eliminar de favoritos";
+            this.first_entry = true;
             this.rating = response.data.rate;
           }
         });
@@ -869,7 +894,11 @@ export default {
       this.setElements();
     },
     rating() {
-      this.setRating();
+      if (this.first_entry) {
+        this.first_entry = false;
+      } else {
+        this.setRating();
+      }
     },
   },
   computed: {
