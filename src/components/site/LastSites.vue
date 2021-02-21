@@ -3,7 +3,7 @@
     <div class="container flex mx-auto">
       <div class="w-full lg:w-8/12">
         <div class="flex text-center">
-          <img src="../assets/img/map_site.svg" class="w-36 h-36" />
+          <img src="../../assets/img/map_site.svg" class="w-36 h-36" />
           <h1 class="pt-10 text-xl font-bold text-gray-700 md:text-2xl">
             Últimos sitios añadidos
           </h1>

@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import MenuBar from "./components/MenuBar.vue";
-import Notification from "./components/Notification.vue";
+import MenuBar from "./components/common/MenuBar.vue";
+import Notification from "./components/common/Notification.vue";
 
 export default {
   name: "app",

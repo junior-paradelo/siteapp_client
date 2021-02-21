@@ -1,17 +1,17 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
-import Seeker from "../components/Seeker.vue";
-import Register from "../components/Register.vue";
-import LastSites from "../components/LastSites.vue";
-import Mapa from "../components/Map.vue";
-import SiteDetails from "../components/SiteDetails.vue";
-import UserProfile from "../components/UserProfile.vue";
-import NewSiteForm from "../components/NewSiteForm.vue";
-import AdminPanel from "../components/AdminPanel.vue";
-import ErrorPage from "../components/ErrorPage.vue";
-import EditSiteForm from "../components/EditSiteForm.vue";
-import Categories from "../components/Categories.vue";
+import Seeker from "../components/site/Seeker.vue";
+import Register from "../components/user/Register.vue";
+import LastSites from "../components/site/LastSites.vue";
+import Mapa from "../components/common/Map.vue";
+import SiteDetails from "../components/site/SiteDetails.vue";
+import UserProfile from "../components/user/UserProfile.vue";
+import NewSiteForm from "../components/site/NewSiteForm.vue";
+import AdminPanel from "../components/user/AdminPanel.vue";
+import ErrorPage from "../components/common/ErrorPage.vue";
+import EditSiteForm from "../components/site/EditSiteForm.vue";
+import Categories from "../components/site/Categories.vue";
 
 Vue.use(VueRouter);
 

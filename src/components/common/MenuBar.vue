@@ -23,7 +23,10 @@
         </div> -->
 
         <div class="self-center w-10 h-10 mr-2">
-          <img class="self-center w-10 h-10" src="../assets/img/oak-leaf.svg" />
+          <img
+            class="self-center w-10 h-10"
+            src="../../assets/img/oak-leaf.svg"
+          />
         </div>
         <a
           href="/"
